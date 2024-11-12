@@ -9,10 +9,17 @@ typedef enum e_token_type {
     OPERATER, // パイプとかリダイレクトとか
 } t_token_type;
 
+typedef enum e_token_status {
+    NORMAL,
+    SINGLE_QUOTE,
+    DOUBLE_QUOTE,
+} t_token_status;
+
 typedef struct s_token t_token;
 struct s_token {
     char            *data;
     t_token         *next;
+    t_token_status  status;
     t_token_type    type;
 };
 

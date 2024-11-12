@@ -3,7 +3,7 @@
 #include <string.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include "../include/tokenize.h"
+#include "../includes/tokenize.h"
 
 int main(void)
 {

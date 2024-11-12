@@ -1,9 +1,9 @@
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 FILES = main.c tokenize.c
-SRCS = $(addprefix ./src/, $(FILES))
+SRCS = $(addprefix ./srcs/, $(FILES))
 LIBFT = libft
 
 all: $(NAME)
@@ -16,11 +16,10 @@ clean:
 	make -C $(LIBFT) clean
 	rm -f *.o
 
-fclean:
+fclean: clean
 	make -C $(LIBFT) fclean
-	rm -f $(NAME)
+	$(RM) $(NAME)
 
-re:
-	fclean all
+re: fclean all
 
 .PHONY: all clean fclean re
