@@ -16,4 +16,5 @@ struct s_token {
     t_token_type    type;
 };
 
+t_token    *tokenization(char *line);
 #endif

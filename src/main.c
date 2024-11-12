@@ -19,8 +19,12 @@ int main(void)
             break;
         }
         token = tokenization(line);
-        printf("line is %s\n", line);
-        printf("%d\n", add_history(line));
+        while (token)
+        {
+            printf("token: %s\n", token->data);
+            token = token->next;
+        }
+        add_history(line);
         free(line);
     }
     printf("exit\n");

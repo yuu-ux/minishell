@@ -10,7 +10,7 @@ t_token *new_token(char *line, t_token_type type)
     token = (t_token *)malloc(sizeof(t_token));
     if (!token)
         return (NULL);
-    token->data = line;
+    token->data = ft_strdup(line);
     token->next = NULL;
     token->type = type;
     return (token);
@@ -19,18 +19,23 @@ t_token *new_token(char *line, t_token_type type)
 t_token    *tokenization(char *line)
 {
     t_token *token;
-    t_token *next;
-    char **result;
+    t_token *new;
+    char    **tokens;
+    t_token *head = NULL;
     int i;
 
     i = 0;
-    result = ft_split(line, ' ');
-    while (result[i] && result[i+1])
+    token = NULL;
+    tokens = ft_split(line, ' ');
+    while (tokens[i])
     {
-        token = new_token(result[i], ARG);
-        token->next = new_token(result[i+1], ARG);
-        token->next = next;
+        new = new_token(tokens[i], ARG);
+        if (!head)
+            head = new;
+        else
+            token->next = new;
+        token = new;
         i++;
     }
-    return (token);
+    return (head);
 }
