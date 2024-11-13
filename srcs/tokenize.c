@@ -14,7 +14,7 @@ int ft_isoperator(int c)
 
 int ft_isquote(int c)
 {
-    return (c == '\'' || c == '\"');
+    return (c == SINGLE_QUOTE || c == DOUBLE_QUOTE);
 }
 
 size_t  count_tokens(char *line)
@@ -37,8 +37,16 @@ size_t  count_tokens(char *line)
         if (ft_isalnum(*line) || ft_isoperator(*line))
         {
             result++;
-            while ((ft_isalnum(*line) || ft_isoperator(*line)) && *line)
-                line++;
+            if (ft_isalnum(*line))
+            {
+                while (ft_isalnum(*line) && *line)
+                    line++;
+            }
+            else
+            {
+                while (ft_isoperator(*line) && *line)
+                    line++;
+            }
         }
     }
     return (result);
@@ -78,10 +86,21 @@ char    **tokenize(char *line)
         }
         if (ft_isalnum(*line) || ft_isoperator(*line))
         {
-            while ((ft_isalnum(*line) || ft_isoperator(*line)) && *line)
+            if (ft_isalnum(*line))
             {
-                line++;
-                j++;
+                while (ft_isalnum(*line) && *line)
+                {
+                    line++;
+                    j++;
+                }
+            }
+            else
+            {
+                while (ft_isoperator(*line) && *line)
+                {
+                    line++;
+                    j++;
+                }
             }
             tokens[i] = (char *)malloc((j + 1) * sizeof(char));
             ft_memcpy(tokens[i], line-j, j);
@@ -108,6 +127,22 @@ t_token *new_token(char *line, t_token_type type)
     return (token);
 }
 
+t_token_type    get_token_type(char *token)
+{
+    if (*token == '|')
+        return (TOKEN_PIPE);
+    else if (*token == '<' && *(token+1) == '<')
+        return (TOKEN_REDIRECT_HEREDOC);
+    else if (*token == '>' && *(token+1) == '>')
+        return (TOKEN_REDIRECT_APPEND);
+    else if (*token == '<')
+        return (TOKEN_REDIRECT_IN);
+    else if (*token == '>')
+        return (TOKEN_REDIRECT_OUT);
+    else
+        return (TOKEN_WORD);
+}
+
 t_token    *tokenization(char *line)
 {
     t_token *token;
@@ -120,7 +155,7 @@ t_token    *tokenization(char *line)
     tokens = tokenize(line);
     while (tokens[i])
     {
-        new = new_token(tokens[i], ARG);
+        new = new_token(tokens[i], get_token_type(tokens[i]));
         if (!head)
             head = new;
         else

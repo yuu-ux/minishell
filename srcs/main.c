@@ -22,6 +22,7 @@ int main(void)
         while (token)
         {
             printf("token: %s\n", token->data);
+            printf("token_type: %d\n", token->type);
             token = token->next;
         }
         add_history(line);

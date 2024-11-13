@@ -1,25 +1,24 @@
 #ifndef LEXER_H
 # define LEXER_H
 
-typedef enum e_token_type {
-    ARG,      // 関数の引数
-    VARIABLE, // コマンドラインでの任意の単語やトークン（e.g. PATH, DISPLAY）
-    BILTIN,   // 定義したビルトイン関数
-    COMMAND,  // ビルトイン以外のコマンド可変長引数でわたす
-    OPERATER, // パイプとかリダイレクトとか
-} t_token_type;
+#define DOUBLE_QUOTE '\"'
+#define SINGLE_QUOTE '\''
 
-typedef enum e_token_status {
-    NORMAL,
-    SINGLE_QUOTE,
-    DOUBLE_QUOTE,
-} t_token_status;
+typedef enum e_token_type {
+    TOKEN_WORD,
+    TOKEN_EOF,
+    TOKEN_UNKOWN,
+    TOKEN_PIPE,
+    TOKEN_REDIRECT_IN,
+    TOKEN_REDIRECT_OUT,
+    TOKEN_REDIRECT_APPEND,
+    TOKEN_REDIRECT_HEREDOC,
+} t_token_type;
 
 typedef struct s_token t_token;
 struct s_token {
     char            *data;
     t_token         *next;
-    t_token_status  status;
     t_token_type    type;
 };
 
