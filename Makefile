@@ -5,6 +5,7 @@ CFLAGS = -Wall -Wextra -Werror -fsanitize=address
 FILES = main.c tokenize.c
 SRCS = $(addprefix ./srcs/, $(FILES))
 LIBFT = libft
+TEST_DIR = ./test/tokenize/
 
 all: $(NAME)
 
@@ -20,6 +21,9 @@ fclean: clean
 	make -C $(LIBFT) fclean
 	$(RM) $(NAME)
 
+test:
+	make -C $(TEST_DIR) test
+
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re test

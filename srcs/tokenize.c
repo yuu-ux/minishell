@@ -1,18 +1,17 @@
 #include "../includes/tokenize.h"
 #include "../libft/libft.h"
 
-int	ft_isspace(int c)
+int ft_isspace(int c)
 {
-	return (c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r'
-		|| c == ' ');
+    return ('\t' == c || '\n' == c || '\v' == c
+            || '\f' == c || '\r' == c || ' ' == c);
+}
+int is_metacharacter(int c)
+{
+    return ('|' == c || c == '<' || c == '>');
 }
 
-int ft_isoperator(int c)
-{
-    return (c == '|' || c == '<' || c == '>');
-}
-
-int ft_isquote(int c)
+int is_quote(int c)
 {
     return (c == SINGLE_QUOTE || c == DOUBLE_QUOTE);
 }
@@ -24,29 +23,26 @@ size_t  count_tokens(char *line)
     result = 0;
     while (*line)
     {
-        while (ft_isspace(*line))
+        while (ft_isspace(*line) && *line)
             line++;
-        if (ft_isquote(*line))
+        if (is_metacharacter(*line))
         {
             result++;
-            line++;
-            while (!ft_isquote(*line) && *line)
+            while (is_metacharacter(*line) && *line)
+                line++;
+        }
+        else if (is_quote(*line++))
+        {
+            result++;
+            while (!is_quote(*line) && *line)
                 line++;
             line++;
         }
-        if (ft_isalnum(*line) || ft_isoperator(*line))
+        else
         {
             result++;
-            if (ft_isalnum(*line))
-            {
-                while (ft_isalnum(*line) && *line)
-                    line++;
-            }
-            else
-            {
-                while (ft_isoperator(*line) && *line)
-                    line++;
-            }
+            while (!(is_metacharacter(*line) || is_quote(*line) || ft_isspace(*line)) && *line)
+                line++;
         }
     }
     return (result);
@@ -67,45 +63,38 @@ char    **tokenize(char *line)
     while (i < word_num)
     {
         j = 0;
-        while (ft_isspace(*line))
+        while (ft_isspace(*line) && *line)
             line++;
-        if (ft_isquote(*line))
+        if (is_metacharacter(*line))
         {
-            line++;
-            j++;
-            while (!ft_isquote(*line) && *line)
+            while (is_metacharacter(*line) && *line)
             {
                 line++;
                 j++;
             }
-            tokens[i] = (char *)malloc((j + 1) * sizeof(char));
-            tokens[i][j] = '\0';
+        }
+        else if (is_quote(*line))
+        {
+            j++;
+            line++;
+            while (!is_quote(*line) && *line)
+            {
+                line++;
+                j++;
+            }
             line++;
             j++;
-            ft_memcpy(tokens[i], line-j, j);
         }
-        if (ft_isalnum(*line) || ft_isoperator(*line))
+        else
         {
-            if (ft_isalnum(*line))
+            while (!(is_metacharacter(*line) || is_quote(*line) || ft_isspace(*line)) && *line)
             {
-                while (ft_isalnum(*line) && *line)
-                {
-                    line++;
-                    j++;
-                }
+                j++;
+                line++;
             }
-            else
-            {
-                while (ft_isoperator(*line) && *line)
-                {
-                    line++;
-                    j++;
-                }
-            }
-            tokens[i] = (char *)malloc((j + 1) * sizeof(char));
-            ft_memcpy(tokens[i], line-j, j);
-            tokens[i][j] = '\0';
         }
+        tokens[i] = (char *)malloc((j + 1) * sizeof(char));
+        ft_memcpy(tokens[i], line-j, j);
         i++;
     }
     tokens[i] = NULL;
@@ -165,3 +154,4 @@ t_token    *tokenization(char *line)
     }
     return (head);
 }
+
