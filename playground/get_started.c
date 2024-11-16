@@ -101,16 +101,16 @@ exec_pipeline(struct cmd *cmdhead)
     int fds1[2] = {-1, -1};
     int fds2[2] = {-1, -1};
 
-    for (cmd = cmdhead; cmd && !REDIRECT_P(cmd); cmd = cmd->next) {
+    for (cmd = cmdhead; cmd && !REDIRECT_P(cmd); cmd = cmd->next) { // cmd が存在するかつcmdがリダイレクトじゃない限り続ける
         fds1[0] = fds2[0];
         fds1[1] = fds2[1];
-        if (! TAIL_P(cmd)) {
+        if (! TAIL_P(cmd)) { // 次のコマンドがNULLじゃないまたは、次のコマンドがリダイレクトであれば True
             if (pipe(fds2) < 0) {
                 perror("pipe");
                 exit(3);
             }
         }
-        if (lookup_builtin(cmd->argv[0]) != NULL) {
+        if (lookup_builtin(cmd->argv[0]) != NULL) { // builtin かどうかを判定する
             cmd->pid = PID_BUILTIN;
         }
         else {
