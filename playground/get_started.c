@@ -199,22 +199,25 @@ parse_command_line(char *p)
     cmd->argv = xmalloc(sizeof(char*) * INIT_ARGV);
     cmd->capa = INIT_ARGV;
     cmd->next = NULL;
+	// トークナイズ
     while (*p) {
         while (*p && isspace((int)*p))
             *p++ = '\0';
-        if (! IDENT_CHAR_P(*p))
+        if (! IDENT_CHAR_P(*p)) // 区切り文字であればループを抜ける
             break;
-        if (*p && IDENT_CHAR_P(*p)) {
-            if (cmd->capa <= cmd->argc) {
+        if (*p && IDENT_CHAR_P(*p)) { // 区切り文字じゃなければ入る
+            if (cmd->capa <= cmd->argc) { // メモリが足りなければ拡張する
                 cmd->capa *= 2;
                 cmd->argv = xrealloc(cmd->argv, cmd->capa);
             }
             cmd->argv[cmd->argc] = p;
             cmd->argc++;
         }
-        while (*p && IDENT_CHAR_P(*p))
+        while (*p && IDENT_CHAR_P(*p)) // 区切り文字じゃなければインクリメント
             p++;
     }
+
+	// NULL 考慮
     if (cmd->capa <= cmd->argc) {
         cmd->capa += 1;
         cmd->argv = xrealloc(cmd->argv, cmd->capa);
