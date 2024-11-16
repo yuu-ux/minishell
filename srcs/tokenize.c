@@ -23,9 +23,12 @@ size_t  count_tokens(char *line)
     result = 0;
     while (*line)
     {
-        while (ft_isspace(*line) && *line)
-            line++;
-        if (is_metacharacter(*line))
+        if (ft_isspace(*line))
+        {
+            while (ft_isspace(*line) && *line)
+                line++;
+        }
+        else if (is_metacharacter(*line))
         {
             result++;
             while (is_metacharacter(*line) && *line)
@@ -95,6 +98,7 @@ char    **tokenize(char *line)
         }
         tokens[i] = (char *)malloc((j + 1) * sizeof(char));
         ft_memcpy(tokens[i], line-j, j);
+        tokens[i][j] = '\0';
         i++;
     }
     tokens[i] = NULL;
