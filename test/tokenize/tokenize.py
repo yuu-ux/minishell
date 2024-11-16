@@ -27,6 +27,7 @@ pipelines = [
     'cat << "EOF" | grep "test" >> "out put"',
     'echo $"variable"',
     'cat < file1>file2',
+    'echo "hello world"                 ',
 ]
 # Python側でトークン化
 def python_tokenizer(pipeline):
