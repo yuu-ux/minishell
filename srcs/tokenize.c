@@ -10,27 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/tokenize.h"
-#include "../libft/libft.h"
+#include "tokenize.h"
+#include "libft.h"
 
-int ft_isspace(int c)
-{
-    return ('\t' == c || '\n' == c || '\v' == c
-            || '\f' == c || '\r' == c || ' ' == c);
-}
-int is_metacharacter(int c)
-{
-    return ('|' == c || c == '<' || c == '>');
-}
-
-int is_quote(int c)
-{
-    return (c == SINGLE_QUOTE || c == DOUBLE_QUOTE);
-}
-
-size_t  count_tokens(char *line)
+static size_t  count_tokens(const char *line)
 {
     size_t  result;
+    char quote_char;
 
     result = 0;
     while (*line)
@@ -40,35 +26,43 @@ size_t  count_tokens(char *line)
             while (ft_isspace(*line) && *line)
                 line++;
         }
-        else if (is_metacharacter(*line))
+        else if (is_operators(*line))
         {
             result++;
-            while (is_metacharacter(*line) && *line)
+            while (is_operators(*line) && *line)
                 line++;
         }
-        else if (is_quote(*line++))
+        else if (is_quote(*line))
         {
             result++;
-            while (!is_quote(*line) && *line)
+            quote_char = *line++;
+            while (*line)
+            {
+                if (*line == quote_char)
+                {
+                    line++;
+                    break;
+                }
                 line++;
-            line++;
+            }
         }
         else
         {
             result++;
-            while (!(is_metacharacter(*line) || is_quote(*line) || ft_isspace(*line)) && *line)
+            while (!(is_operators(*line) || is_quote(*line) || ft_isspace(*line)) && *line)
                 line++;
         }
     }
     return (result);
 }
 
-char    **tokenize(char *line)
+static char    **tokenize(const char *line)
 {
     char **tokens = NULL;
     size_t  word_num;
     size_t  i;
     size_t  j;
+    char    quote_char;
 
     i = 0;
     word_num = count_tokens(line);
@@ -80,9 +74,9 @@ char    **tokenize(char *line)
         j = 0;
         while (ft_isspace(*line) && *line)
             line++;
-        if (is_metacharacter(*line))
+        if (is_operators(*line))
         {
-            while (is_metacharacter(*line) && *line)
+            while (is_operators(*line) && *line)
             {
                 line++;
                 j++;
@@ -90,19 +84,22 @@ char    **tokenize(char *line)
         }
         else if (is_quote(*line))
         {
-            j++;
-            line++;
-            while (!is_quote(*line) && *line)
+            quote_char = *line;
+            while (*line)
             {
                 line++;
                 j++;
+                if (*line == quote_char)
+                {
+                        line++;
+                        j++;
+                        break;
+                }
             }
-            line++;
-            j++;
         }
         else
         {
-            while (!(is_metacharacter(*line) || is_quote(*line) || ft_isspace(*line)) && *line)
+            while (!(is_operators(*line) || is_quote(*line) || ft_isspace(*line)) && *line)
             {
                 j++;
                 line++;
@@ -117,7 +114,7 @@ char    **tokenize(char *line)
     return (tokens);
 }
 
-t_token *new_token(char *line, t_token_type type)
+static t_token *new_token(const char *line, t_token_type type)
 {
     t_token *token;
 
@@ -132,7 +129,7 @@ t_token *new_token(char *line, t_token_type type)
     return (token);
 }
 
-t_token_type    get_token_type(char *token)
+static t_token_type    get_token_type(const char *token)
 {
     if (*token == '|')
         return (TOKEN_PIPE);
@@ -148,7 +145,7 @@ t_token_type    get_token_type(char *token)
         return (TOKEN_WORD);
 }
 
-t_token    *tokenization(char *line)
+t_token    *tokenization(const char *line)
 {
     t_token *token;
     t_token *new;

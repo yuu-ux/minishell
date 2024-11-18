@@ -1,8 +1,8 @@
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address
-FILES = main.c tokenize.c
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -I./includes/ -Ilibft
+FILES = main.c tokenize.c check_syntax.c utils.c debug.c
 SRCS = $(addprefix ./srcs/, $(FILES))
 LIBFT = libft
 TEST_DIR = ./test/tokenize/

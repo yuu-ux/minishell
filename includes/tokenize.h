@@ -3,11 +3,12 @@
 
 #define DOUBLE_QUOTE '\"'
 #define SINGLE_QUOTE '\''
+#define SYNTAX_ERROR 1
 
 typedef enum e_token_type {
     TOKEN_WORD,
     TOKEN_EOF,
-    TOKEN_UNKOWN,
+    TOKEN_UNKNOWN,
     TOKEN_PIPE,
     TOKEN_REDIRECT_IN,
     TOKEN_REDIRECT_OUT,
@@ -22,5 +23,14 @@ struct s_token {
     t_token_type    type;
 };
 
-t_token    *tokenization(char *line);
+t_token    *tokenization(const char *line);
+void    check_syntax(t_token *token);
+
+// tokenize_utils
+int ft_isspace(int c);
+int is_operators(int c);
+int is_quote(int c);
+
+// debug
+const char *get_token_type_string(t_token_type type);
 #endif

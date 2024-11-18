@@ -15,12 +15,13 @@
 #include <string.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include "../includes/tokenize.h"
+#include "tokenize.h"
+#include "minishell.h"
 
 int main(void)
 {
     char *line = NULL;
-    t_token *token;
+    t_token *tokens;
 
     while (1)
     {
@@ -30,15 +31,20 @@ int main(void)
             free(line);
             break;
         }
-        token = tokenization(line);
-        while (token)
+        tokens = tokenization(line);
+        check_syntax(tokens);
+        while (tokens)
         {
-            printf("token: %s\n", token->data);
-            token = token->next;
+            printf("token: %s type: %s\n", tokens->data, get_token_type_string(tokens->type));
+            tokens = tokens->next;
         }
+        //expand(tokens);
+        //parse_pipe_line(tokens);
+        //invoke_commands();
+        //all_free();
         add_history(line);
         free(line);
     }
     printf("exit\n");
-    return (0);
+    return (SUCCESS);
 }

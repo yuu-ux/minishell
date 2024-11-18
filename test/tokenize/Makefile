@@ -1,7 +1,7 @@
 NAME = tokenize_test
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -I../../libft -I../../includes
-SRCS = tokenize.c ../../srcs/tokenize.c
+SRCS = tokenize.c ../../srcs/tokenize.c ../../srcs/utils.c
 LIBFT = ../../libft/libft.a
 
 all: $(NAME)

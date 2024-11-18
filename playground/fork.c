@@ -2,19 +2,20 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include "../libft/libft.h"
 
-int main() {
-    pid_t pid = fork();
-	char **env;
-
-	extern char **environ;
-	int	i = 0;
-
-	while (environ[i])
-	{
-		printf("%s\n", environ[i]);
-		i++;
-	}
+int main(int argc, char **argv) {
+    char **PATH = ft_split(getenv("PATH"), ':');
+    if (argc == 2)
+    {
+        for (int i = 0; PATH[i]; i++)
+        {
+            strlcat(PATH[i], "/", ft_strlen(PATH[i]) + 2);
+            strlcat(PATH[i], argv[1], ft_strlen(PATH[i]) + ft_strlen(argv[1]) + 1);
+            execve(PATH[i], (char *[]){PATH[i], NULL}, NULL);
+        }
+    }
+    //pid_t pid = fork();
     //if (pid < 0) {
     //    perror("fork failed");
     //    exit(1);
@@ -35,7 +36,6 @@ int main() {
     //    }
     //    printf("Child process finished with status: %d\n", WEXITSTATUS(status));
     //}
-
-    //return 0;
+    return 0;
 }
 
