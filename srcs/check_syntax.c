@@ -27,7 +27,7 @@ void    check_operators_error(t_token *token)
 
 void    check_syntax(t_token *token)
 {
-    if (token->data[0] == '|')
+    if (is_operators(token->type))
         exit(SYNTAX_ERROR);
     while (token)
     {
