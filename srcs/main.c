@@ -17,6 +17,8 @@
 #include <readline/history.h>
 #include "tokenize.h"
 #include "minishell.h"
+#include "expand.h"
+#include "libft.h"
 
 int main(void)
 {
@@ -26,19 +28,19 @@ int main(void)
     while (1)
     {
         line = readline("$minishell ");
-        if (line == NULL || strlen(line) == 0)
+        if (line == NULL || ft_strlen(line) == 0)
         {
             free(line);
             break;
         }
         tokens = tokenization(line);
         check_syntax(tokens);
+        tokens = expand_tokens(&tokens);
         while (tokens)
         {
             printf("token: %s type: %s\n", tokens->data, get_token_type_string(tokens->type));
             tokens = tokens->next;
         }
-        //expand(tokens);
         //parse_pipe_line(tokens);
         //invoke_commands();
         //all_free();
