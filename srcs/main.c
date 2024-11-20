@@ -38,7 +38,7 @@ int main(void)
         tokens = expand_tokens(&tokens);
         while (tokens)
         {
-            printf("token: %s type: %s\n", tokens->data, get_token_type_string(tokens->type));
+            printf("token: %s\n", tokens->data);
             tokens = tokens->next;
         }
         //parse_pipe_line(tokens);

@@ -8,5 +8,5 @@ typedef struct {
 
 #include "tokenize.h"
 
-t_token *expand_tokens(t_token **tokens);
+t_token *expand_tokens(t_token **_tokens);
 #endif
