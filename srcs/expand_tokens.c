@@ -17,36 +17,6 @@ static char *search_path(kvs *path_list, const char *key)
     return (NULL);
 }
 
-static kvs *create_path(char **environ)
-{
-    kvs *path_list;
-    char **temp;
-    int i;
-    int count;
-
-    i = 0;
-    count = 0;
-    while (environ[i])
-    {
-        count++;
-        i++;
-    }
-    path_list = (kvs *)malloc(sizeof(kvs) * (count+1));
-    if (!path_list)
-        return NULL;
-    ft_memset(path_list, 0, sizeof(kvs));
-    i = 0;
-    while (environ[i])
-    {
-        temp = ft_split(environ[i], '=');
-        path_list[i].key = temp[0];
-        path_list[i].value = temp[1];
-        free(temp);
-        i++;
-    }
-    return (path_list);
-}
-
 static char *expand_double_quote(kvs *path_list, char *token)
 {
     int i;
@@ -80,17 +50,14 @@ static char *expand_double_quote(kvs *path_list, char *token)
     return (temp);
 }
 
-t_token    *expand_tokens(t_token **_tokens)
+t_token    *expand_tokens(t_token **_tokens, kvs *path_list)
 {
-    extern char **environ;
-    kvs *path_list;
     t_token *head;
     t_token *tokens;
 
     // TODO main の方で一回よびだす
     // unset で消えることもある
     // environは自動で更新されないため、更新する必要がある
-    path_list = create_path(environ);
     head = *_tokens;
     tokens = *_tokens;
     while (tokens)

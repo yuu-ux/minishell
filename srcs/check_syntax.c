@@ -1,7 +1,5 @@
 #include "tokenize.h"
 #include "libft.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 static  void    print_syntax_error()
 {
@@ -11,13 +9,26 @@ static  void    print_syntax_error()
 
 static void    check_quote_error(t_token *token)
 {
-    int last_index;
+    char quote;
+    int i;
 
-    last_index = ft_strlen(token->data) - 1;
-    if (last_index == 0)
+    i = 0;
+    if (ft_strlen(token->data) == 1)
         print_syntax_error();
-    if (token->data[0] != token->data[last_index])
-        print_syntax_error();
+    while (token->data[i])
+    {
+        if (is_quote(token->data[i]))
+        {
+            quote = token->data[i++];
+            while (token->data[i] != quote)
+            {
+                if (!token->data[i])
+                    print_syntax_error();
+                i++;
+            }
+        }
+        i++;
+    }
     return ;
 }
 
@@ -33,7 +44,7 @@ static void    check_operators_error(t_token *token)
 
 void    check_syntax(t_token *token)
 {
-    if (is_operators(token->type))
+    if (token->data[0] == '|')
         print_syntax_error();
     while (token)
     {
