@@ -2,7 +2,7 @@
 #include "expand.h"
 #include "libft.h"
 
-static char *search_path(kvs *path_list, const char *key)
+static char *search_path(const char *key, kvs *path_list)
 {
     int i;
 
@@ -14,40 +14,82 @@ static char *search_path(kvs *path_list, const char *key)
             return (path_list[i].value);
         i++;
     }
-    return (NULL);
+    return (ft_strdup(""));
 }
 
-static char *expand_double_quote(kvs *path_list, char *token)
+static size_t  count_path_len(char *token, int t_index)
 {
-    int i;
-    int j;
-    int start;
-    char *result;
-    size_t len;
-    char *value;
-    char *temp;
+    size_t  i;
 
     i = 0;
-    j = 0;
-    len = ft_strlen(token);
-    result = (char *)ft_xmalloc((len + 1) * sizeof(char));
-    while (token[i])
+    while ((ft_isalnum(token[t_index]) || token[t_index] == '_') && token[t_index])
     {
-        if (token[i] == '$')
-        {
-            start = i+1;
-            while (token[++i] && (ft_isalpha(token[i]) || token[i] == '_'))
-                ;
-            value = search_path(path_list, ft_substr(token, start, i-start));
-            // PATH 以外の文字 + PATH 展開後の文字数
-            temp = (char *)ft_realloc(result, ft_strlen(value)+1);
-            ft_strlcat(temp, value, ft_strlen(value)+1);
-        }
-        else if (token[i] != DOUBLE_QUOTE)
-            result[j++] = token[i];
         i++;
+        t_index++;
     }
-    return (temp);
+    return (i);
+}
+
+static char *expand_token(char *token, kvs *path_list)
+{
+    int t_index;
+    int r_index;
+    char *value;
+    char *result;
+    size_t key_len;
+
+    t_index = 0;
+    r_index = 0;
+    result = (char *)ft_xmalloc((ft_strlen(token) + 1) * sizeof(char));
+    while (token[t_index])
+    {
+        if (token[t_index] == '$')
+        {
+            key_len = count_path_len(token, t_index+1);
+            value = search_path(ft_substr(token, t_index+1, key_len), path_list);
+            result = ft_strjoin(result, value);
+            // value を展開した長さ + 元々の token の長さ
+            result = (char *)ft_realloc(result, ft_strlen(result) + ft_strlen(token));
+            t_index += key_len+1;
+            r_index += ft_strlen(value);
+        }
+        else if (token[t_index] == DOUBLE_QUOTE)
+        {
+            t_index++;
+            continue;
+        }
+        else
+        {
+            result[r_index] = token[t_index];
+            r_index++;
+            t_index++;
+        }
+    }
+    return (result);
+}
+
+static char    *delete_single_quote(char *token)
+{
+    char *result;
+    int t_index;
+    int r_index;
+
+    // token の文字数 - シングルクウォートの文字数 + nul 文字
+    result = (char *)ft_xmalloc((ft_strlen(token) - 2 + 1) * sizeof(char));
+    t_index = 0;
+    r_index = 0;
+    while (token[t_index])
+    {
+        if (token[t_index] == SINGLE_QUOTE)
+        {
+            t_index++;
+            continue;
+        }
+        result[r_index] = token[t_index];
+        t_index++;
+        r_index++;
+    }
+    return result;
 }
 
 t_token    *expand_tokens(t_token **_tokens, kvs *path_list)
@@ -55,19 +97,14 @@ t_token    *expand_tokens(t_token **_tokens, kvs *path_list)
     t_token *head;
     t_token *tokens;
 
-    // TODO main の方で一回よびだす
-    // unset で消えることもある
-    // environは自動で更新されないため、更新する必要がある
     head = *_tokens;
     tokens = *_tokens;
     while (tokens)
     {
-        if (tokens->data[0] == DOUBLE_QUOTE)
-            tokens->data = expand_double_quote(path_list, tokens->data);
-        //else if (tokens->data[0] == '$')
-        //    tokens->data = search_path(path_list, &tokens->data[1]);
-        else if (tokens->data[0] == SINGLE_QUOTE)
-            tokens->data = ft_substr(tokens->data, 1, ft_strlen(tokens->data)-2);
+        if (tokens->data[0] == SINGLE_QUOTE)
+            tokens->data = delete_single_quote(tokens->data);
+        else
+            tokens->data = expand_token(tokens->data, path_list);
         tokens = tokens->next;
     }
     return (head);

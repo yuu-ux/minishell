@@ -70,8 +70,7 @@ int main(void)
         }
         tokens = tokenization(line);
         check_syntax(tokens);
-        (void)path_list;
-        //tokens = expand_tokens(&tokens, path_list);
+        tokens = expand_tokens(&tokens, path_list);
         while (tokens)
         {
             printf("token: %s\n", tokens->data);
