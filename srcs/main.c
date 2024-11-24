@@ -34,8 +34,8 @@ int main(void)
             break;
         }
         tokens = tokenization(line);
-        check_syntax(tokens);
-        tokens = expand_tokens(&tokens);
+        //check_syntax(tokens);
+        //tokens = expand_tokens(&tokens);
         while (tokens)
         {
             printf("token: %s\n", tokens->data);

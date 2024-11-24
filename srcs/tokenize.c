@@ -38,7 +38,8 @@ static size_t  count_tokens(const char *line)
             quote_char = *line++;
             while (*line)
             {
-                if (*line == quote_char)
+                // echo "hello""world"をひとつのトークンとして持ちたいため次がスペースかチェックする
+                if (*line == quote_char && *(line+1) == ' ')
                 {
                     line++;
                     break;
@@ -66,7 +67,7 @@ static char    **tokenize(const char *line)
 
     i = 0;
     word_num = count_tokens(line);
-    tokens = (char **)malloc((word_num + 1) * sizeof(char *));
+    tokens = (char **)ft_xmalloc((word_num + 1) * sizeof(char *));
     if (!tokens)
         return (NULL);
     while (i < word_num)
@@ -89,7 +90,7 @@ static char    **tokenize(const char *line)
             {
                 line++;
                 j++;
-                if (*line == quote_char)
+                if (*line == quote_char && *(line+1) == ' ')
                 {
                         line++;
                         j++;

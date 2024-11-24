@@ -2,7 +2,7 @@
 #include "expand.h"
 #include "libft.h"
 
-static char *expnad_nomal(kvs *path_list, const char *key)
+static char *search_path(kvs *path_list, const char *key)
 {
     int i;
 
@@ -49,37 +49,35 @@ static kvs *create_path(char **environ)
 
 static char *expand_double_quote(kvs *path_list, char *token)
 {
-    int variable_start_index;
-    int variable_last_index;
-    char *before_path_char;
-    char *path;
-    char *after_path_char;
     int i;
+    int j;
+    int start;
     char *result;
+    size_t len;
+    char *value;
+    char *temp;
 
     i = 0;
+    j = 0;
+    len = ft_strlen(token);
+    result = (char *)ft_xmalloc((len + 1) * sizeof(char));
     while (token[i])
     {
         if (token[i] == '$')
         {
-            variable_start_index = i+1;
-            while (token[++i] && ft_isalpha(token[i]))
+            start = i+1;
+            while (token[++i] && (ft_isalpha(token[i]) || token[i] == '_'))
                 ;
-            variable_last_index = i-variable_start_index;
+            value = search_path(path_list, ft_substr(token, start, i-start));
+            // PATH 以外の文字 + PATH 展開後の文字数
+            temp = (char *)ft_realloc(result, ft_strlen(value)+1);
+            ft_strlcat(temp, value, ft_strlen(value)+1);
         }
+        else if (token[i] != DOUBLE_QUOTE)
+            result[j++] = token[i];
         i++;
     }
-    // $PATH であれば start_index は P のインデックスで設定されているため、-2 する
-    // ダブルクウォートを除きたいため、インデックス 1 から始める
-    before_path_char = ft_substr(token, 1, variable_start_index-2);
-    path = expnad_nomal(path_list, ft_substr(token, variable_start_index, variable_last_index));
-    // ダブルクウォートを除きたいため、+1する
-    after_path_char = ft_substr(token, variable_start_index+variable_last_index, i-(variable_start_index+variable_last_index+1));
-    result = ft_strjoin(ft_strjoin(before_path_char, path), after_path_char);
-    free(before_path_char);
-    free(path);
-    free(after_path_char);
-    return (result);
+    return (temp);
 }
 
 t_token    *expand_tokens(t_token **_tokens)
@@ -89,17 +87,20 @@ t_token    *expand_tokens(t_token **_tokens)
     t_token *head;
     t_token *tokens;
 
+    // TODO main の方で一回よびだす
+    // unset で消えることもある
+    // environは自動で更新されないため、更新する必要がある
     path_list = create_path(environ);
     head = *_tokens;
     tokens = *_tokens;
-    // TODO シングルクウォート外す
-    // TODO シェル変数の展開が必要かどうか聞く
     while (tokens)
     {
         if (tokens->data[0] == DOUBLE_QUOTE)
             tokens->data = expand_double_quote(path_list, tokens->data);
-        else if (tokens->data[0] == '$')
-            tokens->data = expnad_nomal(path_list, &tokens->data[1]);
+        //else if (tokens->data[0] == '$')
+        //    tokens->data = search_path(path_list, &tokens->data[1]);
+        else if (tokens->data[0] == SINGLE_QUOTE)
+            tokens->data = ft_substr(tokens->data, 1, ft_strlen(tokens->data)-2);
         tokens = tokens->next;
     }
     return (head);
