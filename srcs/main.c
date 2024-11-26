@@ -19,6 +19,7 @@
 #include "minishell.h"
 #include "expand.h"
 #include "libft.h"
+#include "invoke_commands.h"
 
 static kvs *create_path(char **environ)
 {
@@ -71,13 +72,8 @@ int main(void)
         tokens = tokenization(line);
         check_syntax(tokens);
         tokens = expand_tokens(&tokens, path_list);
-        while (tokens)
-        {
-            printf("token: %s\n", tokens->data);
-            tokens = tokens->next;
-        }
-        //parse_pipe_line(tokens);
-        //invoke_commands();
+        // パース、シグナルキャッチ準備、単一のコマンド実行、パイプ実行
+        invoke_commands(tokens);
         //all_free();
         add_history(line);
         free(line);
