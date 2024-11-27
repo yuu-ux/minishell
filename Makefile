@@ -1,7 +1,7 @@
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I./includes/ -Ilibft
+CFLAGS = -g -Wall -Wextra -Werror -I./includes/ -Ilibft
 FILES = main.c tokenize.c check_syntax.c utils.c debug.c expand_tokens.c invoke_commands.c
 SRCS = $(addprefix ./srcs/, $(FILES))
 LIBFT = libft
