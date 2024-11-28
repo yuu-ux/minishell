@@ -42,14 +42,14 @@ static char **create_argv(t_token **tokens)
     int i;
     size_t word_num;
 
-    i = 0;
     word_num = count_word_node(*tokens);
 	if (word_num == 0)
 		return (NULL);
     result = (char **)malloc((word_num+1) * sizeof(char *));
 	if (result == NULL)
 		return (NULL);
-    while (i < (int)word_num-1)
+    i = 0;
+    while (i < (int)word_num)
     {
         result[i++] = ft_strdup((*tokens)->data);
         *tokens = (*tokens)->next;
@@ -60,37 +60,41 @@ static char **create_argv(t_token **tokens)
 
 static t_node *parse(t_token *tokens)
 {
-    t_node head;
-    t_node *current;
+    t_node *head = NULL;
+    t_node *current = NULL;
 
-	head.next = NULL;
     while (tokens)
     {
-        current = last_node(&head);
-        current->next = new_node();
-        if (current == NULL)
-            return (NULL);
-        current->argv = create_argv(&tokens);
-        // kind 判定
-        if (&head == current)
-            current->next->prev = NULL;
-        else
-            current->next->prev = current;
+		if (head == NULL)
+		{
+			head = new_node();
+			current = head;
+			current->argv = create_argv(&tokens);
+			continue ;
+		}
+		current->next = new_node();
+		current->next->prev = current;
+		current->argv = create_argv(&tokens);
+		if (tokens == NULL)
+			break;
+		current = current->next;
 		tokens = tokens->next;
     }
-	current = head.next;
-    while (current)
+	head->prev = NULL;
+	current->next = NULL;
+    while (head)
     {
         int i = 0;
-        printf("kind:%d\n", current->kind);
+        //printf("kind:%d\n", current->kind);
         while (current->argv[i])
 			printf("argv:%s\n", current->argv[i++]);
         printf("in:%d\n", current->fd_in);
         printf("out:%d\n", current->fd_out);
         printf("---------------------------------\n");
-        current = current->next;
+        head = head->next;
     }
-    return (head.next);
+
+    return (head);
 }
 
 void    invoke_commands(t_token *tokens)
