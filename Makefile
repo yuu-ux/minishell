@@ -1,8 +1,7 @@
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I./includes/ -Ilibft
-# -fsanitize=address
+CFLAGS = -g -Wall -Wextra -Werror -I./includes/ -Ilibft
 FILES = main.c tokenize.c check_syntax.c utils.c debug.c expand_tokens.c invoke_commands.c
 SRCS = $(addprefix ./srcs/, $(FILES))
 LIBFT = libft
@@ -22,9 +21,12 @@ fclean: clean
 	make -C $(LIBFT) fclean
 	$(RM) $(NAME)
 
+debug: CFLAGS += -fsanitize=address
+debug: all
+
 test:
 	make -C $(TEST_DIR) test
 
 re: fclean all
 
-.PHONY: all clean fclean re test
+.PHONY: all clean fclean re test debug

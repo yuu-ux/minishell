@@ -166,6 +166,7 @@ t_token    *tokenization(const char *line)
         token = new;
         i++;
     }
+	token->next = NULL;
     return (head);
 }
 

@@ -6,6 +6,18 @@
 #include <unistd.h>
 #include "libft.h"
 
+typedef enum e_node_type {
+    CMD,
+    PIPE,
+} t_node_type;
+
+typedef enum e_std_fd {
+    IN,
+    OUT,
+    ERR,
+    INVALID_FD = -1,
+} t_std_fd;
+
 typedef struct s_node
 {
     t_token_type	kind;
