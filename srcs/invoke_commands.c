@@ -14,15 +14,6 @@ t_node  *new_node()
     return (node);
 }
 
-t_node	*last_node(t_node *node)
-{
-	if (node == NULL)
-		return (NULL);
-	while (node->next != NULL)
-		node = node->next;
-	return (node);
-}
-
 static size_t count_word_node(t_token *tokens)
 {
     size_t count;
@@ -36,26 +27,47 @@ static size_t count_word_node(t_token *tokens)
     return (count);
 }
 
-static char **create_argv(t_token **tokens)
+static char **create_argv(t_token *tokens)
 {
     char **result;
     int i;
     size_t word_num;
 
-    word_num = count_word_node(*tokens);
+    word_num = count_word_node(tokens);
 	if (word_num == 0)
-		return (NULL);
+		return NULL;
     result = (char **)malloc((word_num+1) * sizeof(char *));
 	if (result == NULL)
 		return (NULL);
     i = 0;
     while (i < (int)word_num)
     {
-        result[i++] = ft_strdup((*tokens)->data);
-        *tokens = (*tokens)->next;
+        result[i++] = ft_strdup(tokens->data);
+        tokens = tokens->next;
     }
 	result[i] = NULL;
     return (result);
+}
+
+void	print_node(t_node *head)
+{
+	t_node *current;
+	int	i;
+
+    current = head;
+    while (current)
+    {
+        if (current->argv != NULL)
+        {
+			i = 0;
+            while (current->argv[i])
+                printf("argv:%s\n", current->argv[i++]);
+        }
+        printf("in:%d\n", current->fd_in);
+        printf("out:%d\n", current->fd_out);
+        printf("---------------------------------\n");
+        current = current->next;
+    }
 }
 
 static t_node *parse(t_token *tokens)
@@ -65,36 +77,33 @@ static t_node *parse(t_token *tokens)
 
     while (tokens)
     {
-		if (head == NULL)
-		{
-			head = new_node();
-			current = head;
-			current->argv = create_argv(&tokens);
-			continue ;
-		}
-		current->next = new_node();
-		current->next->prev = current;
-		current->argv = create_argv(&tokens);
-		if (tokens == NULL)
-			break;
-		current = current->next;
-		tokens = tokens->next;
+        if (head == NULL)
+        {
+            head = new_node();
+            current = head;
+        }
+        current->argv = create_argv(tokens);
+        if (current->argv != NULL)
+        {
+            while (tokens && tokens->type != TOKEN_PIPE)
+                tokens = tokens->next;
+        }
+        else
+        {
+            if (tokens && tokens->type == TOKEN_PIPE)
+                tokens = tokens->next;
+            else
+                tokens = tokens->next;
+        }
+        if (tokens)
+        {
+            current->next = new_node();
+            current->next->prev = current;
+            current = current->next;
+        }
     }
-	head->prev = NULL;
-	current->next = NULL;
-    while (head)
-    {
-        int i = 0;
-        //printf("kind:%d\n", current->kind);
-        while (current->argv[i])
-			printf("argv:%s\n", current->argv[i++]);
-        printf("in:%d\n", current->fd_in);
-        printf("out:%d\n", current->fd_out);
-        printf("---------------------------------\n");
-        head = head->next;
-    }
-
-    return (head);
+    print_node(head);
+    return head;
 }
 
 void    invoke_commands(t_token *tokens)
