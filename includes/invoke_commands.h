@@ -20,7 +20,7 @@ typedef enum e_std_fd {
 
 typedef struct s_node
 {
-    t_token_type	kind;
+    t_node_type	    kind;
     char			**argv;
     int				fd_in;
     int				fd_out;

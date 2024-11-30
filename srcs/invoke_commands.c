@@ -1,6 +1,8 @@
 #include "invoke_commands.h"
+#include "debug.h"
+#include "signal_setting.h"
 
-t_node  *new_node()
+static t_node  *new_node()
 {
     t_node *node;
 
@@ -49,26 +51,6 @@ static char **create_argv(t_token *tokens)
     return (result);
 }
 
-void	print_node(t_node *head)
-{
-	t_node *current;
-	int	i;
-
-    current = head;
-    while (current)
-    {
-        if (current->argv != NULL)
-        {
-			i = 0;
-            while (current->argv[i])
-                printf("argv:%s\n", current->argv[i++]);
-        }
-        printf("in:%d\n", current->fd_in);
-        printf("out:%d\n", current->fd_out);
-        printf("---------------------------------\n");
-        current = current->next;
-    }
-}
 
 static t_node *parse(t_token *tokens)
 {
@@ -85,15 +67,14 @@ static t_node *parse(t_token *tokens)
         current->argv = create_argv(tokens);
         if (current->argv != NULL)
         {
+            current->kind = CMD;
             while (tokens && tokens->type != TOKEN_PIPE)
                 tokens = tokens->next;
         }
         else
         {
-            if (tokens && tokens->type == TOKEN_PIPE)
-                tokens = tokens->next;
-            else
-                tokens = tokens->next;
+            current->kind = PIPE;
+            tokens = tokens->next;
         }
         if (tokens)
         {
@@ -112,6 +93,7 @@ void    invoke_commands(t_token *tokens)
     // シグナル設定
     // 実行
     parse(tokens);
+    signal_setting();
     //argv = (char **)malloc(sizeof(char*) * 3);
     //argv[0] = ft_strdup(tokens->data);
     //execve(tokens->data, argv, NULL);
