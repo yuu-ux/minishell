@@ -20,6 +20,7 @@
 #include "expand.h"
 #include "libft.h"
 #include "invoke_commands.h"
+#include "signal_setting.h"
 
 static kvs *create_path(char **environ)
 {
@@ -61,18 +62,13 @@ int main(void)
     // unset で消えることもある
     // environは自動で更新されないため、更新する必要がある
     path_list = create_path(environ);
+    signal_setting();
     while (1)
     {
-        line = readline("$minishell ");
-        if (line == NULL || ft_strlen(line) == 0)
-        {
-            free(line);
-            break;
-        }
+        line = readline("minishell$ ");
         tokens = tokenization(line);
         check_syntax(tokens);
         tokens = expand_tokens(&tokens, path_list);
-        // パース、シグナルキャッチ準備、単一のコマンド実行、パイプ実行
         invoke_commands(tokens);
         //all_free();
         add_history(line);

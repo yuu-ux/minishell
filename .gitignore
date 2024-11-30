@@ -2,3 +2,4 @@ a.out
 minishell
 compile_commands.json
 .cache
+minishell.dSYM/
