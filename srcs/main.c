@@ -15,12 +15,12 @@
 #include <string.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include "tokenize.h"
-#include "minishell.h"
-#include "expand.h"
-#include "libft.h"
-#include "invoke_commands.h"
-#include "signal_setting.h"
+#include <tokenize.h>
+#include <minishell.h>
+#include <expand.h>
+#include <libft.h>
+#include <invoke_commands.h>
+#include <signal_setting.h>
 
 static kvs *create_path(char **environ)
 {
@@ -70,7 +70,7 @@ int main(void)
         check_syntax(tokens);
         tokens = expand_tokens(&tokens, path_list);
         invoke_commands(tokens);
-        //all_free();
+        ////all_free();
         add_history(line);
         free(line);
     }
