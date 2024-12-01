@@ -1,5 +1,5 @@
-#include "tokenize.h"
-#include "libft.h"
+#include <tokenize.h>
+#include <libft.h>
 
 static  void    print_syntax_error()
 {

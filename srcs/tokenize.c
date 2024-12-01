@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tokenize.h"
-#include "libft.h"
+#include <tokenize.h>
+#include <libft.h>
 
 static size_t  count_tokens(const char *line)
 {

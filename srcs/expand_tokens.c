@@ -1,6 +1,6 @@
-#include "tokenize.h"
-#include "expand.h"
-#include "libft.h"
+#include <tokenize.h>
+#include <expand.h>
+#include <libft.h>
 
 static char *search_path(const char *key, kvs *path_list)
 {

@@ -1,4 +1,4 @@
-#include "signal_setting.h"
+#include <signal_setting.h>
 
 static void	handler(int signum)
 {

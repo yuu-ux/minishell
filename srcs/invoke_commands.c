@@ -1,6 +1,6 @@
-#include "invoke_commands.h"
-#include "debug.h"
-#include "signal_setting.h"
+#include <invoke_commands.h>
+#include <debug.h>
+#include <signal_setting.h>
 
 static t_node  *new_node()
 {
