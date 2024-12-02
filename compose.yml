@@ -1,0 +1,9 @@
+services:
+  mini:
+    build: .
+    volumes:
+      - .:/root/minishell
+      - /Users/ebarayuuga/.ssh:/root/.ssh
+      - ~/.gitconfig:/root/.gitconfig
+    tty: true
+    stdin_open: true

@@ -11,7 +11,7 @@ all: $(NAME)
 
 $(NAME): $(SRCS)
 	make -C $(LIBFT)
-	$(CC) $(CFLAGS) -lreadline $^ -o $@ ./libft/libft.a
+	$(CC) $(CFLAGS) $^ -o $@ ./libft/libft.a -lreadline
 
 clean:
 	make -C $(LIBFT) clean
