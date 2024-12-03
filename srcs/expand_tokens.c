@@ -2,7 +2,7 @@
 #include <expand.h>
 #include <libft.h>
 
-static char *search_env(const char *key, kvs *path_list)
+static char *search_path(const char *key, kvs *path_list)
 {
     int i;
 
@@ -46,7 +46,7 @@ static char *expand_token(char *token, kvs *path_list)
         if (token[t_index] == '$')
         {
             key_len = count_path_len(token, t_index+1);
-            value = search_env(ft_substr(token, t_index+1, key_len), path_list);
+            value = search_path(ft_substr(token, t_index+1, key_len), path_list);
             result = ft_strjoin(result, value);
             // value を展開した長さ + 元々の token の長さ
             result = (char *)ft_realloc(result, ft_strlen(result) + ft_strlen(token));
@@ -68,29 +68,11 @@ static char *expand_token(char *token, kvs *path_list)
     return (result);
 }
 
-// PATH を展開し、もどり値で展開した文字数を返す
-static	size_t	expand_env(char **token, kvs *path_list)
-{
-	size_t key_len;
-	char *value;
-
-	if (*token[0] == '$')
-		(*token)++;
-	else
-		return -1;
-	key_len = count_path_len(*token, 0);
-	value = search_env(ft_substr(*token, 0, key_len), path_list);
-    *token = ft_strjoin(value, (*token + key_len));
-	return (ft_strlen(value));
-}
-
-
-static char    *delete_single_quote(char *token, kvs *path_list)
+static char    *delete_single_quote(char *token)
 {
     char *result;
     int t_index;
     int r_index;
-	char *temp;
 
     // token の文字数 - シングルクウォートの文字数 + nul 文字
     result = (char *)ft_xmalloc((ft_strlen(token) - 2 + 1) * sizeof(char));
@@ -98,13 +80,6 @@ static char    *delete_single_quote(char *token, kvs *path_list)
     r_index = 0;
     while (token[t_index])
     {
-		if (token[t_index] == '$')
-		{
-			temp = token + t_index;
-			expand_env(&(temp), path_list);
-			result = ft_strjoin(result, expand_token(&token[t_index], path_list));
-			ft_realloc(result, ft_strlen(token) - (t_index + 1));
-		}
         if (token[t_index] == SINGLE_QUOTE)
         {
             t_index++;
@@ -127,7 +102,7 @@ t_token    *expand_tokens(t_token **_tokens, kvs *path_list)
     while (tokens)
     {
         if (tokens->data[0] == SINGLE_QUOTE)
-            tokens->data = delete_single_quote(tokens->data, path_list);
+            tokens->data = delete_single_quote(tokens->data);
         else
             tokens->data = expand_token(tokens->data, path_list);
         tokens = tokens->next;
