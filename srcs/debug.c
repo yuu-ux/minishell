@@ -16,6 +16,18 @@ const char *get_token_type_string(t_token_type type)
     }
 }
 
+void	print_token(t_token *head)
+{
+	t_token *current;
+
+	current = head;
+	while (current)
+	{
+		printf("current->data->%s\n", current->data);
+		current = current->next;
+	}
+}
+
 void	print_node(t_node *head)
 {
 	t_node *current;
