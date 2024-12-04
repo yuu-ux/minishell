@@ -6,8 +6,11 @@ RUN apt update && apt install -y make git gcc curl tmux zsh bear libreadline-dev
 
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
+ENV PATH=/root/.local/bin:$PATH
+
 RUN uv tool install norminette@3.3.51 \
-    uv tool install c-formatter-42
+    && uv tool install c-formatter-42
+
 
 SHELL ["/bin/zsh", "-c"]
 
