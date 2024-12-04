@@ -86,11 +86,16 @@ static	char *expand_token(char *token, kvs *path_list)
 		}
 		else if (token[i] == '$' && flg == 0)
 		{
+            key_len = count_key_len(token, i+1);
 			value_len = insert_env(&result, &token[i], path_list);
+            if (value_len == -1)
+            {
+                i += key_len+1;
+                continue;
+            }
 			// result のインデックスを value 文字分進める
 			res_index += value_len;
 			// $をスキップするため+1
-			key_len = count_key_len(token, i+1);
 			i += key_len+1;
 			// $文字文の +1
 			result = ft_realloc(result, (token_len - key_len+1) + value_len + 1);
