@@ -57,19 +57,19 @@ int	main(void)
 	char		*line;
 	t_token		*tokens;
 	extern char	**environ;
-	kvs			*path_list;
+	kvs			*env_list;
 
 	line = NULL;
 	// unset で消えることもある
 	// environは自動で更新されないため、更新する必要がある
-	path_list = create_path(environ);
+	env_list = create_path(environ);
 	signal_setting();
 	while (1)
 	{
 		line = readline("minishell$ ");
 		tokens = tokenization(line);
 		check_syntax(tokens);
-		tokens = expand_tokens(&tokens, path_list);
+		tokens = expand_tokens(&tokens, env_list);
 		invoke_commands(tokens);
 		////all_free();
 		add_history(line);

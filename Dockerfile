@@ -2,11 +2,13 @@
 
 FROM --platform=linux/x86_64 ubuntu:20.04
 
-RUN apt update && apt install -y make git gcc curl tmux zsh bear libreadline-dev man-db python3 python3-venv ripgrep
+RUN apt update && apt install -y make git gcc curl tmux zsh bear libreadline-dev man-db python3 python3-venv ripgrep locales unzip
 
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
 ENV PATH=/root/.local/bin:$PATH
+ENV LANG=ja_JP.UTF-8
+ENV LC_ALL=ja_JP.UTF-8
 
 RUN uv tool install norminette@3.3.51 \
     && uv tool install c-formatter-42
@@ -23,6 +25,7 @@ RUN git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.1 && so
     && asdf plugin add neovim && asdf install neovim 0.10.0 && asdf global neovim 0.10.0
 
 RUN yes | unminimize
+RUN locale-gen ja_JP
 
 WORKDIR /root
 
