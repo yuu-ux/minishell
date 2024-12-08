@@ -29,4 +29,5 @@ typedef struct s_node
 }	t_node;
 
 void    invoke_commands(t_token *tokens);
+t_node *parse(t_token *tokens);
 #endif

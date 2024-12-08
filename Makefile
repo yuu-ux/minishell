@@ -2,7 +2,7 @@ NAME = minishell
 
 CC = cc
 CFLAGS = -g -Wall -Wextra -Werror -I./includes/ -Ilibft
-FILES = main.c tokenize.c check_syntax.c utils.c debug.c expand_tokens.c invoke_commands.c signal_setting.c
+FILES = main.c tokenize.c check_syntax.c utils.c debug.c expand_tokens.c invoke_commands.c signal_setting.c parse.c
 SRCS = $(addprefix ./srcs/, $(FILES))
 LIBFT = libft
 TEST_DIR = ./test/tokenize/
