@@ -22,12 +22,10 @@
 #include <string.h>
 #include <tokenize.h>
 
-static kvs	*create_path(char **environ)
+static size_t count_env(char **environ)
 {
-	kvs		*path_list;
-	char	**temp;
-	int		i;
-	int		count;
+	int	i;
+	int	count;
 
 	i = 0;
 	count = 0;
@@ -36,20 +34,30 @@ static kvs	*create_path(char **environ)
 		count++;
 		i++;
 	}
-	path_list = (kvs *)malloc(sizeof(kvs) * (count + 1));
-	if (!path_list)
+	return (count);
+}
+
+static kvs	*create_env(char **environ)
+{
+	kvs		*env_list;
+	char	**temp;
+	int		i;
+	size_t	count;
+
+	count = count_env(environ);
+	env_list = (kvs *)malloc(sizeof(kvs) * (count + 1));
+	if (!env_list)
 		return (NULL);
-	ft_memset(path_list, 0, sizeof(kvs));
+	ft_memset(env_list, 0, sizeof(kvs));
 	i = 0;
 	while (environ[i])
 	{
 		temp = ft_split(environ[i], '=');
-		path_list[i].key = temp[0];
-		path_list[i].value = temp[1];
-		free(temp);
+		env_list[i].key = temp[0];
+		env_list[i].value = temp[1];
 		i++;
 	}
-	return (path_list);
+	return (env_list);
 }
 
 int	main(void)
@@ -62,7 +70,7 @@ int	main(void)
 	line = NULL;
 	// unset で消えることもある
 	// environは自動で更新されないため、更新する必要がある
-	env_list = create_path(environ);
+	env_list = create_env(environ);
 	signal_setting();
 	while (1)
 	{
@@ -70,7 +78,7 @@ int	main(void)
 		tokens = tokenization(line);
 		check_syntax(tokens);
 		tokens = expand_tokens(&tokens, env_list);
-		invoke_commands(tokens);
+		//invoke_commands(tokens);
 		////all_free();
 		add_history(line);
 		free(line);
