@@ -16,6 +16,7 @@ $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $^ -o $@ ./libft/libft.a -lreadline
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
@@ -26,7 +27,7 @@ fclean: clean
 	make -C $(LIBFT) fclean
 	$(RM) $(NAME)
 
-debug: CFLAGS += -fsanitize=address
+debug: CFLAGS += -fsanitize=address -fsanitize=leak
 debug: all
 
 test:
