@@ -2,7 +2,7 @@ NAME = minishell
 
 CC = cc
 CFLAGS = -g -Wall -Wextra -Werror -I./includes/ -Ilibft
-SRCS = main.c tokenize.c check_syntax.c utils.c debug.c expand_tokens.c invoke_commands.c signal_setting.c parse.c
+SRCS = main.c tokenize.c check_syntax.c utils.c debug.c expand_tokens.c invoke_commands.c signal_setting.c parse.c tokenize_utils.c
 SRC_DIR = ./srcs
 OBJ_DIR = ./objs
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
