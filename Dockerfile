@@ -11,7 +11,8 @@ ENV LANG=ja_JP.UTF-8
 ENV LC_ALL=ja_JP.UTF-8
 
 RUN uv tool install norminette@3.3.51 \
-    && uv tool install c-formatter-42
+    && uv tool install c-formatter-42 \
+	&& uv tool install pre-commit
 
 
 SHELL ["/bin/zsh", "-c"]
