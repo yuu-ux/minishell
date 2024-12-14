@@ -10,5 +10,5 @@ $(NAME): $(SRCS)
 	$(CC) $(CFLAGS) $^ $(LIBFT) -o $@
 
 test: all
-	python tokenize.py
+	python3 tokenize.py
 	$(RM) $(NAME)
