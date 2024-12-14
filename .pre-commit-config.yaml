@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: c-formatter-42
+        name: C Formatter 42
+        entry: zsh ./scripts/c_formatter_42.sh
+        language: system
+        types: [c]
+
