@@ -1,7 +1,7 @@
 #include <readline/readline.h>
 #include <signal_setting.h>
 
-static void	handler(int signum)
+static void	sigint_handler(int signum)
 {
 	(void)signum;
 	write(STDOUT_FILENO, "\n", 1); // 改行
@@ -9,13 +9,19 @@ static void	handler(int signum)
 	rl_on_new_line();              // 新しい行を設定
 	rl_redisplay();                // プロンプトを再描画
 }
+
 void	signal_setting(void)
 {
-	struct sigaction	sa;
+	struct sigaction	sa_sigint;
+	struct sigaction	sa_sigquit;
 
-	ft_memset(&sa, 0, sizeof(struct sigaction));
-	sa.sa_handler = handler;
-	sa.sa_flags = 0;
-	sigemptyset(&sa.sa_mask);
-	sigaction(SIGINT, &sa, NULL);
+	ft_memset(&sa_sigint, 0, sizeof(struct sigaction));
+	ft_memset(&sa_sigquit, 0, sizeof(struct sigaction));
+	sa_sigint.sa_handler = sigint_handler;
+	sa_sigquit.sa_handler = SIG_IGN;
+	sigemptyset(&sa_sigint.sa_mask);
+	sigemptyset(&sa_sigquit.sa_mask);
+	sigaction(SIGINT, &sa_sigint, NULL);
+	sigaction(SIGQUIT, &sa_sigquit, NULL);
 }
+

@@ -76,7 +76,10 @@ int	main(void)
 	{
 		line = readline("minishell$ ");
 		if (line == NULL)
+		{
+			ft_printf("exit\n");
 			break;
+		}
 		else if (*line == '\0')
 			continue;
 		tokens = tokenization(line);
