@@ -49,7 +49,6 @@ static char	**tokenize(const char *line)
 	size_t	index;
 	size_t	moved;
 
-	tokens = NULL;
 	word_num = count_tokens(line);
 	tokens = (char **)ft_xmalloc((word_num + 1) * sizeof(char *));
 	index = 0;
@@ -98,8 +97,6 @@ t_token	*tokenization(const char *line)
 
 	head = NULL;
 	i = 0;
-	if (line == NULL)
-		return (NULL);
 	tokens = tokenize(line);
 	while (tokens[i])
 	{

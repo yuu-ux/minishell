@@ -44,8 +44,6 @@ static void    check_operators_error(t_token *token)
 
 void    check_syntax(t_token *token)
 {
-	if (token == NULL)
-		return ;
     if (token->data[0] == '|')
         print_syntax_error();
     while (token)

@@ -75,14 +75,16 @@ int	main(void)
 	while (1)
 	{
 		line = readline("minishell$ ");
+		if (line == NULL)
+			break;
+		else if (*line == '\0')
+			continue;
 		tokens = tokenization(line);
 		check_syntax(tokens);
 		tokens = expand_tokens(&tokens, env_list);
-		//invoke_commands(tokens);
-		////all_free();
+		invoke_commands(tokens);
+		//all_free();
 		add_history(line);
-		free(line);
 	}
-	printf("exit\n");
 	return (SUCCESS);
 }
