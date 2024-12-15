@@ -7,7 +7,7 @@ SRC_DIR = ./srcs
 OBJ_DIR = ./objs
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 LIBFT = libft
-TEST_DIR = ./test/tokenize/
+TEST_DIR = ./test
 
 all: $(NAME)
 
@@ -31,7 +31,8 @@ debug: CFLAGS += -fsanitize=address -fsanitize=leak
 debug: all
 
 test:
-	make -C $(TEST_DIR) test
+	make -C $(TEST_DIR)/tokenize test
+	make -C $(TEST_DIR)/expand test
 
 re: fclean all
 
