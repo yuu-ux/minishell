@@ -1,6 +1,5 @@
 #include <debug.h>
 #include <invoke_commands.h>
-#include <signal_setting.h>
 
 // int exec_builtin(t_node *parsed_tokens)
 //{
@@ -77,6 +76,5 @@ void	invoke_commands(t_token *tokens)
 
 	path = get_path(getenv("PATH"));
 	parsed_tokens = parse(tokens);
-	signal_setting();
 	exec_cmd(parsed_tokens, path);
 }
