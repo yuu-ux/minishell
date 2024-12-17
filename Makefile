@@ -8,7 +8,9 @@ OBJ_DIR = ./objs
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 LIBFT = libft
 TEST_DIR = ./test
-
+RED = "\033[31m"
+GREEN = "\033[32m"
+RESET = "\033[0m"
 all: $(NAME)
 
 $(NAME): $(OBJS)
@@ -31,8 +33,10 @@ debug: CFLAGS += -fsanitize=address -fsanitize=leak
 debug: all
 
 test:
-	make -C $(TEST_DIR)/tokenize test
-	make -C $(TEST_DIR)/expand test
+	@echo $(RED)'[-----------tokenize test-----------]'$(RESET)
+	@make -C $(TEST_DIR)/tokenize test
+	@echo $(RED)'[-----------expand test-----------]'$(RESET)
+	@make -C $(TEST_DIR)/expand test
 
 re: fclean all
 

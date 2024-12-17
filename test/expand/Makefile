@@ -8,8 +8,8 @@ LIBFT = ../../libft/libft.a
 all: $(NAME)
 
 $(NAME): $(SRCS)
-	$(CC) $(CFLAGS) $^ $(LIBFT) -o $@
+	@$(CC) $(CFLAGS) $^ $(LIBFT) -o $@
 
 test: all
-	./test.sh
-	$(RM) $(NAME)
+	@./test.sh
+	@$(RM) $(NAME)

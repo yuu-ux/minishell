@@ -8,8 +8,8 @@ LIBFT = ../../libft/libft.a
 all: $(NAME)
 
 $(NAME): $(SRCS)
-	$(CC) $(CFLAGS) $^ $(LIBFT) -o $@
+	@$(CC) $(CFLAGS) $^ $(LIBFT) -o $@
 
 test: all
-	python3 tokenize.py
-	$(RM) $(NAME)
+	@python3 tokenize.py
+	@$(RM) $(NAME)

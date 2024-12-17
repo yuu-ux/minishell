@@ -11,6 +11,7 @@ test_cases_program=(
     '"$HOME"'
     "\$UNDEFINED"
     '"$HOME $USER"'
+    '"$PATH $USER"'
 )
 
 test_cases_shell=(
@@ -24,6 +25,7 @@ test_cases_shell=(
     "$HOME"
     "$UNDEFINED"
     "$HOME $USER"
+    "$PATH $USER"
 )
 
 i=1
