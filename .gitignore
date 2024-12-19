@@ -3,3 +3,4 @@ minishell
 compile_commands.json
 .cache
 minishell.dSYM/
+memo
