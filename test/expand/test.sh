@@ -12,6 +12,7 @@ test_cases_program=(
     "\$UNDEFINED"
     '"$HOME $USER"'
     '"$PATH $USER"'
+    '"$PATH $USER"world'
 )
 
 test_cases_shell=(
@@ -26,6 +27,7 @@ test_cases_shell=(
     "$UNDEFINED"
     "$HOME $USER"
     "$PATH $USER"
+    "$PATH $USER"world
 )
 
 i=1
@@ -33,7 +35,7 @@ RED="\033[31m"
 GREEN="\033[32m"
 RESET="\033[0m"
 for index in "${!test_cases_program[@]}"; do
-	p_output="`./expand_test "${test_cases_program[$index]}"`"
+    p_output=$(./expand_test "${test_cases_program[$index]}")
 	s_output="${test_cases_shell[$index]}"
 	if [ "${p_output}" = "${s_output}" ]; then
 		echo -e "${GREEN}OK${RESET}"

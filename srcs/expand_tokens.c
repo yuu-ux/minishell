@@ -36,81 +36,87 @@ static size_t	insert_env(char **buffer, char *token, kvs *path_list)
 {
 	size_t	key_len;
 	char	*value;
-	size_t	value_len;
 
 	if (token[0] == '$')
 		token++;
-	else
-		return (-1);
 	key_len = count_key_len(token, 0);
 	value = search_env(ft_substr(token, 0, key_len), path_list);
 	if (value == NULL)
-		return (-1);
-	value_len = ft_strlen(value);
-	if (buffer)
-		*buffer = ft_strjoin(*buffer, value);
-	else
+		value = ft_strdup("");
+	*buffer = ft_strjoin(*buffer, value);
+	return (key_len);
+}
+
+static size_t	delete_single_quote(char **result, char *token)
+{
+	size_t	i;
+
+	i = 0;
+	i++;
+	while (token[i] != SINGLE_QUOTE)
+		i++;
+	*result = ft_strjoin(*result, ft_substr(token, 1, i - 1));
+	// 「'」の次を指すために、+1
+	return (i + 1);
+}
+
+static size_t	expand_double_quote(char **result, char *token, kvs *path_list)
+{
+	size_t	i;
+	int		start;
+
+	i = 1;
+	start = 1;
+	while (token[i] != DOUBLE_QUOTE)
 	{
-		if (key_len < value_len)
-			*buffer = (char *)ft_realloc(*buffer, value_len);
-		// null 終端分の +1 文字
-		ft_strlcpy(*buffer, value, value_len + 1);
+		if (token[i] == '$')
+		{
+			*result = ft_strjoin(*result, ft_substr(token, start, i - start));
+			// 「"」と「$」のため、i+1
+			i += insert_env(result, &token[i], path_list);
+			start = i + 1;
+		}
+		i++;
 	}
-	return (ft_strlen(value));
+	*result = ft_strjoin(*result, ft_substr(token, start, i - start));
+	return (i + 1);
 }
 
 static char	*expand_token(char *token, kvs *path_list)
 {
 	int		i;
-	int		flg;
 	char	*result;
-	int		res_index;
-	int		value_len;
-	int		key_len;
-	int		token_len;
+	int		start;
 
 	i = 0;
-	res_index = 0;
-	flg = 0;
-	token_len = ft_strlen(token);
-	result = (char *)ft_calloc(token_len + 1, sizeof(char));
+	start = 0;
+	result = ft_strdup("");
+	// 変数以外の文字をカウントする
 	while (token[i])
 	{
 		if (token[i] == SINGLE_QUOTE)
 		{
-			if (flg == 0)
-				flg = 1;
-			else
-				flg = 0;
-			i++;
-		}
-		else if (token[i] == '$' && flg == 0)
-		{
-			key_len = count_key_len(token, i + 1);
-			value_len = insert_env(&result, &token[i], path_list);
-			if (value_len == -1)
-			{
-				i += key_len + 1;
-				continue ;
-			}
-			// result のインデックスを value 文字分進める
-			res_index += value_len;
-			// $をスキップするため+1
-			i += key_len + 1;
-			// $文字文の +1
-			result = ft_realloc(result, (token_len - key_len + 1) + value_len
-					+ 1);
+			i += delete_single_quote(&result, &token[i]);
+			start = i;
 		}
 		else if (token[i] == DOUBLE_QUOTE)
-			i++;
+		{
+			i += expand_double_quote(&result, &token[i], path_list);
+			start = i;
+		}
 		else
 		{
-			result[res_index] = token[i];
-			res_index++;
+			if (token[i] == '$')
+			{
+				result = ft_strjoin(result, ft_substr(token, start, i - start));
+				i += insert_env(&result, &token[i], path_list);
+				// $ 文字分+1
+				start = i + 1;
+			}
 			i++;
 		}
 	}
-	result[res_index] = '\0';
+	result = ft_strjoin(result, ft_substr(token, start, i - start));
 	return (result);
 }
 
