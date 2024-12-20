@@ -28,13 +28,21 @@ static size_t	expand_double_quote(char **result, char *token, kvs *path_list)
 		if (token[i] == '$')
 		{
 			*result = ft_strjoin(*result, ft_substr(token, start, i - start));
-			// 「"」と「$」のため、i+1
 			i += insert_env(result, &token[i], path_list);
+			// 「"」と「$」のため、i+1
 			start = i + 1;
 		}
 		i++;
 	}
 	*result = ft_strjoin(*result, ft_substr(token, start, i - start));
+	return (i + 1);
+}
+
+static size_t	expand_variable(char **result, char *token, kvs *path_list,
+		int start, int i)
+{
+	*result = ft_strjoin(*result, ft_substr(token, start, i - start));
+	i += insert_env(result, &token[i], path_list);
 	return (i + 1);
 }
 
@@ -47,30 +55,21 @@ static char	*expand_token(char *token, kvs *path_list)
 	i = 0;
 	start = 0;
 	result = ft_strdup("");
-	// 変数以外の文字をカウントする
 	while (token[i])
 	{
 		if (token[i] == SINGLE_QUOTE)
-		{
 			i += delete_single_quote(&result, &token[i]);
-			start = i;
-		}
 		else if (token[i] == DOUBLE_QUOTE)
-		{
 			i += expand_double_quote(&result, &token[i], path_list);
-			start = i;
-		}
+		else if (token[i] == '$')
+			i += expand_variable(&result, token, path_list, start, i);
 		else
 		{
-			if (token[i] == '$')
-			{
-				result = ft_strjoin(result, ft_substr(token, start, i - start));
-				i += insert_env(&result, &token[i], path_list);
-				// $ 文字分+1
-				start = i + 1;
-			}
 			i++;
+			// 変数展開したときのみ、start を更新したいため、continue する
+			continue ;
 		}
+		start = i;
 	}
 	result = ft_strjoin(result, ft_substr(token, start, i - start));
 	return (result);

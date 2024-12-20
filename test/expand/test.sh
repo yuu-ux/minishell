@@ -13,6 +13,8 @@ test_cases_program=(
     '"$HOME $USER"'
     '"$PATH $USER"'
     '"$PATH $USER"world'
+    hello\$PATH
+    \$PATH:hello
 )
 
 test_cases_shell=(
@@ -28,6 +30,8 @@ test_cases_shell=(
     "$HOME $USER"
     "$PATH $USER"
     "$PATH $USER"world
+    hello$PATH
+    $PATH:hello
 )
 
 i=1
