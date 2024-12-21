@@ -21,30 +21,68 @@
 //        return (1);
 //}
 
-int	exec_cmd(t_node *parsed_tokens, char **path)
+static size_t	count_pipe(t_node *parsed)
+{
+	size_t	count;
+
+	count = 0;
+	while (parsed)
+	{
+		if (parsed->kind == PIPE)
+			count++;
+		parsed = parsed->next;
+	}
+	return (count);
+}
+
+static void	free_pipe(int **pipefds, int index)
+{
+	while (0 < index)
+	{
+		free(pipefds[index]);
+		index--;
+	}
+}
+
+static int	create_pipe(int ***pipefds, t_node *parsed_tokens)
+{
+	int	pipe_num;
+	int	i;
+
+	i = 0;
+	pipe_num = count_pipe(parsed_tokens);
+	*pipefds = (int **)malloc(pipe_num * sizeof(int *));
+	while (i < pipe_num)
+	{
+		*pipefds[i] = (int *)malloc(sizeof(int) * 2);
+		if (pipe(*pipefds[i]) == -1)
+		{
+			free_pipe(*pipefds, i);
+			return (EXIT_FAILURE);
+		}
+	}
+	return (EXIT_SUCCESS);
+}
+static int	exec_single_cmd(const t_node *parsed_tokens, char **path)
 {
 	int		i;
 	char	*temp;
 	char	*res;
+	pid_t	pid;
 
-	if (fork() == -1)
-		perror("error\n");
 	// TODO ビルトイン 作成
 	// exec_builtin(parsed_tokens);
-	if (parsed_tokens->argv[0][0] == '/')
+	pid = fork();
+	if (pid == -1)
+		perror("error\n");
+	if (pid == 0)
 	{
-		// 絶対パス
-		while (parsed_tokens)
+		if (parsed_tokens->argv[0][0] == '/')
 		{
 			if (access(parsed_tokens->argv[0], F_OK) == 0)
 				execve(parsed_tokens->argv[0], parsed_tokens->argv, NULL);
-			parsed_tokens = parsed_tokens->next;
 		}
-	}
-	else
-	{
-		// 相対パスで渡されたパターン
-		while (parsed_tokens)
+		else
 		{
 			i = 0;
 			while (path[i])
@@ -52,13 +90,27 @@ int	exec_cmd(t_node *parsed_tokens, char **path)
 				temp = ft_strjoin(path[i], "/");
 				res = ft_strjoin(temp, parsed_tokens->argv[0]);
 				if (access(res, F_OK) == 0)
+				{
 					execve(res, parsed_tokens->argv, NULL);
+					break ;
+				}
 				i++;
 			}
-			parsed_tokens = parsed_tokens->next;
 		}
 	}
-	return (1);
+	else
+		waitpid(pid, NULL, 0);
+	return (EXIT_FAILURE);
+}
+
+int	exec_cmd(t_node *parsed_tokens, char **path)
+{
+	int	**pipefds;
+
+	exec_single_cmd(parsed_tokens, path);
+	if (create_pipe(&pipefds, parsed_tokens) == -1)
+		return (EXIT_FAILURE);
+	return (EXIT_FAILURE);
 }
 
 char	**get_path(char *path)
