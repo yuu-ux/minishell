@@ -37,6 +37,8 @@ test:
 	@make -C $(TEST_DIR)/tokenize test
 	@echo $(RED)'[-----------expand test-----------]'$(RESET)
 	@make -C $(TEST_DIR)/expand test
+	@echo $(RED)'[-----------parse test-----------]'$(RESET)
+	@make -C $(TEST_DIR)/parse test
 
 re: fclean all
 
