@@ -40,7 +40,7 @@ void wrap_close(int fd)
     }
 }
 
-int    initialize_node(t_exe_info *info, t_node *parsed_tokens)
+int    initialize_info(t_exe_info *info, t_node *parsed_tokens)
 {
     info->pipe_num = count_pipe(parsed_tokens);
     info->exec_count = 0;
