@@ -43,10 +43,14 @@ void    invoke_commands(t_token *tokens);
 t_node *parse(t_token *tokens);
 
 // invoke_utils.c
-char	**get_path(char *path);
+char	**get_path_list(char *env_path);
 size_t	count_pipe(t_node *parsed);
 int    initialize_node(t_exe_info *info, t_node *parsed_tokens);
 void wrap_close(int fd);
 void wrap_dup2(int old_fd, int new_fd);
+int execute(t_node *parsed_tokens, char **path_list);
+
+// execute.c
+char *find_executable_path(const t_node *parsed_tokens, char **path_list);
 
 #endif

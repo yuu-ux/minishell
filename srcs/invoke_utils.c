@@ -1,11 +1,11 @@
 #include <invoke_commands.h>
 
-char	**get_path(char *path)
+char	**get_path_list(char *env_path)
 {
-    char	**result;
+    char	**path_list;
 
-    result = ft_split(path, ':');
-    return (result);
+    path_list = ft_split(env_path, ':');
+    return (path_list);
 }
 
 size_t	count_pipe(t_node *parsed)

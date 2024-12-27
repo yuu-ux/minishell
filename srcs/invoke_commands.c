@@ -22,11 +22,8 @@
 //}
 
 
-static int	exec_single_cmd(const t_node *parsed_tokens, char **path)
+static int	exec_single_cmd(const t_node *parsed_tokens, char **path_list)
 {
-	int		i;
-	char	*temp;
-	char	*res;
     pid_t	pid;
 
 	// TODO ビルトイン 作成
@@ -42,34 +39,14 @@ static int	exec_single_cmd(const t_node *parsed_tokens, char **path)
 				execve(parsed_tokens->argv[0], parsed_tokens->argv, NULL);
 		}
 		else
-		{
-			i = 0;
-			while (path[i])
-			{
-				temp = ft_strjoin(path[i], "/");
-				res = ft_strjoin(temp, parsed_tokens->argv[0]);
-				if (access(res, F_OK) == 0)
-				{
-					execve(res, parsed_tokens->argv, NULL);
-					break ;
-				}
-				i++;
-			}
-		}
+            execve(find_executable_path(parsed_tokens, path_list), parsed_tokens->argv, NULL);
 	}
 	else
 		waitpid(pid, NULL, 0);
 	return (EXIT_FAILURE);
 }
 
-int execute(t_node *parsed_tokens, char **path)
-{
-    (void)path;
-    execve(parsed_tokens->argv[0], parsed_tokens->argv, NULL);
-    exit(EXIT_FAILURE);
-}
-
-int exec_child(t_node *parsed_tokens, t_exe_info *info, char **path)
+int exec_child(t_node *parsed_tokens, t_exe_info *info, char **path_list)
 {
     // 最後以外のコマンドの場合
     // STDOUT → current_pipefd[1]
@@ -86,7 +63,7 @@ int exec_child(t_node *parsed_tokens, t_exe_info *info, char **path)
         wrap_dup2(info->before_cmd_fd, STDIN_FILENO);
         wrap_close(info->before_cmd_fd);
     }
-    execute(parsed_tokens, path);
+    execute(parsed_tokens, path_list);
     exit(EXIT_FAILURE);
 }
 
@@ -97,20 +74,20 @@ int exec_parent(t_node *parsed_tokens, t_exe_info *info)
     return (EXIT_SUCCESS);
 }
 
-int exec_pipe(t_node *parsed_tokens, t_exe_info *info, char **path)
+int exec_pipe(t_node *parsed_tokens, t_exe_info *info, char **path_list)
 {
     pipe(parsed_tokens->fds);
     info->pid[info->exec_count] = fork();
     if (info->pid[info->exec_count] == -1)
         return (EXIT_FAILURE);
     if (info->pid[info->exec_count] == 0)
-        exec_child(parsed_tokens, info, path);
+        exec_child(parsed_tokens, info, path_list);
    exec_parent(parsed_tokens, info);
     info->exec_count++;
    return (EXIT_SUCCESS);
 }
 
-int exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info, char **path)
+int exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info, char **path_list)
 {
     info->pid[info->exec_count] = fork();
     if (info->pid[info->exec_count] == -1)
@@ -119,7 +96,7 @@ int exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info, char **path)
     {
         wrap_dup2(info->before_cmd_fd, STDIN_FILENO);
         wrap_close(info->before_cmd_fd);
-        execute(parsed_tokens, path);
+        execute(parsed_tokens, path_list);
         exit(EXIT_FAILURE);
     }
     wrap_close(info->before_cmd_fd);
@@ -131,12 +108,12 @@ int exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info, char **path)
     return (EXIT_SUCCESS);
 }
 
-int	exec_cmd(t_node *parsed_tokens, char **path)
+int	exec_cmd(t_node *parsed_tokens, char **path_list)
 {
     t_exe_info *info;
 
     if (parsed_tokens->next == NULL && parsed_tokens->argv != NULL)
-        return (exec_single_cmd(parsed_tokens, path));
+        return (exec_single_cmd(parsed_tokens, path_list));
     info = (t_exe_info *)malloc(sizeof(t_exe_info));
     if (info == NULL)
         exit(EXIT_FAILURE);
@@ -146,21 +123,21 @@ int	exec_cmd(t_node *parsed_tokens, char **path)
     {
         if (parsed_tokens->kind == CMD)
         {
-            if (exec_pipe(parsed_tokens, info, path) == 1)
+            if (exec_pipe(parsed_tokens, info, path_list) == 1)
                 return (EXIT_FAILURE);
         }
         parsed_tokens = parsed_tokens->next;
     }
-	return (exec_last_pipe_cmd(parsed_tokens, info, path));
+	return (exec_last_pipe_cmd(parsed_tokens, info, path_list));
 }
 
 
 void	invoke_commands(t_token *tokens)
 {
 	t_node	*parsed_tokens;
-	char	**path;
+	char	**path_list;
 
-	path = get_path(getenv("PATH"));
+	path_list = get_path_list(getenv("PATH"));
 	parsed_tokens = parse(tokens);
-	exec_cmd(parsed_tokens, path);
+	exec_cmd(parsed_tokens, path_list);
 }
