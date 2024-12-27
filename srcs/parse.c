@@ -8,8 +8,6 @@ static t_node  *new_node()
     node = (t_node *)malloc(sizeof(t_node));
     if (node == NULL)
         return (NULL);
-    node->fd_in = INVALID_FD;
-    node->fd_out = INVALID_FD;
     node->next = NULL;
     node->prev = NULL;
     return (node);

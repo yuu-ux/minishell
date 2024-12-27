@@ -10,6 +10,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+typedef struct s_exe_info {
+    pid_t *pid;
+    int pipe_num;
+    int exec_count;
+    int				before_cmd_fd;
+} t_exe_info;
+
 typedef enum e_node_type {
     CMD,
     PIPE,

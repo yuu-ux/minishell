@@ -62,23 +62,98 @@ static int	exec_single_cmd(const t_node *parsed_tokens, char **path)
 	return (EXIT_FAILURE);
 }
 
+int execute(t_node *parsed_tokens, char **path)
+{
+    (void)path;
+    execve(parsed_tokens->argv[0], parsed_tokens->argv, NULL);
+    exit(EXIT_FAILURE);
+}
+
+int exec_child(t_node *parsed_tokens, t_exe_info *info, char **path)
+{
+    // 最後以外のコマンドの場合
+    // STDOUT → current_pipefd[1]
+    if (info->exec_count < info->pipe_num)
+    {
+        wrap_dup2(parsed_tokens->fds[OUT], STDOUT_FILENO);
+        wrap_close(parsed_tokens->fds[OUT]);
+        wrap_close(parsed_tokens->fds[IN]);
+    }
+    // 初めのコマンド以外は、入力を前のpipefd[0]にリダイレクトする
+    // STDIN → before_pipe_fd[0]
+    if (info->exec_count > 0)
+    {
+        wrap_dup2(info->before_cmd_fd, STDIN_FILENO);
+        wrap_close(info->before_cmd_fd);
+    }
+    execute(parsed_tokens, path);
+    exit(EXIT_FAILURE);
+}
+
+int exec_parent(t_node *parsed_tokens, t_exe_info *info)
+{
+    wrap_close(parsed_tokens->fds[OUT]);
+    info->before_cmd_fd = parsed_tokens->fds[IN];
+    return (EXIT_SUCCESS);
+}
+
+int exec_pipe(t_node *parsed_tokens, t_exe_info *info, char **path)
+{
+    pipe(parsed_tokens->fds);
+    info->pid[info->exec_count] = fork();
+    if (info->pid[info->exec_count] == -1)
+        return (EXIT_FAILURE);
+    if (info->pid[info->exec_count] == 0)
+        exec_child(parsed_tokens, info, path);
+   exec_parent(parsed_tokens, info);
+    info->exec_count++;
+   return (EXIT_SUCCESS);
+}
+
+int exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info, char **path)
+{
+    info->pid[info->exec_count] = fork();
+    if (info->pid[info->exec_count] == -1)
+        return (ft_printf("error\n"), EXIT_FAILURE);
+    if (info->pid[info->exec_count] == 0)
+    {
+        wrap_dup2(info->before_cmd_fd, STDIN_FILENO);
+        wrap_close(info->before_cmd_fd);
+        execute(parsed_tokens, path);
+        exit(EXIT_FAILURE);
+    }
+    wrap_close(info->before_cmd_fd);
+    while (info->exec_count >= 0)
+    {
+        waitpid(info->pid[info->exec_count], NULL, 0);
+        info->exec_count--;
+    }
+    return (EXIT_SUCCESS);
+}
+
 int	exec_cmd(t_node *parsed_tokens, char **path)
 {
-	int	**pipefds;
+    t_exe_info *info;
 
-	exec_single_cmd(parsed_tokens, path);
-	if (create_pipe(&pipefds, parsed_tokens) == -1)
-		return (EXIT_FAILURE);
-	return (EXIT_FAILURE);
+    if (parsed_tokens->next == NULL && parsed_tokens->argv != NULL)
+        return (exec_single_cmd(parsed_tokens, path));
+    info = (t_exe_info *)malloc(sizeof(t_exe_info));
+    if (info == NULL)
+        exit(EXIT_FAILURE);
+    if (initialize_node(info, parsed_tokens))
+        return (EXIT_FAILURE);
+    while (parsed_tokens->next)
+    {
+        if (parsed_tokens->kind == CMD)
+        {
+            if (exec_pipe(parsed_tokens, info, path) == 1)
+                return (EXIT_FAILURE);
+        }
+        parsed_tokens = parsed_tokens->next;
+    }
+	return (exec_last_pipe_cmd(parsed_tokens, info, path));
 }
 
-char	**get_path(char *path)
-{
-	char	**result;
-
-	result = ft_split(path, ':');
-	return (result);
-}
 
 void	invoke_commands(t_token *tokens)
 {

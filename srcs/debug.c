@@ -55,8 +55,6 @@ void	print_node(t_node *head)
 		}
 		else
 			printf("argv:(nil)\n");
-		printf("in:%d\n", current->fd_in);
-		printf("out:%d\n", current->fd_out);
 		printf("---------------------------------\n");
 		current = current->next;
 	}
