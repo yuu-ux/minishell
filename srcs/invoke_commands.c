@@ -21,54 +21,13 @@
 //        return (1);
 //}
 
-static size_t	count_pipe(t_node *parsed)
-{
-	size_t	count;
 
-	count = 0;
-	while (parsed)
-	{
-		if (parsed->kind == PIPE)
-			count++;
-		parsed = parsed->next;
-	}
-	return (count);
-}
-
-static void	free_pipe(int **pipefds, int index)
-{
-	while (0 < index)
-	{
-		free(pipefds[index]);
-		index--;
-	}
-}
-
-static int	create_pipe(int ***pipefds, t_node *parsed_tokens)
-{
-	int	pipe_num;
-	int	i;
-
-	i = 0;
-	pipe_num = count_pipe(parsed_tokens);
-	*pipefds = (int **)malloc(pipe_num * sizeof(int *));
-	while (i < pipe_num)
-	{
-		*pipefds[i] = (int *)malloc(sizeof(int) * 2);
-		if (pipe(*pipefds[i]) == -1)
-		{
-			free_pipe(*pipefds, i);
-			return (EXIT_FAILURE);
-		}
-	}
-	return (EXIT_SUCCESS);
-}
 static int	exec_single_cmd(const t_node *parsed_tokens, char **path)
 {
 	int		i;
 	char	*temp;
 	char	*res;
-	pid_t	pid;
+    pid_t	pid;
 
 	// TODO ビルトイン 作成
 	// exec_builtin(parsed_tokens);

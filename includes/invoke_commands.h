@@ -24,14 +24,22 @@ typedef enum e_std_fd {
 
 typedef struct s_node
 {
+    int fds[2];
     t_node_type	    kind; // CMD:0 PIPE:1
     char			**argv;
-    int				fd_in;
-    int				fd_out;
     struct s_node	*next;
     struct s_node	*prev;
 }	t_node;
 
+// invoke_commands.c
 void    invoke_commands(t_token *tokens);
 t_node *parse(t_token *tokens);
+
+// invoke_utils.c
+char	**get_path(char *path);
+size_t	count_pipe(t_node *parsed);
+int    initialize_node(t_exe_info *info, t_node *parsed_tokens);
+void wrap_close(int fd);
+void wrap_dup2(int old_fd, int new_fd);
+
 #endif
