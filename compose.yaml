@@ -4,6 +4,6 @@ services:
     volumes:
       - .:/root/minishell
       - /Users/ebarayuuga/.ssh:/root/.ssh
-      - ~/.gitconfig:/root/.gitconfig
+      - /etc/localtime:/etc/localtime/:ro
     tty: true
     stdin_open: true
