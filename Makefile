@@ -39,6 +39,8 @@ test:
 	@make -C $(TEST_DIR)/expand test
 	@echo $(RED)'[-----------parse test-----------]'$(RESET)
 	@make -C $(TEST_DIR)/parse test
+	@echo $(RED)'[-----------execute test-----------]'$(RESET)
+	@make -C $(TEST_DIR)/execute test
 
 re: fclean all
 
