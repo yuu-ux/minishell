@@ -50,10 +50,12 @@ int parent_process(t_node *parsed_tokens, t_exe_info *info)
     return (EXIT_SUCCESS);
 }
 
-int execute(t_node *parsed_tokens, char **path_list)
+int execute(const t_node *parsed_tokens, char **path_list)
 {
 	// TODO ビルトイン 作成
-	// exec_builtin(parsed_tokens);
+    // TODO 子プロセスの fd を閉じる
+	if (is_builtin(parsed_tokens))
+        exec_builtin(parsed_tokens);
     execve(find_executable_path(parsed_tokens, path_list), parsed_tokens->argv, NULL);
     exit(EXIT_FAILURE);
 }

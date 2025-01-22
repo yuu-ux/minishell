@@ -7,3 +7,7 @@ services:
       - /etc/localtime:/etc/localtime/:ro
     tty: true
     stdin_open: true
+    #cap_add:
+    #  - SYS_PTRACE
+    #environment:
+    #  - ROSETTA_DEBUGSERVER_PORT=1234

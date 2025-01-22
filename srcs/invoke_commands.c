@@ -1,4 +1,3 @@
-#include <debug.h>
 #include <invoke_commands.h>
 
 static int	exec_single_cmd(const t_node *parsed_tokens, char **path_list)
@@ -13,8 +12,7 @@ static int	exec_single_cmd(const t_node *parsed_tokens, char **path_list)
 		if (access(parsed_tokens->argv[0], F_OK) == 0)
 			execve(parsed_tokens->argv[0], parsed_tokens->argv, NULL);
 		else
-			execve(find_executable_path(parsed_tokens, path_list),
-				parsed_tokens->argv, NULL);
+			execute(parsed_tokens, path_list);
 	}
 	else
 		waitpid(pid, NULL, 0);
@@ -60,6 +58,8 @@ int	exec_cmd(t_node *parsed_tokens, char **path_list)
 {
 	t_exe_info	*info;
 
+	if (is_builtin(parsed_tokens))
+		exec_builtin(parsed_tokens);
 	// TODO hoge/test.sh ようなケースを実行できるようにする
 	if (parsed_tokens->next == NULL && parsed_tokens->argv != NULL)
 		return (exec_single_cmd(parsed_tokens, path_list));

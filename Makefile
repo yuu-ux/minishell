@@ -14,7 +14,9 @@ SRCS = 	main.c \
 		invoke_commands.c \
 		invoke_utils.c \
 		execute.c \
-		debug.c
+		debug.c \
+		builtin.c \
+		builtin_utils.c
 SRC_DIR = ./srcs
 OBJ_DIR = ./objs
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
