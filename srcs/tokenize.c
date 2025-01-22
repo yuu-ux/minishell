@@ -6,7 +6,7 @@
 /*   By: kmogami <kmogami@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 20:45:02 by kmogami           #+#    #+#             */
-/*   Updated: 2024/11/16 20:45:03 by kmogami          ###   ########.fr       */
+/*   Updated: 2025/01/22 20:27:14 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,9 @@ t_token	*tokenization(const char *line)
 		i++;
 	}
 	token->next = NULL;
-	return (head);
+    while (i >= 0)
+        free(tokens[i--]);
+    free(tokens);
+    return (head);
 }
+
