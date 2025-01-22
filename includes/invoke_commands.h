@@ -12,7 +12,7 @@
 #include <stdbool.h>
 
 typedef struct s_exe_info {
-    pid_t *pid;
+    pid_t   *pid;
     int pipe_num;
     int exec_count;
     int				before_cmd_fd;
@@ -30,8 +30,7 @@ typedef enum e_std_fd {
     INVALID_FD = -1,
 } t_std_fd;
 
-typedef struct s_node
-{
+typedef struct s_node {
     int fds[2];
     t_node_type	    kind; // CMD:0 PIPE:1
     char			**argv;
