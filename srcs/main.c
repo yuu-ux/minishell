@@ -86,8 +86,9 @@ int	main(void)
 		check_syntax(tokens);
 		tokens = expand_tokens(&tokens, env_list);
 		invoke_commands(tokens);
-		//all_free();
+		all_free();
 		add_history(line);
 	}
 	return (SUCCESS);
 }
+
