@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_tokens.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/23 20:05:08 by yehara            #+#    #+#             */
+/*   Updated: 2025/01/23 21:38:04 by yehara           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <debug.h>
 #include <expand.h>
 #include <libft.h>
@@ -79,13 +91,17 @@ t_token	*expand_tokens(t_token **_tokens, kvs *path_list)
 {
 	t_token	*head;
 	t_token	*tokens;
+    char    *temp;
 
 	head = *_tokens;
 	tokens = *_tokens;
 	while (tokens)
 	{
+        temp = tokens->data;
 		tokens->data = expand_token(tokens->data, path_list);
+        free(temp);
 		tokens = tokens->next;
 	}
 	return (head);
 }
+

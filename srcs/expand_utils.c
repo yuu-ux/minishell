@@ -36,13 +36,17 @@ size_t	insert_env(char **buffer, char *token, kvs *path_list)
 {
 	size_t	key_len;
 	char	*value;
+    char *substr;
 
 	if (token[0] == '$')
 		token++;
 	key_len = count_key_len(token, 0);
-	value = search_env(ft_substr(token, 0, key_len), path_list);
+    substr = ft_substr(token, 0, key_len);
+	value = search_env(substr, path_list);
+    free(substr);
 	if (value == NULL)
 		value = ft_strdup("");
 	*buffer = ft_strjoin(*buffer, value);
 	return (key_len);
 }
+
