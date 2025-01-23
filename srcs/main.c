@@ -22,7 +22,7 @@
 #include <string.h>
 #include <tokenize.h>
 
-static size_t count_env(char **environ)
+static size_t	count_env(char **environ)
 {
 	int	i;
 	int	count;
@@ -45,10 +45,7 @@ static kvs	*create_env(char **environ)
 	size_t	count;
 
 	count = count_env(environ);
-	env_list = (kvs *)malloc(sizeof(kvs) * (count + 1));
-	if (!env_list)
-		return (NULL);
-	ft_memset(env_list, 0, sizeof(kvs));
+	env_list = (kvs *)ft_xmalloc(sizeof(kvs) * (count + 1));
 	i = 0;
 	while (environ[i])
 	{
@@ -78,17 +75,16 @@ int	main(void)
 		if (line == NULL)
 		{
 			ft_printf("exit\n");
-			break;
+			break ;
 		}
 		else if (*line == '\0')
-			continue;
+			continue ;
 		tokens = tokenization(line);
 		check_syntax(tokens);
 		tokens = expand_tokens(&tokens, env_list);
 		invoke_commands(tokens);
-//		all_free();
+		//		all_free();
 		add_history(line);
 	}
 	return (SUCCESS);
 }
-
