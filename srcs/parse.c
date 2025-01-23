@@ -26,6 +26,18 @@ static size_t count_word_node(t_token *tokens)
     return (count);
 }
 
+static void    advance_token_after_free(t_token **token)
+{
+    t_token *temp;
+    char *data;
+
+    temp = *token;
+    data = (*token)->data;
+    (*token) = (*token)->next;
+    free(data);
+    free(temp);
+}
+
 static char **create_argv(t_token *tokens)
 {
     char **result;
@@ -66,12 +78,12 @@ t_node *parse(t_token *tokens)
         {
             current->kind = CMD;
             while (tokens && tokens->type != TOKEN_PIPE)
-                tokens = tokens->next;
+                advance_token_after_free(&tokens);
         }
         else
         {
             current->kind = PIPE;
-            tokens = tokens->next;
+            advance_token_after_free(&tokens);
         }
         if (tokens)
         {
