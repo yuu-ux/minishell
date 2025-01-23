@@ -31,7 +31,6 @@ static void    advance_token_after_free(t_token **token)
     t_token *temp;
     char *data;
 
-    printf("free\n");
     temp = *token;
     data = (*token)->data;
     (*token) = (*token)->next;

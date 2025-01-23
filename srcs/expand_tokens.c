@@ -23,7 +23,7 @@ static size_t	delete_single_quote(char **result, char *token)
 	i++;
 	while (token[i] != SINGLE_QUOTE)
 		i++;
-	*result = ft_strjoin(*result, ft_substr(token, 1, i - 1));
+	*result = free_strjoin(*result, ft_substr(token, 1, i - 1));
 	// 「'」の次を指すために、+1
 	return (i + 1);
 }
@@ -39,21 +39,21 @@ static size_t	expand_double_quote(char **result, char *token, kvs *path_list)
 	{
 		if (token[i] == '$')
 		{
-			*result = ft_strjoin(*result, ft_substr(token, start, i - start));
+			*result = free_strjoin(*result, ft_substr(token, start, i - start));
 			i += insert_env(result, &token[i], path_list);
 			// 「"」と「$」のため、i+1
 			start = i + 1;
 		}
 		i++;
 	}
-	*result = ft_strjoin(*result, ft_substr(token, start, i - start));
+	*result = free_strjoin(*result, ft_substr(token, start, i - start));
 	return (i + 1);
 }
 
 static size_t	expand_variable(char **result, char *token, kvs *path_list,
 		int start, int i)
 {
-	*result = ft_strjoin(*result, ft_substr(token, start, i - start));
+	*result = free_strjoin(*result, ft_substr(token, start, i - start));
 	i += insert_env(result, &token[i], path_list);
 	return (i + 1);
 }
@@ -83,7 +83,7 @@ static char	*expand_token(char *token, kvs *path_list)
 		}
 		start = i;
 	}
-	result = ft_strjoin(result, ft_substr(token, start, i - start));
+	result = free_strjoin(result, ft_substr(token, start, i - start));
 	return (result);
 }
 

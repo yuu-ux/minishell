@@ -46,7 +46,7 @@ size_t	insert_env(char **buffer, char *token, kvs *path_list)
     free(substr);
 	if (value == NULL)
 		value = ft_strdup("");
-	*buffer = ft_strjoin(*buffer, value);
+	*buffer = free_strjoin(*buffer, value);
 	return (key_len);
 }
 
