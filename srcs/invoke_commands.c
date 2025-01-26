@@ -1,4 +1,5 @@
 #include <invoke_commands.h>
+#include <utils.h>
 
 static int	exec_single_cmd(const t_node *parsed_tokens, char **path_list)
 {
@@ -88,4 +89,6 @@ void	invoke_commands(t_token *tokens)
 	path_list = get_path_list(getenv("PATH"));
 	parsed_tokens = parse(tokens);
 	exec_cmd(parsed_tokens, path_list);
+    all_free(NULL, path_list, parsed_tokens);
 }
+

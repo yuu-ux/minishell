@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <expand.h>
+#include <utils.h>
 #include <invoke_commands.h>
 #include <libft.h>
 #include <minishell.h>
@@ -42,6 +43,7 @@ static kvs	*create_env(char **environ)
 	kvs		*env_list;
 	char	**temp;
 	int		i;
+    int j;
 	size_t	count;
 
 	count = count_env(environ);
@@ -49,9 +51,14 @@ static kvs	*create_env(char **environ)
 	i = 0;
 	while (environ[i])
 	{
+        j = 0;
 		temp = ft_split(environ[i], '=');
-		env_list[i].key = temp[0];
-		env_list[i].value = temp[1];
+		env_list[i].key = ft_strdup(temp[0]);
+		env_list[i].value = ft_strdup(temp[1]);
+        while (temp[j])
+            free(temp[j++]);
+        free(temp[j]);
+        free(temp);
 		i++;
 	}
 	return (env_list);
@@ -83,8 +90,9 @@ int	main(void)
 		check_syntax(tokens);
 		tokens = expand_tokens(&tokens, env_list);
 		invoke_commands(tokens);
-		//		all_free();
 		add_history(line);
 	}
+    all_free(env_list, NULL, NULL);
 	return (SUCCESS);
 }
+

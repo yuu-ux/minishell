@@ -28,7 +28,7 @@ static size_t	delete_single_quote(char **result, char *token)
 	return (i + 1);
 }
 
-static size_t	expand_double_quote(char **result, char *token, kvs *path_list)
+static size_t	expand_double_quote(char **result, char *token, kvs *env_list)
 {
 	size_t	i;
 	int		start;
@@ -40,7 +40,7 @@ static size_t	expand_double_quote(char **result, char *token, kvs *path_list)
 		if (token[i] == '$')
 		{
 			*result = free_strjoin(*result, ft_substr(token, start, i - start));
-			i += insert_env(result, &token[i], path_list);
+			i += insert_env(result, &token[i], env_list);
 			// 「"」と「$」のため、i+1
 			start = i + 1;
 		}
@@ -50,15 +50,15 @@ static size_t	expand_double_quote(char **result, char *token, kvs *path_list)
 	return (i + 1);
 }
 
-static size_t	expand_variable(char **result, char *token, kvs *path_list,
+static size_t	expand_variable(char **result, char *token, kvs *env_list,
 		int start, int i)
 {
 	*result = free_strjoin(*result, ft_substr(token, start, i - start));
-	i += insert_env(result, &token[i], path_list);
+	i += insert_env(result, &token[i], env_list);
 	return (i + 1);
 }
 
-static char	*expand_token(char *token, kvs *path_list)
+static char	*expand_token(char *token, kvs *env_list)
 {
 	int		i;
 	char	*result;
@@ -72,9 +72,9 @@ static char	*expand_token(char *token, kvs *path_list)
 		if (token[i] == SINGLE_QUOTE)
 			i += delete_single_quote(&result, &token[i]);
 		else if (token[i] == DOUBLE_QUOTE)
-			i += expand_double_quote(&result, &token[i], path_list);
+			i += expand_double_quote(&result, &token[i], env_list);
 		else if (token[i] == '$')
-			i += expand_variable(&result, token, path_list, start, i);
+			i += expand_variable(&result, token, env_list, start, i);
 		else
 		{
 			i++;
@@ -87,7 +87,7 @@ static char	*expand_token(char *token, kvs *path_list)
 	return (result);
 }
 
-t_token	*expand_tokens(t_token **_tokens, kvs *path_list)
+t_token	*expand_tokens(t_token **_tokens, kvs *env_list)
 {
 	t_token	*head;
 	t_token	*tokens;
@@ -98,7 +98,7 @@ t_token	*expand_tokens(t_token **_tokens, kvs *path_list)
 	while (tokens)
 	{
         temp = tokens->data;
-		tokens->data = expand_token(tokens->data, path_list);
+		tokens->data = expand_token(tokens->data, env_list);
         free(temp);
 		tokens = tokens->next;
 	}

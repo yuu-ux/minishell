@@ -10,14 +10,44 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <utils.h>
+#include <expand.h>
+#include <invoke_commands.h>
 
-void    all_free()
+void    all_free(kvs *env_list, char **path_list, t_node *parsed_tokens)
 {
-    // env
-    // path
-    // t_token
-    // t_node_
+    int i;
+
+    (void)parsed_tokens;
+    i = 0;
+    if (env_list)
+    {
+        while (env_list[i].key)
+        {
+            free(env_list[i].key);
+            free(env_list[i].value);
+            i++;
+        }
+        free(env_list);
+    }
+    i = 0;
+    if (path_list)
+    {
+        while (path_list[i])
+            free(path_list[i++]);
+        free(path_list);
+    }
+    // while (parsed_tokens)
+    // {
+    //     i = 0;
+    //     if (parsed_tokens->argv)
+    //     {
+    //         while (parsed_tokens->argv[i])
+    //             free(parsed_tokens->argv[i]);
+    //         free(parsed_tokens->argv);
+    //     }
+    //     free(parsed_tokens);
+    //     parsed_tokens = parsed_tokens->next;
+    // }
 }
 
 
