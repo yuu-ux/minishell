@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include <expand.h>
-#include <utils.h>
 #include <invoke_commands.h>
 #include <libft.h>
 #include <minishell.h>
@@ -22,6 +21,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <tokenize.h>
+#include <utils.h>
 
 static size_t	count_env(char **environ)
 {
@@ -43,7 +43,7 @@ static kvs	*create_env(char **environ)
 	kvs		*env_list;
 	char	**temp;
 	int		i;
-    int j;
+	int		j;
 	size_t	count;
 
 	count = count_env(environ);
@@ -51,14 +51,14 @@ static kvs	*create_env(char **environ)
 	i = 0;
 	while (environ[i])
 	{
-        j = 0;
+		j = 0;
 		temp = ft_split(environ[i], '=');
 		env_list[i].key = ft_strdup(temp[0]);
 		env_list[i].value = ft_strdup(temp[1]);
-        while (temp[j])
-            free(temp[j++]);
-        free(temp[j]);
-        free(temp);
+		while (temp[j])
+			free(temp[j++]);
+		free(temp[j]);
+		free(temp);
 		i++;
 	}
 	return (env_list);
@@ -91,8 +91,8 @@ int	main(void)
 		tokens = expand_tokens(&tokens, env_list);
 		invoke_commands(tokens);
 		add_history(line);
+		free(line);
 	}
-    all_free(env_list, NULL, NULL);
+	all_free(env_list, NULL, NULL);
 	return (SUCCESS);
 }
-
