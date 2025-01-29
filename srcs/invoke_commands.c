@@ -57,8 +57,10 @@ int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 
 int	exec_cmd(t_node *parsed_tokens, char **path_list)
 {
-	t_exe_info	*info;
+    t_exe_info	*info;
 
+	if (process_heredoc(parsed_tokens)) // 失敗したら false
+		return (EXIT_FAILURE);
 	if (is_builtin(parsed_tokens))
 		exec_builtin(parsed_tokens);
 	// TODO hoge/test.sh ようなケースを実行できるようにする

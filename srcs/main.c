@@ -96,3 +96,4 @@ int	main(void)
 	all_free(env_list, NULL, NULL);
 	return (SUCCESS);
 }
+

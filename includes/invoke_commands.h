@@ -61,4 +61,7 @@ int exec_builtin(const t_node *parsed_tokens);
 // builtin_utils.c
 bool is_builtin(const t_node *parsed_tokens);
 
+// exec_heredoc.c
+bool    process_heredoc(t_node *parsed_tokens);
+
 #endif

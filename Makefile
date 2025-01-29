@@ -17,7 +17,8 @@ SRCS = 	main.c \
 		debug.c \
 		builtin.c \
 		builtin_utils.c \
-		free.c
+		free.c \
+		exec_heredoc.c
 
 SRC_DIR = ./srcs
 OBJ_DIR = ./objs
