@@ -18,7 +18,9 @@ SRCS = 	main.c \
 		builtin.c \
 		builtin_utils.c \
 		free.c \
-		exec_heredoc.c
+		exec_heredoc.c \
+		redirect.c \
+		redirect_utils.c \
 
 SRC_DIR = ./srcs
 OBJ_DIR = ./objs

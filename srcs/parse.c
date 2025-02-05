@@ -3,14 +3,16 @@
 
 static t_node  *new_node()
 {
-    t_node *node;
+	t_node	*node;
 
-    node = (t_node *)malloc(sizeof(t_node));
-    if (node == NULL)
-        return (NULL);
-    node->next = NULL;
-    node->prev = NULL;
-    return (node);
+	node = (t_node *)malloc(sizeof(t_node));
+	if (node == NULL)
+		return (NULL);
+	node->fds[IN] = INVALID_FD;
+	node->fds[OUT] = INVALID_FD;
+	node->next = NULL;
+	node->prev = NULL;
+	return (node);
 }
 
 static size_t count_word_node(t_token *tokens)
@@ -94,3 +96,4 @@ t_node *parse(t_token *tokens)
     }
     return head;
 }
+
