@@ -33,6 +33,7 @@ RESET = "\033[0m"
 all: $(NAME)
 
 $(NAME): $(OBJS)
+	git submodule update --init --recursive
 	make -C $(LIBFT)
 	$(CC) $(CFLAGS) $^ -o $@ ./libft/libft.a -lreadline
 
