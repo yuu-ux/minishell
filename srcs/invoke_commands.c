@@ -1,7 +1,7 @@
 #include <invoke_commands.h>
 #include <utils.h>
 
-static int	exec_single_cmd(const t_node *parsed_tokens, char **path_list)
+static int	exec_single_cmd(t_node *parsed_tokens, char **path_list)
 {
 	pid_t	pid;
 
@@ -59,7 +59,8 @@ int	exec_cmd(t_node *parsed_tokens, char **path_list)
 {
     t_exe_info	*info;
 
-	if (process_heredoc(parsed_tokens)) // 失敗したら false
+	// TODO 'EOF'のとき変数を展開しないようにする
+	if (process_heredoc(parsed_tokens))
 		return (EXIT_FAILURE);
 	if (is_builtin(parsed_tokens))
 		exec_builtin(parsed_tokens);

@@ -15,7 +15,7 @@
 #include <readline/history.h>
 #include <readline/readline.h>
 
-static bool is_heredoc(char *argv)
+bool is_heredoc(char *argv)
 {
     if (ft_strncmp(argv, "<<", 3) == 0)
         return (true);
@@ -30,7 +30,7 @@ static void heredoc_child_process(char *delimiter, int fds[2])
     line = NULL;
     while (true)
     {
-		line = readline(">");
+		line = readline("> ");
         if (ft_strncmp(delimiter, line, ft_strlen(delimiter) + 1) == 0)
 			break ;
         ft_putstr_fd(line, fds[OUT]);
