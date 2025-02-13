@@ -2,7 +2,7 @@
 
 FROM --platform=linux/x86_64 ubuntu:20.04
 
-RUN apt update && apt install -y make git gcc curl tmux zsh bear libreadline-dev man-db python3 python3-venv ripgrep locales unzip tmux
+RUN apt update && apt install -y make git gcc curl tmux zsh bear libreadline-dev man-db python3 python3-venv ripgrep locales unzip tmux lsof
 
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
