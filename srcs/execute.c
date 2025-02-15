@@ -12,6 +12,7 @@
 
 #include <invoke_commands.h>
 #include <redirect.h>
+#include <utils.h>
 
 char *find_executable_path(const t_node *parsed_tokens, char **path_list)
 {
@@ -42,8 +43,8 @@ int child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list)
 	if (info->exec_count < info->pipe_num)
 	{
 		wrap_dup2(parsed_tokens->fds[OUT], STDOUT_FILENO);
-		wrap_close(parsed_tokens->fds[OUT]);
-		wrap_close(parsed_tokens->fds[IN]);
+		close_redirect_fd(&parsed_tokens->fds[OUT]);
+		close_redirect_fd(&parsed_tokens->fds[IN]);
 	}
 	// 初めのコマンド以外は、入力を前のpipefd[0]にリダイレクトする
 	// STDIN → before_pipe_fd[0]
@@ -58,7 +59,7 @@ int child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list)
 
 int parent_process(t_node *parsed_tokens, t_exe_info *info)
 {
-	wrap_close(parsed_tokens->fds[OUT]);
+	close_redirect_fd(&parsed_tokens->fds[OUT]);
 	info->before_cmd_fd = parsed_tokens->fds[IN];
 	return (EXIT_SUCCESS);
 }
@@ -69,7 +70,7 @@ void	set_redirect_fd(t_node *parsed_tokens)
 	if (parsed_tokens->fds[IN] != INVALID_FD)
 	{
 		wrap_dup2(parsed_tokens->fds[IN], STDIN_FILENO);
-		wrap_close(parsed_tokens->fds[IN]);
+		close_redirect_fd(&parsed_tokens->fds[IN]);
 	}
 	if (parsed_tokens->fds[OUT] != INVALID_FD)
 	{
@@ -79,8 +80,7 @@ void	set_redirect_fd(t_node *parsed_tokens)
 
 int execute(t_node *parsed_tokens, char **path_list)
 {
-	if (!(do_redirections(parsed_tokens)))
-		return (EXIT_FAILURE);
+	do_redirections(parsed_tokens);
 	set_redirect_fd(parsed_tokens);
 	// TODO ビルトイン 作成
 	// TODO 子プロセスの fd を閉じる

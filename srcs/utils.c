@@ -21,3 +21,9 @@ void    wrap_double_close(int fd1, int fd2)
     wrap_close(fd1);
     wrap_close(fd2);
 }
+
+void	close_redirect_fd(int *fd)
+{
+	wrap_close(*fd);
+	*fd = -1;
+}
