@@ -27,7 +27,10 @@ bool	is_heredoc(char *line)
 void	wrap_close(int fd)
 {
 	if (close(fd) == -1)
+	{
+		perror("close");
 		exit(EXIT_FAILURE);
+	}
 }
 
 void	wrap_dup2(int old_fd, int new_fd)
@@ -54,6 +57,7 @@ void	child_process(int fds[2])
 		free(temp);
 	}
 	wrap_close(fds[OUT]);
+	exit(EXIT_SUCCESS);
 }
 
 int	parent_process(pid_t pid, int fds[2])
@@ -79,8 +83,7 @@ int	exec_heredoc(void)
 		exit(EXIT_FAILURE);
 	if (pid == 0)
 		child_process(fds);
-	if (pid > 0)
-		in = parent_process(pid, fds);
+	in = parent_process(pid, fds);
 	return (in);
 }
 
