@@ -36,13 +36,11 @@ void	wrap_dup2(int old_fd, int new_fd)
 		exit(EXIT_FAILURE);
 }
 
-int	exec_heredoc(void)
+void	child_process(int fds[2])
 {
-	int		fds[2];
 	char	*temp;
 
-	if (pipe(fds) == -1)
-		exit(EXIT_FAILURE);
+	wrap_close(fds[IN]);
 	while (true)
 	{
 		temp = readline("> ");
@@ -56,7 +54,34 @@ int	exec_heredoc(void)
 		free(temp);
 	}
 	wrap_close(fds[OUT]);
+}
+
+int	parent_process(pid_t pid, int fds[2])
+{
+	int	status;
+
+	waitpid(pid, &status, 0);
+	wrap_close(fds[OUT]);
 	return (fds[IN]);
+}
+
+int	exec_heredoc(void)
+{
+	int		fds[2];
+	pid_t	pid;
+	int		in;
+
+	in = -1;
+	if (pipe(fds) == -1)
+		exit(EXIT_FAILURE);
+	pid = fork();
+	if (pid == -1)
+		exit(EXIT_FAILURE);
+	if (pid == 0)
+		child_process(fds);
+	if (pid > 0)
+		in = parent_process(pid, fds);
+	return (in);
 }
 
 void	execuve(int in)
