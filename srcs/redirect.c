@@ -1,12 +1,11 @@
 #include <invoke_commands.h>
 #include <redirect.h>
+#include <utils.h>
 
 bool	redirect_in(t_node *parsed_tokens, int i)
 {
 	int	fd;
 
-	parsed_tokens->fds[IN] = -1;
-	parsed_tokens->fds[OUT] = -1;
 	fd = open(parsed_tokens->argv[i + 1], O_RDONLY);
 	if (fd == -1)
 		return (printf("fd error\n"), false);
@@ -18,8 +17,6 @@ bool	redirect_out(t_node *parsed_tokens, int i)
 {
 	int	fd;
 
-	parsed_tokens->fds[IN] = -1;
-	parsed_tokens->fds[OUT] = -1;
 	fd = open(parsed_tokens->argv[i + 1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd == -1)
 		return (printf("fd error\n"), false);
@@ -31,8 +28,6 @@ bool	redirect_append(t_node *parsed_tokens, int i)
 {
 	int	fd;
 
-	parsed_tokens->fds[IN] = -1;
-	parsed_tokens->fds[OUT] = -1;
 	fd = open(parsed_tokens->argv[i + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
 	if (fd == -1)
 		return (printf("fd error\n"), false);
@@ -51,6 +46,8 @@ static	bool set_redirect(t_node *parsed_tokens, int i)
 		return (redirect_out(parsed_tokens, i));
 	else if (type == TOKEN_REDIRECT_APPEND)
 		return (redirect_append(parsed_tokens, i));
+	else if (type == TOKEN_REDIRECT_HEREDOC)
+		return (true);
 	return (false);
 }
 
@@ -61,7 +58,7 @@ static bool	find_set_redirect(t_node *parsed_tokens)
 	i = 0;
 	while (parsed_tokens->argv[i])
 	{
-		if (is_redirect(parsed_tokens->argv[i]))
+		if (is_redirect(parsed_tokens->argv[i]) || is_heredoc(parsed_tokens->argv[i]))
 		{
 			if (set_redirect(parsed_tokens, i))
 				return (true);
@@ -81,7 +78,7 @@ int	count_argv_cmd(char **argv)
 	i = 0;
 	while (argv[i])
 	{
-		if (is_redirect(argv[i]))
+		if (is_redirect(argv[i]) || is_heredoc(argv[i]))
 		{
 			i += 2;
 			continue ;
@@ -100,10 +97,10 @@ char	**remove_redirect(t_node *parsed_tokens)
 
 	i = 0;
 	j = 0;
-	new_argv = (char **)malloc(sizeof(char *) * count_argv_cmd(parsed_tokens->argv));
+	new_argv = (char **)malloc(sizeof(char *) * count_argv_cmd(parsed_tokens->argv) + 1);
 	while (parsed_tokens->argv[i])
 	{
-		if (is_redirect(parsed_tokens->argv[i]))
+		if (is_redirect(parsed_tokens->argv[i]) || is_heredoc(parsed_tokens->argv[i]))
 		{
 			i += 2; // リダイレクトとファイル名までとばしたいため +2
 			continue ;
@@ -112,6 +109,7 @@ char	**remove_redirect(t_node *parsed_tokens)
 		j++;
 		i++;
 	}
+	new_argv[j] = NULL;
 	return (new_argv);
 }
 
