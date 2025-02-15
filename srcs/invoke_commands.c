@@ -59,8 +59,9 @@ int	exec_cmd(t_node *parsed_tokens, char **path_list)
 {
     t_exe_info	*info;
 
+	// TODO unset PATH 時の挙動
 	// TODO 'EOF'のとき変数を展開しないようにする
-	if (process_heredoc(parsed_tokens))
+	if (!(process_heredoc(parsed_tokens)))
 		return (EXIT_FAILURE);
 	if (is_builtin(parsed_tokens))
 		exec_builtin(parsed_tokens);

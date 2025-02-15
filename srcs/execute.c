@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/13 01:10:18 by yehara            #+#    #+#             */
+/*   Updated: 2025/02/13 22:17:43 by yehara           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <invoke_commands.h>
 #include <redirect.h>
 
@@ -57,12 +69,14 @@ void	set_redirect_fd(t_node *parsed_tokens)
 	if (parsed_tokens->fds[IN] != INVALID_FD)
 	{
 		wrap_dup2(parsed_tokens->fds[IN], STDIN_FILENO);
+		wrap_close(parsed_tokens->fds[IN]);
 	}
 	if (parsed_tokens->fds[OUT] != INVALID_FD)
 	{
 		wrap_dup2(parsed_tokens->fds[OUT], STDOUT_FILENO);
 	}
 }
+
 int execute(t_node *parsed_tokens, char **path_list)
 {
 	if (!(do_redirections(parsed_tokens)))

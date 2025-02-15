@@ -6,7 +6,7 @@
 /*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:42:52 by yehara            #+#    #+#             */
-/*   Updated: 2025/01/29 17:19:57 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/13 21:18:41 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static void heredoc_child_process(char *delimiter, int fds[2])
         ft_putstr_fd("\n", fds[OUT]);
         free(line);
     }
+	wrap_close(fds[OUT]);
 }
 
 static bool heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid)
@@ -44,7 +45,7 @@ static bool heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid)
     int status;
 
     waitpid(pid, &status, 0);
-    wrap_close(fds[OUT]);
+	wrap_close(fds[OUT]);
     parsed_tokens->fds[IN] = fds[IN];
     return (EXIT_SUCCESS);
 }
