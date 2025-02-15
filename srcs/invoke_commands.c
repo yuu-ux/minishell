@@ -57,12 +57,11 @@ int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 
 int	exec_cmd(t_node *parsed_tokens, char **path_list)
 {
-    t_exe_info	*info;
+	t_exe_info	*info;
 
 	// TODO unset PATH 時の挙動
 	// TODO 'EOF'のとき変数を展開しないようにする
-	if (!(process_heredoc(parsed_tokens)))
-		return (EXIT_FAILURE);
+	process_heredoc(parsed_tokens);
 	if (is_builtin(parsed_tokens))
 		exec_builtin(parsed_tokens);
 	// TODO hoge/test.sh ようなケースを実行できるようにする
@@ -93,6 +92,5 @@ void	invoke_commands(t_token *tokens)
 	path_list = get_path_list(getenv("PATH"));
 	parsed_tokens = parse(tokens);
 	exec_cmd(parsed_tokens, path_list);
-    all_free(NULL, path_list, parsed_tokens);
+	all_free(NULL, path_list, parsed_tokens);
 }
-
