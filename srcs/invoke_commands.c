@@ -63,7 +63,7 @@ int	exec_cmd(t_node *parsed_tokens, char **path_list)
 	// TODO 'EOF'のとき変数を展開しないようにする
 	process_heredoc(parsed_tokens);
 	if (is_builtin(parsed_tokens))
-		exec_builtin(parsed_tokens);
+		return (exec_builtin(parsed_tokens));
 	// TODO hoge/test.sh ようなケースを実行できるようにする
 	if (parsed_tokens->next == NULL && parsed_tokens->argv != NULL)
 		return (exec_single_cmd(parsed_tokens, path_list));

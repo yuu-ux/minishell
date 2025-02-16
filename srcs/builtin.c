@@ -34,7 +34,6 @@ int    built_exit()
 
  int exec_builtin(const t_node *parsed_tokens)
 {
-	printf("test\n");
     if (!(ft_strncmp(parsed_tokens->argv[0], "echo", 5)))
 		return (built_echo(parsed_tokens));
     else if (!(ft_strncmp(parsed_tokens->argv[0], "cd", 3)))
