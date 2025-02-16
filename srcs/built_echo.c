@@ -66,7 +66,7 @@ char *create_message(char **argv, bool flg_option)
 	return (ft_chop(result));
 }
 
-int	built_echo(const t_node *parsed_tokens)
+bool	built_echo(const t_node *parsed_tokens)
 {
 	bool	flg_option;
 
