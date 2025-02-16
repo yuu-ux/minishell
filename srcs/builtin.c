@@ -1,9 +1,5 @@
 #include <invoke_commands.h>
-
-int    built_echo()
-{
-    return (EXIT_SUCCESS);
-}
+#include <builtin.h>
 
 int    built_cd()
 {
@@ -39,7 +35,7 @@ int    built_exit()
  int exec_builtin(const t_node *parsed_tokens)
 {
     if (!(ft_strncmp(parsed_tokens->argv[0], "echo", 5)))
-        return (built_echo());
+		return (built_echo(parsed_tokens));
     else if (!(ft_strncmp(parsed_tokens->argv[0], "cd", 3)))
         return (built_cd());
     else if (!(ft_strncmp(parsed_tokens->argv[0], "pwd", 4)))
