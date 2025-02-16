@@ -2,11 +2,6 @@
 #include <builtin.h>
 #include <minishell.h>
 
-int    built_pwd()
-{
-    return (EXIT_SUCCESS);
-}
-
 int    built_export()
 {
     return (EXIT_SUCCESS);
