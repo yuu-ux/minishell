@@ -6,28 +6,28 @@
 /*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 20:14:52 by yehara            #+#    #+#             */
-/*   Updated: 2025/01/22 20:16:15 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/16 20:43:40 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <expand.h>
 #include <invoke_commands.h>
 
-void    all_free(kvs *env_list, char **path_list, t_node *parsed_tokens)
+void    all_free(kvs *environ, char **path_list, t_node *parsed_tokens)
 {
     int i;
 
     (void)parsed_tokens;
     i = 0;
-    if (env_list)
+    if (environ)
     {
-        while (env_list[i].key)
+        while (environ[i].key)
         {
-            free(env_list[i].key);
-            free(env_list[i].value);
+            free(environ[i].key);
+            free(environ[i].value);
             i++;
         }
-        free(env_list);
+        free(environ);
     }
     i = 0;
     if (path_list)
