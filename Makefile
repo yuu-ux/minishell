@@ -3,6 +3,7 @@ NAME = minishell
 CC = cc
 CFLAGS = -g -Wall -Wextra -Werror -I./includes/ -Ilibft
 SRCS = 	main.c \
+		init.c \
 		tokenize.c \
 		check_syntax.c \
 		utils.c \

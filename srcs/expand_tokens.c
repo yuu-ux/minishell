@@ -6,7 +6,7 @@
 /*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 20:05:08 by yehara            #+#    #+#             */
-/*   Updated: 2025/01/23 21:38:04 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/16 20:41:22 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static size_t	delete_single_quote(char **result, char *token)
 	return (i + 1);
 }
 
-static size_t	expand_double_quote(char **result, char *token, kvs *env_list)
+static size_t	expand_double_quote(char **result, char *token, kvs *environ)
 {
 	size_t	i;
 	int		start;
@@ -40,7 +40,7 @@ static size_t	expand_double_quote(char **result, char *token, kvs *env_list)
 		if (token[i] == '$')
 		{
 			*result = free_strjoin(*result, ft_substr(token, start, i - start));
-			i += insert_env(result, &token[i], env_list);
+			i += insert_env(result, &token[i], environ);
 			// 「"」と「$」のため、i+1
 			start = i + 1;
 		}
@@ -50,15 +50,15 @@ static size_t	expand_double_quote(char **result, char *token, kvs *env_list)
 	return (i + 1);
 }
 
-static size_t	expand_variable(char **result, char *token, kvs *env_list,
+static size_t	expand_variable(char **result, char *token, kvs *environ,
 		int start, int i)
 {
 	*result = free_strjoin(*result, ft_substr(token, start, i - start));
-	i += insert_env(result, &token[i], env_list);
+	i += insert_env(result, &token[i], environ);
 	return (i + 1);
 }
 
-static char	*expand_token(char *token, kvs *env_list)
+static char	*expand_token(char *token, kvs *environ)
 {
 	int		i;
 	char	*result;
@@ -72,9 +72,9 @@ static char	*expand_token(char *token, kvs *env_list)
 		if (token[i] == SINGLE_QUOTE)
 			i += delete_single_quote(&result, &token[i]);
 		else if (token[i] == DOUBLE_QUOTE)
-			i += expand_double_quote(&result, &token[i], env_list);
+			i += expand_double_quote(&result, &token[i], environ);
 		else if (token[i] == '$')
-			i += expand_variable(&result, token, env_list, start, i);
+			i += expand_variable(&result, token, environ, start, i);
 		else
 		{
 			i++;
@@ -87,7 +87,7 @@ static char	*expand_token(char *token, kvs *env_list)
 	return (result);
 }
 
-t_token	*expand_tokens(t_token **_tokens, kvs *env_list)
+t_token	*expand_tokens(t_token **_tokens, t_context *context)
 {
 	t_token	*head;
 	t_token	*tokens;
@@ -98,7 +98,7 @@ t_token	*expand_tokens(t_token **_tokens, kvs *env_list)
 	while (tokens)
 	{
         temp = tokens->data;
-		tokens->data = expand_token(tokens->data, env_list);
+		tokens->data = expand_token(tokens->data, context->environ);
         free(temp);
 		tokens = tokens->next;
 	}

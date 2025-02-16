@@ -1,5 +1,6 @@
 #include <invoke_commands.h>
 #include <builtin.h>
+#include <minishell.h>
 
 int    built_pwd()
 {
@@ -27,12 +28,12 @@ int    built_exit()
     exit(EXIT_SUCCESS);
 }
 
- int exec_builtin(const t_node *parsed_tokens)
+ int exec_builtin(const t_node *parsed_tokens, t_context *context)
 {
     if (!(ft_strncmp(parsed_tokens->argv[0], "echo", 5)))
 		return (built_echo(parsed_tokens));
     else if (!(ft_strncmp(parsed_tokens->argv[0], "cd", 3)))
-        return (built_cd(parsed_tokens));
+        return (built_cd(parsed_tokens, context));
     else if (!(ft_strncmp(parsed_tokens->argv[0], "pwd", 4)))
         return (built_pwd());
     else if (!(ft_strncmp(parsed_tokens->argv[0], "export", 7)))

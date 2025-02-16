@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <minishell.h>
 
 typedef struct s_exe_info {
     pid_t   *pid;
@@ -39,7 +40,7 @@ typedef struct s_node {
 }	t_node;
 
 // invoke_commands.c
-void    invoke_commands(t_token *tokens);
+void    invoke_commands(t_token *tokens, t_context *context);
 t_node *parse(t_token *tokens);
 
 // invoke_utils.c
@@ -48,15 +49,15 @@ size_t	count_pipe(t_node *parsed);
 int    initialize_info(t_exe_info *info, t_node *parsed_tokens);
 void wrap_close(int fd);
 void wrap_dup2(int old_fd, int new_fd);
-int execute(t_node *parsed_tokens, char **path_list);
+int execute(t_node *parsed_tokens, char **path_list, t_context *context);
 
 // execute.c
 char *find_executable_path(const t_node *parsed_tokens, char **path_list);
-int child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list);
+int child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list, t_context *context);
 int parent_process(t_node *parsed_tokens, t_exe_info *info);
 
 // builtin.c
-int exec_builtin(const t_node *parsed_tokens);
+int exec_builtin(const t_node *parsed_tokens, t_context *context);
 
 // builtin_utils.c
 bool is_builtin(const t_node *parsed_tokens);
