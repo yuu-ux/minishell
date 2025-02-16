@@ -1,11 +1,6 @@
 #include <invoke_commands.h>
 #include <builtin.h>
 
-int    built_cd()
-{
-    return (EXIT_SUCCESS);
-}
-
 int    built_pwd()
 {
     return (EXIT_SUCCESS);
@@ -37,7 +32,7 @@ int    built_exit()
     if (!(ft_strncmp(parsed_tokens->argv[0], "echo", 5)))
 		return (built_echo(parsed_tokens));
     else if (!(ft_strncmp(parsed_tokens->argv[0], "cd", 3)))
-        return (built_cd());
+        return (built_cd(parsed_tokens));
     else if (!(ft_strncmp(parsed_tokens->argv[0], "pwd", 4)))
         return (built_pwd());
     else if (!(ft_strncmp(parsed_tokens->argv[0], "export", 7)))

@@ -22,6 +22,7 @@ SRCS = 	main.c \
 		redirect.c \
 		redirect_utils.c \
 		built_echo.c \
+		built_cd.c \
 
 SRC_DIR = ./srcs
 OBJ_DIR = ./objs
