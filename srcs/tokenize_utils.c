@@ -56,11 +56,14 @@ size_t	skip_non_delimiter(const char **line)
 	size_t	moved;
 
 	moved = 0;
-	while (!(is_operators(**line) || is_quote(**line) || ft_isspace(**line))
+	while (!(is_operators(**line) || ft_isspace(**line))
 		&& **line)
 	{
 		moved++;
 		(*line)++;
+		if (is_quote(**line))
+			moved += skip_quoted_token(**line, line);
 	}
 	return (moved);
 }
+

@@ -2,15 +2,6 @@
 #include <builtin.h>
 #include <minishell.h>
 
-int    built_pwd()
-{
-	char *current_dir;
-
-	current_dir = getcwd(NULL, 0);
-	printf("%s\n", current_dir);
-    return (EXIT_SUCCESS);
-}
-
 int    built_export()
 {
     return (EXIT_SUCCESS);

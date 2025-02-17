@@ -78,6 +78,8 @@ static char	*expand_token(char *token, kvs *environ)
 		else
 		{
 			i++;
+			if (is_quote(token[i]))
+				result = free_strjoin(result, ft_substr(token, start, i - start));
 			// 変数展開したときのみ、start を更新したいため、continue する
 			continue ;
 		}

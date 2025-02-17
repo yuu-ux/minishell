@@ -4,7 +4,7 @@
 #define SUCCESS 0
 #define FAILURE 1
 
-#include <stdio.h>
+#include <stdbool.h>
 
 typedef struct {
     char *key;

@@ -44,12 +44,19 @@ static void    check_operators_error(t_token *token)
 
 void    check_syntax(t_token *token)
 {
-    if (token->data[0] == '|')
+	int	i;
+
+	i = 0;
+    if (token->data[i] == '|')
         print_syntax_error();
     while (token)
     {
-        if (is_quote(token->data[0]))
-            check_quote_error(token);
+		while (token->data[i])
+		{
+			if (is_quote(token->data[i]))
+				check_quote_error(token);
+			i++;
+		}
         if (is_operators(token->data[0]))
             check_operators_error(token);
         token = token->next;
