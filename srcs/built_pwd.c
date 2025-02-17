@@ -26,3 +26,4 @@ bool	built_pwd(void)
 	ft_printf("%s\n", current_dir);
 	return (EXIT_SUCCESS);
 }
+
