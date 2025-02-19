@@ -46,11 +46,11 @@ void    check_syntax(t_token *token)
 {
 	int	i;
 
-	i = 0;
-    if (token->data[i] == '|')
+    if (token->data[0] == '|')
         print_syntax_error();
     while (token)
     {
+		i = 0;
 		while (token->data[i])
 		{
 			if (is_quote(token->data[i]))
