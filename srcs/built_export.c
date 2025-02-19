@@ -33,11 +33,12 @@ int	xsetenv(char *name, char *value, t_context *context)
 	env = xgetenv(name, context);
 	if (env == NULL)
 		return (EXIT_FAILURE);
-	env->value = value;
+	free(env->value);
+	env->value = ft_strdup(value);
 	return (EXIT_SUCCESS);
 }
 
-int	count_environ(kvs	*environ)
+int	count_environ(kvs *environ)
 {
 	int	i;
 
@@ -50,35 +51,50 @@ int	count_environ(kvs	*environ)
 void	xaddenv(char *name, char *value, t_context *context)
 {
 	int	env_count;
-
-	env_count = count_environ(context->environ);
-	// 追加と null 終端のサイズ確保のために +2 する
-	context->environ = (kvs *)ft_realloc(context->environ, sizeof(kvs) * (env_count + 2));
-	context->environ[env_count].key = ft_strdup(name);
-	context->environ[env_count].value = ft_strdup(value);
-}
-
-static	bool	update_env(const t_node *parsed_tokens, t_context	*context)
-{
-	char **temp;
+	kvs	*new_environ;
 	int	i;
 
+	i = 0;
+	env_count = count_environ(context->environ);
+	// 追加と null 終端のサイズ確保のために +2 する
+	new_environ = (kvs *)ft_xmalloc(sizeof(kvs) * (env_count + 2));
+	while (context->environ[i].key)
+	{
+		new_environ[i].key = ft_strdup(context->environ[i].key);
+		free(context->environ[i].key);
+		new_environ[i].value = ft_strdup(context->environ[i].value);
+		free(context->environ[i].value);
+		i++;
+	}
+	new_environ[env_count].key = ft_strdup(name);
+	new_environ[env_count].value = ft_strdup(value);
+	free(context->environ);
+	context->environ = new_environ;
+}
+
+static bool	update_env(const t_node *parsed_tokens, t_context *context)
+{
+	char	**temp;
+	int		i;
+	int		j;
+
 	i = 1;
+	j = 0;
 	while (parsed_tokens->argv[i])
 	{
 		temp = ft_split(parsed_tokens->argv[i], '=');
 		if (xsetenv(temp[0], temp[1], context))
 			xaddenv(temp[0], temp[1], context);
-		while (temp[i])
-			free(temp[i++]);
-		free(temp[i]);
+		while (temp[j])
+			free(temp[j++]);
+		free(temp[j]);
 		free(temp);
 		i++;
 	}
 	return (EXIT_SUCCESS);
 }
 
-bool	built_export(const	t_node *parsed_tokens, t_context *context)
+bool	built_export(const t_node *parsed_tokens, t_context *context)
 {
 	int	i;
 
@@ -88,9 +104,11 @@ bool	built_export(const	t_node *parsed_tokens, t_context *context)
 		while (context->environ[i].key)
 		{
 			if (context->environ[i].value)
-				ft_printf("delare -x %s=%s\n", context->environ[i].key, context->environ[i].value);
+				ft_printf("delare -x %s=\"%s\"\n", context->environ[i].key,
+					context->environ[i].value);
 			else
-				ft_printf("delare -x %s\n", context->environ[i].key, context->environ[i].value);
+				ft_printf("delare -x %s\n", context->environ[i].key,
+					context->environ[i].value);
 			i++;
 		}
 	}
@@ -100,4 +118,3 @@ bool	built_export(const	t_node *parsed_tokens, t_context *context)
 	}
 	return (EXIT_SUCCESS);
 }
-
