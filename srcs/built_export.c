@@ -30,6 +30,8 @@ int	xsetenv(char *name, char *value, t_context *context)
 {
 	kvs	*env;
 
+	if (value == NULL)
+		return (EXIT_SUCCESS);
 	env = xgetenv(name, context);
 	if (env == NULL)
 		return (EXIT_FAILURE);
