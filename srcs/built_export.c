@@ -52,6 +52,8 @@ void	xaddenv(char *name, char *value, t_context *context)
 	int	env_count;
 
 	env_count = count_environ(context->environ);
+	// 追加と null 終端のサイズ確保のために +2 する
+	context->environ = (kvs *)ft_realloc(context->environ, sizeof(kvs) * (env_count + 2));
 	context->environ[env_count].key = ft_strdup(name);
 	context->environ[env_count].value = ft_strdup(value);
 }
@@ -62,17 +64,17 @@ static	bool	update_env(const t_node *parsed_tokens, t_context	*context)
 	int	i;
 
 	i = 1;
-	// while (parsed_tokens->argv[i])
-	// {
-	temp = ft_split(parsed_tokens->argv[i], '=');
-	if (xsetenv(temp[0], temp[1], context))
-		xaddenv(temp[0], temp[1], context);
-	while (temp[i])
-		free(temp[i++]);
-	free(temp[i]);
-	free(temp);
-	i++;
-	// }
+	while (parsed_tokens->argv[i])
+	{
+		temp = ft_split(parsed_tokens->argv[i], '=');
+		if (xsetenv(temp[0], temp[1], context))
+			xaddenv(temp[0], temp[1], context);
+		while (temp[i])
+			free(temp[i++]);
+		free(temp[i]);
+		free(temp);
+		i++;
+	}
 	return (EXIT_SUCCESS);
 }
 
