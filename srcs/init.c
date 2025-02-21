@@ -26,16 +26,11 @@
 static size_t	count_env(char **envp)
 {
 	int	i;
-	int	count;
 
 	i = 0;
-	count = 0;
 	while (envp[i])
-	{
-		count++;
 		i++;
-	}
-	return (count);
+	return (i);
 }
 
 static kvs	*create_env(char **envp)
