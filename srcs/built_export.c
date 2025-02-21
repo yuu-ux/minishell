@@ -30,11 +30,11 @@ int	xsetenv(char *name, char *value, t_context *context)
 {
 	kvs	*env;
 
-	if (value == NULL)
-		return (EXIT_SUCCESS);
 	env = xgetenv(name, context);
 	if (env == NULL)
 		return (EXIT_FAILURE);
+	if (value == NULL)
+		return (EXIT_SUCCESS);
 	free(env->value);
 	env->value = ft_strdup(value);
 	return (EXIT_SUCCESS);
@@ -74,22 +74,34 @@ void	xaddenv(char *name, char *value, t_context *context)
 	context->environ = new_environ;
 }
 
+
+char	*analysis_token(char *argv, char *value)
+{
+	char *equal_char;
+
+	equal_char = ft_strchr(argv, '=');
+	if (equal_char)
+	{
+		free(value);
+		value = ft_strdup(equal_char + 1);
+	}
+	return (value);
+}
+
 static bool	update_env(const t_node *parsed_tokens, t_context *context)
 {
 	char	**temp;
 	int		i;
-	int		j;
 
 	i = 1;
-	j = 0;
 	while (parsed_tokens->argv[i])
 	{
 		temp = ft_split(parsed_tokens->argv[i], '=');
+		temp[1] = analysis_token(parsed_tokens->argv[i], temp[1]);
 		if (xsetenv(temp[0], temp[1], context))
 			xaddenv(temp[0], temp[1], context);
-		while (temp[j])
-			free(temp[j++]);
-		free(temp[j]);
+		free(temp[0]);
+		free(temp[1]);
 		free(temp);
 		i++;
 	}
