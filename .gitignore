@@ -4,3 +4,5 @@ compile_commands.json
 .cache
 minishell.dSYM/
 memo
+objs
+debug.sh
