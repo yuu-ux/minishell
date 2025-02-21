@@ -71,13 +71,11 @@ bool	built_echo(const t_node *parsed_tokens)
 	bool	flg_option;
 
 	// はじめのオプションのみ検証する
-	if (parsed_tokens->argv[1] == NULL)
-		return (ft_printf("\n"), EXIT_SUCCESS);
 	flg_option = has_option(parsed_tokens->argv[1]);
 	if (flg_option)
-		ft_printf("%s", create_message(parsed_tokens->argv, flg_option));
+		printf("%s", create_message(parsed_tokens->argv, flg_option));
 	else
-		ft_printf("%s\n", create_message(parsed_tokens->argv, flg_option));
+		printf("%s\n", create_message(parsed_tokens->argv, flg_option));
 	return (EXIT_SUCCESS);
 }
 
