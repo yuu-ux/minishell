@@ -10,11 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
 #include <invoke_commands.h>
+#include <minishell.h>
 #include <utils.h>
 
-static int	exec_single_cmd(t_node *parsed_tokens, char **path_list, t_context *context)
+static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
+		t_context *context)
 {
 	pid_t	pid;
 
@@ -33,7 +34,8 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list, t_context *c
 	return (EXIT_FAILURE);
 }
 
-static	int	exec_pipe(t_node *parsed_tokens, t_exe_info *info, char **path_list, t_context *context)
+static int	exec_pipe(t_node *parsed_tokens, t_exe_info *info, char **path_list,
+		t_context *context)
 {
 	pipe(parsed_tokens->fds);
 	info->pid[info->exec_count] = fork();
@@ -46,7 +48,7 @@ static	int	exec_pipe(t_node *parsed_tokens, t_exe_info *info, char **path_list, 
 	return (EXIT_SUCCESS);
 }
 
-static	int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
+static int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 		char **path_list, t_context *context)
 {
 	info->pid[info->exec_count] = fork();
@@ -68,18 +70,21 @@ static	int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 	return (EXIT_SUCCESS);
 }
 
-static int	exec_cmd(t_node *parsed_tokens, char **path_list, t_context *context)
+static int	exec_cmd(t_node *parsed_tokens, char **path_list,
+		t_context *context)
 {
 	t_exe_info	*info;
 
 	// TODO unset PATH 時の挙動
 	// TODO 'EOF'のとき変数を展開しないようにする
 	process_heredoc(parsed_tokens);
-	if (is_builtin(parsed_tokens))
-		return (exec_builtin(parsed_tokens, context));
 	// TODO hoge/test.sh ようなケースを実行できるようにする
 	if (parsed_tokens->next == NULL && parsed_tokens->argv != NULL)
+	{
+		if (is_builtin(parsed_tokens))
+			return (exec_builtin(parsed_tokens, context));
 		return (exec_single_cmd(parsed_tokens, path_list, context));
+	}
 	info = (t_exe_info *)malloc(sizeof(t_exe_info));
 	if (info == NULL)
 		exit(EXIT_FAILURE);
