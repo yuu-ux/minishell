@@ -5,7 +5,6 @@
 #define FAILURE 1
 
 #include <stdbool.h>
-#include <libft.h>
 
 typedef struct {
     char *key;
