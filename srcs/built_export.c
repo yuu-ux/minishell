@@ -74,10 +74,9 @@ void	xaddenv(char *name, char *value, t_context *context)
 	context->environ = new_environ;
 }
 
-
 char	*analysis_token(char *argv, char *value)
 {
-	char *equal_char;
+	char	*equal_char;
 
 	equal_char = ft_strchr(argv, '=');
 	if (equal_char)
@@ -108,27 +107,50 @@ static bool	update_env(const t_node *parsed_tokens, t_context *context)
 	return (EXIT_SUCCESS);
 }
 
-bool	built_export(const t_node *parsed_tokens, t_context *context)
+void	kvs_swap(kvs *env1, kvs *env2)
 {
-	int	i;
+	kvs	temp;
+
+	temp = *env1;
+	*env1 = *env2;
+	*env2 = temp;
+}
+
+void	sorted_print(t_context *context)
+{
+	int		i;
+	int		j;
 
 	i = 0;
-	if (!(parsed_tokens->argv[1]))
+	while (context->environ[i + 1].key)
 	{
-		while (context->environ[i].key)
+		j = i + 1;
+		while (context->environ[j].key)
 		{
-			if (context->environ[i].value)
-				ft_printf("delare -x %s=\"%s\"\n", context->environ[i].key,
-					context->environ[i].value);
-			else
-				ft_printf("delare -x %s\n", context->environ[i].key,
-					context->environ[i].value);
-			i++;
+			if (strcmp(context->environ[i].key, context->environ[j].key) > 0)
+				kvs_swap(&context->environ[i], &context->environ[j]);
+			j++;
 		}
+		i++;
 	}
-	else
+	i = 0;
+	while (context->environ[i].key)
 	{
-		update_env(parsed_tokens, context);
+		if (context->environ[i].value)
+			ft_printf("declare -x %s=\"%s\"\n", context->environ[i].key,
+				context->environ[i].value);
+		else
+			ft_printf("declare -x %s\n", context->environ[i].key);
+		i++;
 	}
+}
+
+bool	built_export(const t_node *parsed_tokens, t_context *context)
+{
+	if (!(parsed_tokens->argv[1]))
+		sorted_print(context);
+	else
+		update_env(parsed_tokens, context);
 	return (EXIT_SUCCESS);
 }
+
