@@ -120,35 +120,27 @@ void	sorted_print(t_context *context)
 {
 	int		i;
 	int		j;
-	bool	swapped;
 
 	i = 0;
 	while (context->environ[i + 1].key)
 	{
 		j = i + 1;
-		swapped = 0;
 		while (context->environ[j].key)
 		{
 			if (strcmp(context->environ[i].key, context->environ[j].key) > 0)
-			{
 				kvs_swap(&context->environ[i], &context->environ[j]);
-				swapped = 1;
-			}
 			j++;
 		}
-		if (swapped == 0)
-			break ;
 		i++;
 	}
 	i = 0;
 	while (context->environ[i].key)
 	{
 		if (context->environ[i].value)
-			ft_printf("delare -x %s=\"%s\"\n", context->environ[i].key,
+			ft_printf("declare -x %s=\"%s\"\n", context->environ[i].key,
 				context->environ[i].value);
 		else
-			ft_printf("delare -x %s\n", context->environ[i].key,
-				context->environ[i].value);
+			ft_printf("declare -x %s\n", context->environ[i].key);
 		i++;
 	}
 }
@@ -161,3 +153,4 @@ bool	built_export(const t_node *parsed_tokens, t_context *context)
 		update_env(parsed_tokens, context);
 	return (EXIT_SUCCESS);
 }
+
