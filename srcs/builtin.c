@@ -2,12 +2,6 @@
 #include <builtin.h>
 #include <minishell.h>
 
-
-int    built_env()
-{
-    return (EXIT_SUCCESS);
-}
-
 int    built_exit()
 {
     ft_printf("exit\n");
@@ -27,7 +21,7 @@ int    built_exit()
 	else if (!(ft_strncmp(parsed_tokens->argv[0], "unset", 6)))
 		return (built_unset(parsed_tokens, context));
 	else if (!(ft_strncmp(parsed_tokens->argv[0], "env", 4)))
-		return (built_env());
+		return (built_env(context));
 	else if (!(ft_strncmp(parsed_tokens->argv[0], "exit", 5)))
 		return (built_exit());
 	return (EXIT_FAILURE);
