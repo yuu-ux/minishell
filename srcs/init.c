@@ -6,7 +6,7 @@
 /*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:26:05 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/16 20:46:24 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/23 18:11:14 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,28 +26,23 @@
 static size_t	count_env(char **envp)
 {
 	int	i;
-	int	count;
 
 	i = 0;
-	count = 0;
 	while (envp[i])
-	{
-		count++;
 		i++;
-	}
-	return (count);
+	return (i);
 }
 
-static kvs	*create_env(char **envp)
+static t_kvs	*create_env(char **envp)
 {
-	kvs		*environ;
+	t_kvs		*environ;
 	char	**temp;
 	int		i;
 	int		j;
 	size_t	count;
 
 	count = count_env(envp);
-	environ = (kvs *)ft_xmalloc(sizeof(kvs) * (count + 1));
+	environ = (t_kvs *)ft_xmalloc(sizeof(t_kvs) * (count + 1));
 	i = 0;
 	while (envp[i])
 	{

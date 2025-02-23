@@ -6,7 +6,7 @@
 /*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 20:04:57 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/16 20:49:17 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/23 18:22:39 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	main(int argc, char *argv[], char *envp[])
 		add_history(line);
 		free(line);
 	}
-	all_free(context->environ, NULL, NULL);
+	env_free(context->environ);
 	return (SUCCESS);
 }
 

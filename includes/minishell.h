@@ -5,16 +5,16 @@
 #define FAILURE 1
 
 #include <stdbool.h>
+#include <libft.h>
 
-typedef struct {
+typedef struct s_kvs {
     char *key;
     char *value;
-} kvs;
+} t_kvs;
 
 typedef struct s_context
 {
-	kvs	*environ;
-	char	**envp;
+	t_kvs	*environ;
 	int		exit_status;
 }	t_context;
 

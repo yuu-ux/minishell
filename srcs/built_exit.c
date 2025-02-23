@@ -1,30 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_pwd.c                                        :+:      :+:    :+:   */
+/*   built_exit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/16 23:58:41 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/17 00:10:04 by yehara           ###   ########.fr       */
+/*   Created: 2025/02/23 17:40:48 by yehara            #+#    #+#             */
+/*   Updated: 2025/02/23 17:41:14 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
-#include <invoke_commands.h>
+#include <builtin.h>
 
-bool	built_pwd(void)
+bool	built_exit()
 {
-	char *current_dir;
-
-	current_dir = getcwd(NULL, 0);
-	if (current_dir == NULL)
-	{
-		perror("pwd");
-		exit(EXIT_FAILURE);
-	}
-	ft_printf("%s\n", current_dir);
-	free(current_dir);
-	return (EXIT_SUCCESS);
+    ft_printf("exit\n");
+    exit(EXIT_SUCCESS);
 }
-

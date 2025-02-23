@@ -17,18 +17,18 @@ static size_t count_env(char **environ)
 	return (count);
 }
 
-static kvs	*create_env(char **environ)
+static t_kvs	*create_env(char **environ)
 {
-	kvs		*env_list;
+	t_kvs		*env_list;
 	char	**temp;
 	int		i;
 	size_t	count;
 
 	count = count_env(environ);
-	env_list = (kvs *)malloc(sizeof(kvs) * (count + 1));
+	env_list = (t_kvs *)malloc(sizeof(t_kvs) * (count + 1));
 	if (!env_list)
 		return (NULL);
-	ft_memset(env_list, 0, sizeof(kvs));
+	ft_memset(env_list, 0, sizeof(t_kvs));
 	i = 0;
 	while (environ[i])
 	{
@@ -45,7 +45,7 @@ int main(int argc, char **argv)
 	extern char	**environ;
     t_token *tokens;
 	t_token *expanded_tokens;
-	kvs			*env_list;
+	t_kvs			*env_list;
 
 	env_list = create_env(environ);
     if (1 < argc)

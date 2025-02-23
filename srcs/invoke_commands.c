@@ -6,15 +6,17 @@
 /*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:48:21 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/16 20:58:58 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/23 18:23:23 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
 #include <invoke_commands.h>
+#include <minishell.h>
 #include <utils.h>
+#include <builtin.h>
 
-static int	exec_single_cmd(t_node *parsed_tokens, char **path_list, t_context *context)
+static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
+		t_context *context)
 {
 	pid_t	pid;
 
@@ -24,7 +26,7 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list, t_context *c
 	if (pid == 0)
 	{
 		if (access(parsed_tokens->argv[0], F_OK) == 0)
-			execve(parsed_tokens->argv[0], parsed_tokens->argv, NULL);
+			execve(parsed_tokens->argv[0], parsed_tokens->argv, convert_to_envp(context->environ));
 		else
 			execute(parsed_tokens, path_list, context);
 	}
@@ -33,7 +35,8 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list, t_context *c
 	return (EXIT_FAILURE);
 }
 
-static	int	exec_pipe(t_node *parsed_tokens, t_exe_info *info, char **path_list, t_context *context)
+static int	exec_pipe(t_node *parsed_tokens, t_exe_info *info, char **path_list,
+		t_context *context)
 {
 	pipe(parsed_tokens->fds);
 	info->pid[info->exec_count] = fork();
@@ -46,7 +49,7 @@ static	int	exec_pipe(t_node *parsed_tokens, t_exe_info *info, char **path_list, 
 	return (EXIT_SUCCESS);
 }
 
-static	int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
+static int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 		char **path_list, t_context *context)
 {
 	info->pid[info->exec_count] = fork();
@@ -68,23 +71,20 @@ static	int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 	return (EXIT_SUCCESS);
 }
 
-static int	exec_cmd(t_node *parsed_tokens, char **path_list, t_context *context)
+static int	exec_cmd(t_node *parsed_tokens, char **path_list,
+		t_context *context, t_exe_info *info)
 {
-	t_exe_info	*info;
 
 	// TODO unset PATH 時の挙動
 	// TODO 'EOF'のとき変数を展開しないようにする
 	process_heredoc(parsed_tokens);
-	if (is_builtin(parsed_tokens))
-		return (exec_builtin(parsed_tokens, context));
 	// TODO hoge/test.sh ようなケースを実行できるようにする
 	if (parsed_tokens->next == NULL && parsed_tokens->argv != NULL)
+	{
+		if (is_builtin(parsed_tokens))
+			return (exec_builtin(parsed_tokens, context));
 		return (exec_single_cmd(parsed_tokens, path_list, context));
-	info = (t_exe_info *)malloc(sizeof(t_exe_info));
-	if (info == NULL)
-		exit(EXIT_FAILURE);
-	if (initialize_info(info, parsed_tokens))
-		return (EXIT_FAILURE);
+	}
 	while (parsed_tokens->next)
 	{
 		if (parsed_tokens->kind == CMD)
@@ -101,9 +101,12 @@ void	invoke_commands(t_token *tokens, t_context *context)
 {
 	t_node	*parsed_tokens;
 	char	**path_list;
+	t_exe_info	*info;
 
-	path_list = get_path_list(getenv("PATH"));
+	path_list = get_path_list(xgetenv("PATH", context)->value);
 	parsed_tokens = parse(tokens);
-	exec_cmd(parsed_tokens, path_list, context);
-	all_free(NULL, path_list, parsed_tokens);
+	info = (t_exe_info *)ft_xmalloc(sizeof(t_exe_info));
+	initialize_info(info, parsed_tokens);
+	exec_cmd(parsed_tokens, path_list, context, info);
+	free_after_invoke(path_list, parsed_tokens, info);
 }

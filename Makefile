@@ -25,6 +25,10 @@ SRCS = 	main.c \
 		built_echo.c \
 		built_cd.c \
 		built_pwd.c \
+		built_export.c \
+		built_unset.c \
+		built_env.c \
+		built_exit.c \
 
 SRC_DIR = ./srcs
 OBJ_DIR = ./objs
@@ -37,7 +41,7 @@ RESET = "\033[0m"
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	git submodule update --init --recursive
+	git submodule update --init --remote
 	make -C $(LIBFT)
 	$(CC) $(CFLAGS) $^ -o $@ ./libft/libft.a -lreadline
 

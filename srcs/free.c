@@ -10,14 +10,40 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "tokenize.h"
 #include <expand.h>
 #include <invoke_commands.h>
 
-void    all_free(kvs *environ, char **path_list, t_node *parsed_tokens)
+void	free_after_invoke(char **path_list, t_node *parsed_tokens, t_exe_info *info)
+{
+	int	i;
+	t_node *before_tokens;
+
+	i = 0;
+    if (path_list)
+    {
+        while (path_list[i])
+            free(path_list[i++]);
+        free(path_list);
+    }
+	free(info->pid);
+	free(info);
+	while (parsed_tokens)
+	{
+		i = 0;
+		while (parsed_tokens->kind != PIPE && parsed_tokens->argv[i])
+			free(parsed_tokens->argv[i++]);
+		free(parsed_tokens->argv);
+		before_tokens = parsed_tokens;
+		parsed_tokens = parsed_tokens->next;
+		free(before_tokens);
+	}
+}
+
+void    env_free(t_kvs *environ)
 {
     int i;
 
-    (void)parsed_tokens;
     i = 0;
     if (environ)
     {
@@ -30,24 +56,5 @@ void    all_free(kvs *environ, char **path_list, t_node *parsed_tokens)
         free(environ);
     }
     i = 0;
-    if (path_list)
-    {
-        while (path_list[i])
-            free(path_list[i++]);
-        free(path_list);
-    }
-    // while (parsed_tokens)
-    // {
-    //     i = 0;
-    //     if (parsed_tokens->argv)
-    //     {
-    //         while (parsed_tokens->argv[i])
-    //             free(parsed_tokens->argv[i]);
-    //         free(parsed_tokens->argv);
-    //     }
-    //     free(parsed_tokens);
-    //     parsed_tokens = parsed_tokens->next;
-    // }
 }
-
 

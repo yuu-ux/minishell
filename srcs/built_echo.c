@@ -69,13 +69,18 @@ char *create_message(char **argv, bool flg_option)
 bool	built_echo(const t_node *parsed_tokens)
 {
 	bool	flg_option;
+	char *message;
 
 	// はじめのオプションのみ検証する
+	if (parsed_tokens->argv[1] == NULL)
+		return (ft_printf("\n"), EXIT_SUCCESS);
 	flg_option = has_option(parsed_tokens->argv[1]);
+	message = create_message(parsed_tokens->argv, flg_option);
 	if (flg_option)
-		printf("%s", create_message(parsed_tokens->argv, flg_option));
+		ft_printf("%s", message);
 	else
-		printf("%s\n", create_message(parsed_tokens->argv, flg_option));
+		ft_printf("%s\n", message);
+	free(message);
 	return (EXIT_SUCCESS);
 }
 
