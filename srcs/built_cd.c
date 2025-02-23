@@ -10,40 +10,29 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <invoke_commands.h>
-#include <minishell.h>
-#include <expand.h>
-#include <unistd.h>
-
-kvs	*xgetenv(const char *name, t_context *context)
-{
-	int	i;
-
-	i = 0;
-	while (context->environ[i].key)
-	{
-		if (ft_strncmp(context->environ[i].key, name, ft_strlen(name) + 1) == 0)
-			return (&context->environ[i]);
-		i++;
-	}
-	return (NULL);
-}
-
-int	xsetenv(char *name, char *value, t_context *context)
-{
-	kvs	*env;
-
-	env = xgetenv(name, context);
-	if (env == NULL)
-		return (EXIT_FAILURE);
-	env->value = value;
-	return (EXIT_SUCCESS);
-}
+#include <builtin.h>
 
 bool	built_cd(const t_node *parsed_tokens, t_context *context)
 {
+	char *pwd;
+	char *old_pwd;
+
+	old_pwd = getcwd(NULL, 0);
 	chdir(parsed_tokens->argv[1]);
-	xsetenv("PWD", getcwd(NULL, 0), context);
+	pwd = getcwd(NULL, 0);
+	if (xgetenv("PWD", context) == NULL)
+	{
+		xaddenv("PWD", pwd, context);
+		xunsetenv("OLDPWD", context);
+		xaddenv("OLDPWD", NULL, context);
+	}
+	else
+	{
+		xsetenv("oldpwd", old_pwd, context);
+		xsetenv("pwd", pwd, context);
+	}
+	free(old_pwd);
+	free(pwd);
 	return (EXIT_SUCCESS);
 }
 
