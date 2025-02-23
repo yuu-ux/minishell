@@ -22,6 +22,7 @@ SRCS = 	main.c \
 		exec_heredoc.c \
 		redirect.c \
 		redirect_utils.c \
+		built_utils.c \
 		built_echo.c \
 		built_cd.c \
 		built_pwd.c \
