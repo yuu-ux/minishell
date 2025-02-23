@@ -2,13 +2,7 @@
 #include <builtin.h>
 #include <minishell.h>
 
-int    built_exit()
-{
-    ft_printf("exit\n");
-    exit(EXIT_SUCCESS);
-}
-
- int exec_builtin(const t_node *parsed_tokens, t_context *context)
+int exec_builtin(const t_node *parsed_tokens, t_context *context)
 {
 	if (!(ft_strncmp(parsed_tokens->argv[0], "echo", 5)))
 		return (built_echo(parsed_tokens));

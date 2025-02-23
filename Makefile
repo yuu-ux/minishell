@@ -28,6 +28,7 @@ SRCS = 	main.c \
 		built_export.c \
 		built_unset.c \
 		built_env.c \
+		built_exit.c \
 
 SRC_DIR = ./srcs
 OBJ_DIR = ./objs
