@@ -15,7 +15,6 @@ typedef struct {
 typedef struct s_context
 {
 	kvs	*environ;
-	char	**envp;
 	int		exit_status;
 }	t_context;
 

@@ -6,13 +6,14 @@
 /*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:48:21 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/16 20:58:58 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/23 18:23:23 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <invoke_commands.h>
 #include <minishell.h>
 #include <utils.h>
+#include <builtin.h>
 
 static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 		t_context *context)
@@ -25,7 +26,7 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 	if (pid == 0)
 	{
 		if (access(parsed_tokens->argv[0], F_OK) == 0)
-			execve(parsed_tokens->argv[0], parsed_tokens->argv, NULL);
+			execve(parsed_tokens->argv[0], parsed_tokens->argv, convert_to_envp(context->environ));
 		else
 			execute(parsed_tokens, path_list, context);
 	}
@@ -107,7 +108,7 @@ void	invoke_commands(t_token *tokens, t_context *context)
 	t_node	*parsed_tokens;
 	char	**path_list;
 
-	path_list = get_path_list(getenv("PATH"));
+	path_list = get_path_list(xgetenv("PATH", context)->value);
 	parsed_tokens = parse(tokens);
 	exec_cmd(parsed_tokens, path_list, context);
 	all_free(NULL, path_list, parsed_tokens);

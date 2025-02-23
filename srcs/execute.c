@@ -6,7 +6,7 @@
 /*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 01:10:18 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/16 20:54:48 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/23 18:33:01 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,6 @@ int execute(t_node *parsed_tokens, char **path_list, t_context *context)
 	// TODO 子プロセスの fd を閉じる
 	if (is_builtin(parsed_tokens))
 		return (exec_builtin(parsed_tokens, context));
-	execve(find_executable_path(parsed_tokens, path_list), parsed_tokens->argv, NULL);
+	execve(find_executable_path(parsed_tokens, path_list), parsed_tokens->argv, convert_to_envp(context->environ));
 	exit(EXIT_FAILURE);
 }
