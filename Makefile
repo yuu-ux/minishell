@@ -22,12 +22,12 @@ SRCS = 	main.c \
 		exec_heredoc.c \
 		redirect.c \
 		redirect_utils.c \
-		built_utils.c \
 		built_echo.c \
 		built_cd.c \
 		built_pwd.c \
 		built_export.c \
 		built_unset.c \
+		built_env.c \
 
 SRC_DIR = ./srcs
 OBJ_DIR = ./objs
