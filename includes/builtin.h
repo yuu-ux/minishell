@@ -13,8 +13,8 @@ bool	built_env(t_context *context);
 bool	built_exit();
 
 // builtin_utils.c
-kvs	*xgetenv(const char *name, t_context *context);
+t_kvs	*xgetenv(const char *name, t_context *context);
 int	xsetenv(char *name, char *value, t_context *context);
-int	count_environ(kvs *environ);
+int	count_environ(t_kvs *environ);
 void	xaddenv(char *name, char *value, t_context *context);
 #endif

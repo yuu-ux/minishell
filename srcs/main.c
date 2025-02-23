@@ -51,7 +51,7 @@ int	main(int argc, char *argv[], char *envp[])
 		add_history(line);
 		free(line);
 	}
-	all_free(context->environ, NULL, NULL);
+	env_free(context->environ);
 	return (SUCCESS);
 }
 

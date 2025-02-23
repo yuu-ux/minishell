@@ -45,9 +45,9 @@ static bool	update_env(const t_node *parsed_tokens, t_context *context)
 	return (EXIT_SUCCESS);
 }
 
-static	void	kvs_swap(kvs *env1, kvs *env2)
+static	void	kvs_swap(t_kvs *env1, t_kvs *env2)
 {
-	kvs	temp;
+	t_kvs	temp;
 
 	temp = *env1;
 	*env1 = *env2;

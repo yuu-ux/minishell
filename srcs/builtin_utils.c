@@ -27,7 +27,7 @@ bool    is_builtin(const t_node *parsed_tokens)
     return (false);
 }
 
-kvs	*xgetenv(const char *name, t_context *context)
+t_kvs	*xgetenv(const char *name, t_context *context)
 {
 	int	i;
 
@@ -43,7 +43,7 @@ kvs	*xgetenv(const char *name, t_context *context)
 
 int	xsetenv(char *name, char *value, t_context *context)
 {
-	kvs	*env;
+	t_kvs	*env;
 
 	env = xgetenv(name, context);
 	if (env == NULL)
@@ -55,7 +55,7 @@ int	xsetenv(char *name, char *value, t_context *context)
 	return (EXIT_SUCCESS);
 }
 
-int	count_environ(kvs *environ)
+int	count_environ(t_kvs *environ)
 {
 	int	i;
 
@@ -68,13 +68,13 @@ int	count_environ(kvs *environ)
 void	xaddenv(char *name, char *value, t_context *context)
 {
 	int	env_count;
-	kvs	*new_environ;
+	t_kvs	*new_environ;
 	int	i;
 
 	i = 0;
 	env_count = count_environ(context->environ);
 	// 追加と null 終端のサイズ確保のために +2 する
-	new_environ = (kvs *)ft_xmalloc(sizeof(kvs) * (env_count + 2));
+	new_environ = (t_kvs *)ft_xmalloc(sizeof(t_kvs) * (env_count + 2));
 	while (context->environ[i].key)
 	{
 		new_environ[i].key = ft_strdup(context->environ[i].key);

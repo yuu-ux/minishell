@@ -28,7 +28,7 @@ static size_t	delete_single_quote(char **result, char *token)
 	return (i + 1);
 }
 
-static size_t	expand_double_quote(char **result, char *token, kvs *environ)
+static size_t	expand_double_quote(char **result, char *token, t_kvs *environ)
 {
 	size_t	i;
 	int		start;
@@ -50,7 +50,7 @@ static size_t	expand_double_quote(char **result, char *token, kvs *environ)
 	return (i + 1);
 }
 
-static size_t	expand_variable(char **result, char *token, kvs *environ,
+static size_t	expand_variable(char **result, char *token, t_kvs *environ,
 		int start, int i)
 {
 	*result = free_strjoin(*result, ft_substr(token, start, i - start));
@@ -58,7 +58,7 @@ static size_t	expand_variable(char **result, char *token, kvs *environ,
 	return (i + 1);
 }
 
-static char	*expand_token(char *token, kvs *environ)
+static char	*expand_token(char *token, t_kvs *environ)
 {
 	int		i;
 	char	*result;

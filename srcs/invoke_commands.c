@@ -72,9 +72,8 @@ static int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 }
 
 static int	exec_cmd(t_node *parsed_tokens, char **path_list,
-		t_context *context)
+		t_context *context, t_exe_info *info)
 {
-	t_exe_info	*info;
 
 	// TODO unset PATH 時の挙動
 	// TODO 'EOF'のとき変数を展開しないようにする
@@ -86,11 +85,6 @@ static int	exec_cmd(t_node *parsed_tokens, char **path_list,
 			return (exec_builtin(parsed_tokens, context));
 		return (exec_single_cmd(parsed_tokens, path_list, context));
 	}
-	info = (t_exe_info *)malloc(sizeof(t_exe_info));
-	if (info == NULL)
-		exit(EXIT_FAILURE);
-	if (initialize_info(info, parsed_tokens))
-		return (EXIT_FAILURE);
 	while (parsed_tokens->next)
 	{
 		if (parsed_tokens->kind == CMD)
@@ -107,9 +101,12 @@ void	invoke_commands(t_token *tokens, t_context *context)
 {
 	t_node	*parsed_tokens;
 	char	**path_list;
+	t_exe_info	*info;
 
 	path_list = get_path_list(xgetenv("PATH", context)->value);
 	parsed_tokens = parse(tokens);
-	exec_cmd(parsed_tokens, path_list, context);
-	all_free(NULL, path_list, parsed_tokens);
+	info = (t_exe_info *)ft_xmalloc(sizeof(t_exe_info));
+	initialize_info(info, parsed_tokens);
+	exec_cmd(parsed_tokens, path_list, context, info);
+	free_after_invoke(path_list, parsed_tokens, info);
 }

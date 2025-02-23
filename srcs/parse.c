@@ -49,16 +49,13 @@ static char **create_argv(t_token *tokens)
     word_num = count_word_node(tokens);
 	if (word_num == 0)
 		return NULL;
-    result = (char **)malloc((word_num+1) * sizeof(char *));
-	if (result == NULL)
-		return (NULL);
+    result = (char **)ft_xmalloc((word_num+1) * sizeof(char *));
     i = 0;
     while (i < (int)word_num)
     {
         result[i++] = ft_strdup(tokens->data);
         tokens = tokens->next;
     }
-	result[i] = NULL;
     return (result);
 }
 

@@ -3,7 +3,7 @@
 #include <libft.h>
 #include <tokenize.h>
 
-char	*search_env(const char *key, kvs *environ)
+char	*search_env(const char *key, t_kvs *environ)
 {
 	int	i;
 
@@ -32,7 +32,7 @@ size_t	count_key_len(char *token, int t_index)
 	return (i);
 }
 
-size_t	insert_env(char **buffer, char *token, kvs *environ)
+size_t	insert_env(char **buffer, char *token, t_kvs *environ)
 {
 	size_t	key_len;
 	char	*value;

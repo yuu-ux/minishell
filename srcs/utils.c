@@ -36,7 +36,7 @@ void	close_redirect_fd(int *fd)
 	*fd = -1;
 }
 
-char	**convert_to_envp(kvs *environ)
+char	**convert_to_envp(t_kvs *environ)
 {
 	int	i;
 	char **envp;
@@ -45,7 +45,7 @@ char	**convert_to_envp(kvs *environ)
 
 	i = 0;
 	environ_num = count_environ(environ);
-	envp = (char **)ft_xmalloc(sizeof(char *) * environ_num + 1);
+	envp = (char **)ft_xmalloc(sizeof(char *) * (environ_num + 1));
 	while (environ[i].key)
 	{
 		temp = ft_strjoin(environ[i].key, "=");
