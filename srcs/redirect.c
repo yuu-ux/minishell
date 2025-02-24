@@ -97,7 +97,7 @@ char	**remove_redirect(t_node *parsed_tokens)
 
 	i = 0;
 	j = 0;
-	new_argv = (char **)malloc(sizeof(char *) * count_argv_cmd(parsed_tokens->argv) + 1);
+	new_argv = (char **)ft_xmalloc(sizeof(char *) * (count_argv_cmd(parsed_tokens->argv) + 1));
 	while (parsed_tokens->argv[i])
 	{
 		if (is_redirect(parsed_tokens->argv[i]) || is_heredoc(parsed_tokens->argv[i]))

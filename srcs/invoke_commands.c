@@ -31,7 +31,10 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 			execute(parsed_tokens, path_list, context);
 	}
 	else
+	{
 		waitpid(pid, NULL, 0);
+		wrap_close(parsed_tokens->fds[IN]);
+	}
 	return (EXIT_FAILURE);
 }
 
