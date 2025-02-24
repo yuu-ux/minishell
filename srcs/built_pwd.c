@@ -6,7 +6,7 @@
 /*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 23:58:41 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/17 00:10:04 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/24 20:01:26 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool	built_pwd(void)
 	if (current_dir == NULL)
 	{
 		perror("pwd");
-		exit(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	}
 	ft_printf("%s\n", current_dir);
 	free(current_dir);
