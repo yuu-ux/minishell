@@ -9,7 +9,7 @@ int exec_builtin(const t_node *parsed_tokens, t_context *context)
 	else if (!(ft_strncmp(parsed_tokens->argv[0], "cd", 3)))
 		return (built_cd(parsed_tokens, context));
 	else if (!(ft_strncmp(parsed_tokens->argv[0], "pwd", 4)))
-		return (built_pwd());
+		return (built_pwd(context));
 	else if (!(ft_strncmp(parsed_tokens->argv[0], "export", 7)))
 		return (built_export(parsed_tokens, context));
 	else if (!(ft_strncmp(parsed_tokens->argv[0], "unset", 6)))
