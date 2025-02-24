@@ -50,7 +50,7 @@ static size_t	expand_double_quote(char **result, char *token, t_kvs *environ)
 	return (i + 1);
 }
 
-static size_t	expand_variable(char **result, char *token, t_kvs *environ,
+size_t	expand_variable(char **result, char *token, t_kvs *environ,
 		int start, int i)
 {
 	*result = free_strjoin(*result, ft_substr(token, start, i - start));
