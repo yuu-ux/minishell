@@ -40,21 +40,21 @@ void	free_after_invoke(char **path_list, t_node *parsed_tokens, t_exe_info *info
 	}
 }
 
-void    env_free(t_kvs *environ)
+void    free_context(t_context *context)
 {
     int i;
 
     i = 0;
-    if (environ)
+    if (context->environ)
     {
-        while (environ[i].key)
+        while (context->environ[i].key)
         {
-            free(environ[i].key);
-            free(environ[i].value);
+            free(context->environ[i].key);
+            free(context->environ[i].value);
             i++;
         }
-        free(environ);
+        free(context->environ);
     }
-    i = 0;
+	free(context);
 }
 
