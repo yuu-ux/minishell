@@ -66,6 +66,7 @@ t_context	*init_context(char *envp[])
 	context = (t_context *)ft_xmalloc(sizeof(t_context));
 	context->environ = create_env(envp);
 	context->exit_status = EXIT_SUCCESS;
+	context->flg_heredoc_expand = true;
 	return (context);
 }
 
