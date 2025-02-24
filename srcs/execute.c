@@ -21,6 +21,8 @@ char *find_executable_path(const t_node *parsed_tokens, char **path_list)
 	char	*slash_cmd;
 	char	*path;
 
+	if (path_list == NULL)
+		return (NULL);
 	i = 0;
 	path = NULL;
 	slash_cmd = ft_strjoin("/", parsed_tokens->argv[0]);
@@ -81,12 +83,17 @@ void	set_redirect_fd(t_node *parsed_tokens)
 
 int execute(t_node *parsed_tokens, char **path_list, t_context *context)
 {
+	char *path;
+
 	do_redirections(parsed_tokens);
 	set_redirect_fd(parsed_tokens);
 	// TODO ビルトイン 作成
 	// TODO 子プロセスの fd を閉じる
 	if (is_builtin(parsed_tokens))
 		return (exec_builtin(parsed_tokens, context));
-	execve(find_executable_path(parsed_tokens, path_list), parsed_tokens->argv, convert_to_envp(context->environ));
+	path = find_executable_path(parsed_tokens, path_list);
+	if (path == NULL)
+		exit(EXIT_FAILURE);
+	execve(path, parsed_tokens->argv, convert_to_envp(context->environ));
 	exit(EXIT_FAILURE);
 }

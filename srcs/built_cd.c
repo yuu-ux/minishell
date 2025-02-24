@@ -28,8 +28,8 @@ bool	built_cd(const t_node *parsed_tokens, t_context *context)
 	}
 	else
 	{
-		xsetenv("oldpwd", old_pwd, context);
-		xsetenv("pwd", pwd, context);
+		xsetenv("OLDPWD", old_pwd, context);
+		xsetenv("PWD", pwd, context);
 	}
 	free(old_pwd);
 	free(pwd);
