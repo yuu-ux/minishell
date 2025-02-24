@@ -28,7 +28,7 @@ static size_t	delete_single_quote(char **result, char *token)
 	return (i + 1);
 }
 
-static size_t	expand_double_quote(char **result, char *token, t_kvs *environ)
+static size_t	expand_double_quote(char **result, char *token, bool flg_heredoc, t_context *context)
 {
 	size_t	i;
 	int		start;
@@ -37,10 +37,10 @@ static size_t	expand_double_quote(char **result, char *token, t_kvs *environ)
 	start = 1;
 	while (token[i] != DOUBLE_QUOTE)
 	{
-		if (token[i] == '$')
+		if (token[i] == '$' && !flg_heredoc)
 		{
 			*result = free_strjoin(*result, ft_substr(token, start, i - start));
-			i += insert_env(result, &token[i], environ);
+			i += insert_env(result, &token[i], context->environ);
 			// 「"」と「$」のため、i+1
 			start = i + 1;
 		}
@@ -50,15 +50,15 @@ static size_t	expand_double_quote(char **result, char *token, t_kvs *environ)
 	return (i + 1);
 }
 
-size_t	expand_variable(char **result, char *token, t_kvs *environ,
+size_t	expand_variable(char **result, char *token, t_context *context,
 		int start, int i)
 {
 	*result = free_strjoin(*result, ft_substr(token, start, i - start));
-	i += insert_env(result, &token[i], environ);
+	i += insert_env(result, &token[i], context->environ);
 	return (i + 1);
 }
 
-static char	*expand_token(char *token, t_kvs *environ)
+static char	*expand_token(char *token, bool flg_heredoc, t_context *context)
 {
 	int		i;
 	char	*result;
@@ -72,9 +72,9 @@ static char	*expand_token(char *token, t_kvs *environ)
 		if (token[i] == SINGLE_QUOTE)
 			i += delete_single_quote(&result, &token[i]);
 		else if (token[i] == DOUBLE_QUOTE)
-			i += expand_double_quote(&result, &token[i], environ);
-		else if (token[i] == '$')
-			i += expand_variable(&result, token, environ, start, i);
+			i += expand_double_quote(&result, &token[i], flg_heredoc, context);
+		else if (token[i] == '$' && !flg_heredoc)
+			i += expand_variable(&result, token, context, start, i);
 		else
 		{
 			i++;
@@ -89,18 +89,31 @@ static char	*expand_token(char *token, t_kvs *environ)
 	return (result);
 }
 
+void	set_heredoc_expand_flg(t_token *token, t_context *context)
+{
+	if (ft_strchr(token->data, SINGLE_QUOTE) != NULL || ft_strchr(token->data, DOUBLE_QUOTE) != NULL)
+		context->flg_heredoc_expand = false;
+}
+
 t_token	*expand_tokens(t_token **_tokens, t_context *context)
 {
 	t_token	*head;
 	t_token	*tokens;
     char    *temp;
+	bool	flg_heredoc;
 
+	flg_heredoc = false;
 	head = *_tokens;
 	tokens = *_tokens;
 	while (tokens)
 	{
         temp = tokens->data;
-		tokens->data = expand_token(tokens->data, context->environ);
+		if (is_heredoc(tokens->data))
+		{
+			flg_heredoc = true;
+			set_heredoc_expand_flg(tokens->next, context);
+		}
+		tokens->data = expand_token(tokens->data, flg_heredoc, context);
         free(temp);
 		tokens = tokens->next;
 	}
