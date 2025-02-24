@@ -5,5 +5,7 @@ compile_commands.json
 minishell.dSYM/
 memo
 objs
+playground/*.sh
+libft
 debug.sh
 test.sh

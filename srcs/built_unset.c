@@ -12,7 +12,7 @@
 
 #include <builtin.h>
 
-static	void	xunsetenv(const char *name, t_context *context)
+void	xunsetenv(const char *name, t_context *context)
 {
 	int	i;
 

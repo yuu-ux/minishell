@@ -16,6 +16,8 @@ char	**get_path_list(char *env_path)
 {
     char	**path_list;
 
+	if (env_path == NULL)
+		return (NULL);
     path_list = ft_split(env_path, ':');
     return (path_list);
 }

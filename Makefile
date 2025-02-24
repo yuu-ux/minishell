@@ -29,6 +29,7 @@ SRCS = 	main.c \
 		built_unset.c \
 		built_env.c \
 		built_exit.c \
+		error_utils.c \
 
 SRC_DIR = ./srcs
 OBJ_DIR = ./objs

@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_pwd.c                                        :+:      :+:    :+:   */
+/*   error_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/16 23:58:41 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/24 20:01:26 by yehara           ###   ########.fr       */
+/*   Created: 2025/02/24 18:47:39 by yehara            #+#    #+#             */
+/*   Updated: 2025/02/24 18:52:35 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include <builtin.h>
 #include <invoke_commands.h>
 
-bool	built_pwd(void)
+void	join_perror(const char *s1, const char *s2)
 {
-	char *current_dir;
+	char *message;
 
-	current_dir = getcwd(NULL, 0);
-	if (current_dir == NULL)
-	{
-		perror("pwd");
-		return (EXIT_FAILURE);
-	}
-	ft_printf("%s\n", current_dir);
-	free(current_dir);
-	return (EXIT_SUCCESS);
+	message = ft_strjoin(s1, s2);
+	perror(message);
+	free(message);
 }
-

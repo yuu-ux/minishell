@@ -17,4 +17,5 @@ t_kvs	*xgetenv(const char *name, t_context *context);
 int	xsetenv(char *name, char *value, t_context *context);
 int	count_environ(t_kvs *environ);
 void	xaddenv(char *name, char *value, t_context *context);
+void	xunsetenv(const char *name, t_context *context);
 #endif

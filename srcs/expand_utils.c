@@ -6,16 +6,21 @@
 char	*search_env(const char *key, t_kvs *environ)
 {
 	int	i;
+	char *result;
 
 	i = 0;
+	result = NULL;
 	while (environ[i].key)
 	{
 		// null 文字まで比較させるための+1
 		if (!ft_strncmp(environ[i].key, key, ft_strlen(environ[i].key) + 1))
-            return (ft_strdup(environ[i].value));
+			result = ft_strdup(environ[i].value);
 		i++;
 	}
-	return (ft_strdup(""));
+	// key のみ存在する場合、value が NULL になる
+	if (result == NULL)
+		return (ft_strdup(""));
+	return (result);
 }
 
 size_t	count_key_len(char *token, int t_index)
