@@ -89,7 +89,7 @@ static char	*expand_token(char *token, bool flg_heredoc, t_context *context)
 	return (result);
 }
 
-void	set_heredoc_expand_flg(t_token *token, t_context *context)
+static void	set_flg_heredoc_expand(t_token *token, t_context *context)
 {
 	if (ft_strchr(token->data, SINGLE_QUOTE) != NULL || ft_strchr(token->data, DOUBLE_QUOTE) != NULL)
 		context->flg_heredoc_expand = false;
@@ -111,7 +111,7 @@ t_token	*expand_tokens(t_token **_tokens, t_context *context)
 		if (is_heredoc(tokens->data))
 		{
 			flg_heredoc = true;
-			set_heredoc_expand_flg(tokens->next, context);
+			set_flg_heredoc_expand(tokens->next, context);
 		}
 		tokens->data = expand_token(tokens->data, flg_heredoc, context);
         free(temp);
