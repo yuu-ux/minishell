@@ -8,3 +8,4 @@ objs
 playground/*.sh
 libft
 debug.sh
+test.sh

@@ -64,7 +64,7 @@ bool is_builtin(const t_node *parsed_tokens);
 
 // exec_heredoc.c
 bool    is_heredoc(char *argv);
-bool    process_heredoc(t_node *parsed_tokens);
+bool    process_heredoc(t_node *parsed_tokens, t_context *context);
 
 
 #endif

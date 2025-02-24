@@ -31,7 +31,10 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 			execute(parsed_tokens, path_list, context);
 	}
 	else
+	{
 		waitpid(pid, NULL, 0);
+		wrap_close(parsed_tokens->fds[IN]);
+	}
 	return (EXIT_FAILURE);
 }
 
@@ -77,7 +80,7 @@ static int	exec_cmd(t_node *parsed_tokens, char **path_list,
 
 	// TODO unset PATH 時の挙動
 	// TODO 'EOF'のとき変数を展開しないようにする
-	process_heredoc(parsed_tokens);
+	process_heredoc(parsed_tokens, context);
 	// TODO hoge/test.sh ようなケースを実行できるようにする
 	if (parsed_tokens->next == NULL && parsed_tokens->argv != NULL)
 	{
