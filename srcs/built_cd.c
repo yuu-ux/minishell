@@ -33,7 +33,6 @@ void	setup_pwd(char **old_pwd, char **pwd, t_context *context)
 	free(*pwd);
 }
 
-
 int	count_argv(const t_node *parsed_tokens)
 {
 	int	count;
@@ -42,6 +41,23 @@ int	count_argv(const t_node *parsed_tokens)
 	while (parsed_tokens->argv[count])
 		count++;
 	return (count);
+}
+
+bool	cd_parent(char *current_pwd)
+{
+	size_t	len;
+
+	if (current_pwd == NULL)
+		return (EXIT_FAILURE);
+	len = ft_strlen(current_pwd);
+	while (current_pwd[len - 1])
+	{
+		if (current_pwd[len] == '/')
+			current_pwd[len] = '\0';
+		len--;
+	}
+	chdir(current_pwd);
+	return (EXIT_SUCCESS);
 }
 
 bool	built_cd(const t_node *parsed_tokens, t_context *context)
@@ -62,8 +78,10 @@ bool	built_cd(const t_node *parsed_tokens, t_context *context)
 		if (home_path != NULL)
 			chdir(home_path->value);
 	}
-	else if (access(parsed_tokens->argv[1], F_OK) == 0 && access(parsed_tokens->argv[1], X_OK) == 0)
+	else if (access(parsed_tokens->argv[1], X_OK) == 0)
 		chdir(parsed_tokens->argv[1]);
+	else if (ft_strncmp(parsed_tokens->argv[1], "..", 3) == 0)
+		return (cd_parent(current_pwd));
 	else
 	{
 		free(current_pwd);
@@ -74,4 +92,3 @@ bool	built_cd(const t_node *parsed_tokens, t_context *context)
 	setup_pwd(&current_pwd, &next_pwd, context);
 	return (EXIT_SUCCESS);
 }
-
