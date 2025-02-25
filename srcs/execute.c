@@ -35,8 +35,10 @@ char	*find_executable_path(const t_node *parsed_tokens, char **path_list)
 			free(slash_cmd);
 			return (path);
 		}
+		free(path);
 		i++;
 	}
+	free(slash_cmd);
 	return (NULL);
 }
 
@@ -96,8 +98,10 @@ int	execute(t_node *parsed_tokens, char **path_list, t_context *context)
 	if (path == NULL)
 	{
 		ft_printf("bash: %s: command not found\n", parsed_tokens->argv[0]);
+		free(path);
 		exit(EXIT_FAILURE);
 	}
 	execve(path, parsed_tokens->argv, convert_to_envp(context->environ));
 	exit(EXIT_FAILURE);
 }
+
