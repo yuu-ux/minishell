@@ -23,7 +23,7 @@
 #include <tokenize.h>
 #include <utils.h>
 
-int	main(int argc, char *argv[], char *envp[])
+int	main(int argc, char *argv[], char *envp[]) // __attribute__((unused))
 {
 	char		*line;
 	t_context	*context;
