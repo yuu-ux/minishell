@@ -6,7 +6,7 @@
 /*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 01:10:18 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/23 18:33:01 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/26 01:20:13 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,17 @@
 #include <redirect.h>
 #include <utils.h>
 
-char	*find_executable_path(const t_node *parsed_tokens, char **path_list)
+static	char	*find_executable_path(const t_node *parsed_tokens, char **path_list, char **error_message)
 {
 	int		i;
 	char	*slash_cmd;
 	char	*path;
 
 	if (path_list == NULL)
+	{
+		*error_message = ft_strdup("No such file or directory");
 		return (NULL);
+	}
 	i = 0;
 	path = NULL;
 	slash_cmd = ft_strjoin("/", parsed_tokens->argv[0]);
@@ -39,6 +42,7 @@ char	*find_executable_path(const t_node *parsed_tokens, char **path_list)
 		i++;
 	}
 	free(slash_cmd);
+	*error_message = ft_strdup("command not found");
 	return (NULL);
 }
 
@@ -90,6 +94,7 @@ void	set_redirect_fd(t_node *parsed_tokens)
 int	execute(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_info *info)
 {
 	char	*path;
+	char *error_message;
 
 	init_saved_fd(info);
 	do_redirections(parsed_tokens);
@@ -101,10 +106,11 @@ int	execute(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_i
 		// ビルトインの終了ステータスを返したい
 		return (EXIT_SUCCESS);
 	}
-	path = find_executable_path(parsed_tokens, path_list);
+	path = find_executable_path(parsed_tokens, path_list, &error_message);
 	if (path == NULL)
 	{
-		ft_printf("bash: %s: command not found\n", parsed_tokens->argv[0]);
+		ft_printf("bash: %s: %s\n", parsed_tokens->argv[0], error_message);
+		free(error_message);
 		free(path);
 		reset_fd(info);
 		exit(EXIT_FAILURE);

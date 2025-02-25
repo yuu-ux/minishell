@@ -54,7 +54,6 @@ void wrap_dup2(int old_fd, int new_fd);
 int execute(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_info *info);
 
 // execute.c
-char *find_executable_path(const t_node *parsed_tokens, char **path_list);
 int child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list, t_context *context);
 int parent_process(t_node *parsed_tokens, t_exe_info *info);
 
