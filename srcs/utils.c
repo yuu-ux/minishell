@@ -6,7 +6,7 @@
 /*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 18:04:14 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/23 18:32:12 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/26 02:09:26 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@
 #include <minishell.h>
 #include <builtin.h>
 
-int ft_isspace(int c)
-{
-    return ('\t' == c || '\n' == c || '\v' == c
-            || '\f' == c || '\r' == c || ' ' == c);
-}
 int is_operators(int c)
 {
     return ('|' == c || c == '<' || c == '>');
