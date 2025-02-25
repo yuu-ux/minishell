@@ -36,6 +36,20 @@ void	close_redirect_fd(int *fd)
 	*fd = -1;
 }
 
+void	reset_fd(t_exe_info *info)
+{
+	dup2(info->saved_stdin, STDIN_FILENO);
+	close_redirect_fd(&info->saved_stdin);
+	dup2(info->saved_stdout, STDOUT_FILENO);
+	close_redirect_fd(&info->saved_stdout);
+}
+
+void	init_saved_fd(t_exe_info *info)
+{
+	info->saved_stdin = dup(STDIN_FILENO);
+	info->saved_stdout = dup(STDOUT_FILENO);
+}
+
 char	**convert_to_envp(t_kvs *environ)
 {
 	int	i;

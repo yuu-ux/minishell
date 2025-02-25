@@ -102,14 +102,17 @@ char	**remove_redirect(t_node *parsed_tokens)
 	{
 		if (is_redirect(parsed_tokens->argv[i]) || is_heredoc(parsed_tokens->argv[i]))
 		{
+			free(parsed_tokens->argv[i]);
+			free(parsed_tokens->argv[i+1]);
 			i += 2; // リダイレクトとファイル名までとばしたいため +2
 			continue ;
 		}
-		new_argv[j] = parsed_tokens->argv[i];
+		new_argv[j] = ft_strdup(parsed_tokens->argv[i]);
+		free(parsed_tokens->argv[i]);
 		j++;
 		i++;
 	}
-	new_argv[j] = NULL;
+	free(parsed_tokens->argv);
 	return (new_argv);
 }
 

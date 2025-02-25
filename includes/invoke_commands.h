@@ -17,6 +17,8 @@ typedef struct s_exe_info {
     int pipe_num;
     int exec_count;
     int				before_cmd_fd;
+	int	saved_stdin;
+	int	saved_stdout;
 } t_exe_info;
 
 typedef enum e_node_type {
@@ -49,7 +51,7 @@ size_t	count_pipe(t_node *parsed);
 int    initialize_info(t_exe_info *info, t_node *parsed_tokens);
 void wrap_close(int fd);
 void wrap_dup2(int old_fd, int new_fd);
-int execute(t_node *parsed_tokens, char **path_list, t_context *context);
+int execute(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_info *info);
 
 // execute.c
 char *find_executable_path(const t_node *parsed_tokens, char **path_list);
@@ -57,7 +59,7 @@ int child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list, t_c
 int parent_process(t_node *parsed_tokens, t_exe_info *info);
 
 // builtin.c
-int exec_builtin(const t_node *parsed_tokens, t_context *context);
+int exec_builtin(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_info *info);
 
 // builtin_utils.c
 bool is_builtin(const t_node *parsed_tokens);
