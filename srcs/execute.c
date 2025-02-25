@@ -60,7 +60,7 @@ int	child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list,
 		wrap_dup2(info->before_cmd_fd, STDIN_FILENO);
 		wrap_close(info->before_cmd_fd);
 	}
-	execute(parsed_tokens, path_list, context);
+	execute(parsed_tokens, path_list, context, info);
 	exit(EXIT_FAILURE);
 }
 
@@ -82,26 +82,35 @@ void	set_redirect_fd(t_node *parsed_tokens)
 	if (parsed_tokens->fds[OUT] != INVALID_FD)
 	{
 		wrap_dup2(parsed_tokens->fds[OUT], STDOUT_FILENO);
+		close_redirect_fd(&parsed_tokens->fds[OUT]);
 	}
 }
 
-int	execute(t_node *parsed_tokens, char **path_list, t_context *context)
+
+int	execute(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_info *info)
 {
 	char	*path;
 
+	init_saved_fd(info);
 	do_redirections(parsed_tokens);
 	set_redirect_fd(parsed_tokens);
-	// TODO ビルトイン 作成
-	// TODO 子プロセスの fd を閉じる
 	if (is_builtin(parsed_tokens))
-		return (exec_builtin(parsed_tokens, context));
+	{
+		exec_builtin(parsed_tokens, path_list, context, info);
+		reset_fd(info);
+		// ビルトインの終了ステータスを返したい
+		return (EXIT_SUCCESS);
+	}
 	path = find_executable_path(parsed_tokens, path_list);
 	if (path == NULL)
 	{
 		ft_printf("bash: %s: command not found\n", parsed_tokens->argv[0]);
 		free(path);
+		reset_fd(info);
 		exit(EXIT_FAILURE);
 	}
+	close_redirect_fd(&info->saved_stdin);
+	close_redirect_fd(&info->saved_stdout);
 	execve(path, parsed_tokens->argv, convert_to_envp(context->environ));
 	exit(EXIT_FAILURE);
 }

@@ -11,9 +11,13 @@
 /* ************************************************************************** */
 
 #include <builtin.h>
+#include <utils.h>
 
-bool	built_exit()
+bool	built_exit(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_info *info)
 {
     ft_printf("exit\n");
+	reset_fd(info);
+	free_after_invoke(path_list, parsed_tokens, info);
+	free_context(context);
     exit(EXIT_SUCCESS);
 }
