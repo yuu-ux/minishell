@@ -10,12 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <error.h>
 #include <invoke_commands.h>
+#include <minishell.h>
 #include <redirect.h>
 #include <utils.h>
-#include <minishell.h>
 
-char *find_executable_path(const t_node *parsed_tokens, char **path_list)
+char	*find_executable_path(const t_node *parsed_tokens, char **path_list)
 {
 	int		i;
 	char	*slash_cmd;
@@ -39,7 +40,8 @@ char *find_executable_path(const t_node *parsed_tokens, char **path_list)
 	return (NULL);
 }
 
-int child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list, t_context *context)
+int	child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list,
+		t_context *context)
 {
 	// 最後以外のコマンドの場合
 	// STDOUT → current_pipefd[1]
@@ -60,13 +62,12 @@ int child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list, t_c
 	exit(EXIT_FAILURE);
 }
 
-int parent_process(t_node *parsed_tokens, t_exe_info *info)
+int	parent_process(t_node *parsed_tokens, t_exe_info *info)
 {
 	close_redirect_fd(&parsed_tokens->fds[OUT]);
 	info->before_cmd_fd = parsed_tokens->fds[IN];
 	return (EXIT_SUCCESS);
 }
-
 
 void	set_redirect_fd(t_node *parsed_tokens)
 {
@@ -81,9 +82,9 @@ void	set_redirect_fd(t_node *parsed_tokens)
 	}
 }
 
-int execute(t_node *parsed_tokens, char **path_list, t_context *context)
+int	execute(t_node *parsed_tokens, char **path_list, t_context *context)
 {
-	char *path;
+	char	*path;
 
 	do_redirections(parsed_tokens);
 	set_redirect_fd(parsed_tokens);
@@ -93,7 +94,10 @@ int execute(t_node *parsed_tokens, char **path_list, t_context *context)
 		return (exec_builtin(parsed_tokens, context));
 	path = find_executable_path(parsed_tokens, path_list);
 	if (path == NULL)
+	{
+		ft_printf("bash: %s: command not found\n", parsed_tokens->argv[0]);
 		exit(EXIT_FAILURE);
+	}
 	execve(path, parsed_tokens->argv, convert_to_envp(context->environ));
 	exit(EXIT_FAILURE);
 }
