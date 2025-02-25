@@ -15,7 +15,7 @@ typedef struct s_kvs {
 typedef struct s_context
 {
 	t_kvs	*environ;
-	int		exit_status;
+	unsigned char	exit_status;
 	bool	flg_heredoc_expand;
 }	t_context;
 
