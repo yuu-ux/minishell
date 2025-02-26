@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:49:17 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/02/26 17:50:06 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/02/26 18:03:48 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ typedef struct s_node		t_node;
 // redirect_utils.c
 bool			is_pipe(char *str);
 bool			is_redirect(char *str);
-t_token_type	get_token_type(char *token);
+t_token_type	get_token_type(const char *token);
 
 // redirect.c
 bool    do_redirections(t_node *parsed_tokens);

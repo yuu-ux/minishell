@@ -6,12 +6,11 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 17:40:48 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 18:10:38 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/02/26 18:22:12 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <builtin.h>
-#include <utils.h>
+#include "minishell.h"
 
 bool	is_numeric(char *argv)
 {

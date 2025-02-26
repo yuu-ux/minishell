@@ -6,14 +6,11 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 18:04:14 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 18:09:36 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/02/26 18:13:37 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <tokenize.h>
-#include <invoke_commands.h>
-#include <minishell.h>
-#include <builtin.h>
+#include "minishell.h"
 
 int is_operators(int c)
 {

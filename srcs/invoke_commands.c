@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   invoke_commands.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:48:21 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/23 18:23:23 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/26 18:20:40 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <invoke_commands.h>
-#include <minishell.h>
-#include <utils.h>
-#include <builtin.h>
-#include <redirect.h>
+#include "minishell.h"
 
 static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 		t_context *context, t_exe_info *info)

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   invoke_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 17:58:54 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/23 17:58:59 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/26 18:20:33 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <invoke_commands.h>
+#include "minishell.h"
 
 char	**get_path_list(char *env_path)
 {

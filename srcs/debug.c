@@ -6,12 +6,11 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:28:27 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/02/26 17:28:28 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/02/26 18:21:02 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <invoke_commands.h>
-#include <tokenize.h>
+#include "minishell.h"
 
 const char	*get_token_type_string(t_token_type type)
 {
