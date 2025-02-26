@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 01:11:09 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 01:11:11 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/26 18:20:21 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <invoke_commands.h>
-#include <redirect.h>
-#include <utils.h>
+#include "minishell.h"
 
 bool	redirect_in(t_node *parsed_tokens, int i)
 {

@@ -5,7 +5,6 @@
 #define SINGLE_QUOTE '\''
 #define SYNTAX_ERROR 1
 
-#include <libft.h>
 typedef enum e_token_type {
     TOKEN_WORD,
     TOKEN_EOF,
@@ -37,6 +36,4 @@ size_t	skip_while(int (*is_skip)(int), const char **line);
 size_t	skip_non_delimiter(const char **line);
 t_token	*new_token(const char *line, t_token_type type);
 
-// debug
-const char *get_token_type_string(t_token_type type);
 #endif

@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expand_tokens.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 20:05:08 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/16 20:41:22 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/26 18:19:01 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <debug.h>
-#include <expand.h>
-#include <libft.h>
-#include <tokenize.h>
+#include "minishell.h"
 
 static size_t	delete_single_quote(char **result, char *token)
 {

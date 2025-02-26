@@ -1,8 +1,11 @@
 #ifndef UTILS_H
 # define UTILS_H
 
-#include <expand.h>
-#include <invoke_commands.h>
+typedef struct s_context	t_context;
+typedef struct s_kvs		t_kvs;
+typedef struct s_node		t_node;
+typedef struct s_exe_info	t_exe_info;
+
 void    free_context(t_context *context);
 void	close_redirect_fd(int *fd);
 char	**convert_to_envp(t_kvs *environ);

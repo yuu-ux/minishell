@@ -3,35 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 20:04:57 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/23 18:22:39 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/26 19:06:19 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <expand.h>
-#include <invoke_commands.h>
-#include <libft.h>
-#include <minishell.h>
-#include <readline/history.h>
-#include <readline/readline.h>
-#include <signal_setting.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <tokenize.h>
-#include <utils.h>
+#include "minishell.h"
 
-int	main(int argc, char *argv[], char *envp[])
+int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)), char *envp[])
 {
 	char		*line;
 	t_context	*context;
 	t_token		*tokens;
 
 	line = NULL;
-	(void)argc;
-	(void)argv;
 	context = init_context(envp);
 	signal_setting();
 	while (true)
@@ -39,7 +26,7 @@ int	main(int argc, char *argv[], char *envp[])
 		line = readline("minishell$ ");
 		if (line == NULL)
 		{
-			ft_printf("exit\n");
+			ft_putstr_fd("exit\n", STDOUT_FILENO);
 			break ;
 		}
 		else if (*line == '\0')

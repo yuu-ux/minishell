@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   built_export.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 18:20:02 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/23 15:43:33 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/26 17:27:15 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <builtin.h>
+#include "minishell.h"
 
 static	char	*analysis_token(char *argv, char *value)
 {

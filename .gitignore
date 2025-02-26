@@ -8,3 +8,4 @@ playground/*.sh
 libft
 debug.sh
 test.sh
+.vscode
