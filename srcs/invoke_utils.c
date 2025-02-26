@@ -60,5 +60,7 @@ int    initialize_info(t_exe_info *info, t_node *parsed_tokens)
     info->exec_count = 0;
     info->before_cmd_fd = INVALID_FD;
     info->pid = (pid_t *)ft_xmalloc((info->pipe_num + 1) * sizeof(pid_t));
+	info->saved_stdin = INVALID_FD;
+	info->saved_stdout = INVALID_FD;
     return (EXIT_SUCCESS);
 }

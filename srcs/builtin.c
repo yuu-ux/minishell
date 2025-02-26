@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int exec_builtin(const t_node *parsed_tokens, t_context *context)
+int exec_builtin(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_info *info)
 {
 	if (!(ft_strncmp(parsed_tokens->argv[0], "echo", 5)))
 		return (built_echo(parsed_tokens));
@@ -27,6 +27,6 @@ int exec_builtin(const t_node *parsed_tokens, t_context *context)
 	else if (!(ft_strncmp(parsed_tokens->argv[0], "env", 4)))
 		return (built_env(context));
 	else if (!(ft_strncmp(parsed_tokens->argv[0], "exit", 5)))
-		return (built_exit());
+		return (built_exit(parsed_tokens, path_list, context, info));
 	return (EXIT_FAILURE);
 }

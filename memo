@@ -1,10 +1,31 @@
 ### TODO
-- 実行時できなかったらエラー処理
 - 終了ステータス
+	- ? を展開する
 - エラー文の表示
-- cat | cat | ls のデバッグ
 - シグナル周りの確認
-<hoge echo helloのパターンの不具合
-実行終了時にfdを戻す必要がある
-0, 1 のfdを戻すために、保持していおく(ストア)
-パイプのときにひとつ fd を閉じ忘れている
+- exit のエラーメッセージ
+- ~をHOMEに展開する
+# 余裕があれば
+- `-`をOLDPWDに展開する
+
+# exit のエラーメッセージについて
+終了ステータスは 255 が最大で負の数になることはない。
+unsigned char 型でもつ
+- 引数が複数ある
+終了ステータスは1でexitしない
+Bash yehara $ exit 0 1 2
+exit
+bash: exit: too many arguments
+Bash yehara $ exit a
+
+- 数字以外
+終了ステータスは2でexitする
+exit
+bash: exit: a: numeric argument required
+
+- LONG_MAX 以上の数字
+LONG_MAX まではエラーメッセージを表示しない
+終了ステータスは2でexitする
+Bash yehara $ exit 9223372036854775808
+exit
+bash: exit: 9223372036854775808: numeric argument required

@@ -14,12 +14,16 @@
 #include <minishell.h>
 #include <utils.h>
 #include <builtin.h>
+#include <redirect.h>
 
 static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
-		t_context *context)
+		t_context *context, t_exe_info *info)
 {
 	pid_t	pid;
 
+	do_redirections(parsed_tokens);
+	if (is_builtin(parsed_tokens))
+		return (execute(parsed_tokens, path_list, context, info));
 	pid = fork();
 	if (pid == -1)
 		perror("error\n");
@@ -28,7 +32,7 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 		if (access(parsed_tokens->argv[0], F_OK) == 0)
 			execve(parsed_tokens->argv[0], parsed_tokens->argv, convert_to_envp(context->environ));
 		else
-			execute(parsed_tokens, path_list, context);
+			execute(parsed_tokens, path_list, context, info);
 	}
 	else
 	{
@@ -62,7 +66,7 @@ static int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 	{
 		wrap_dup2(info->before_cmd_fd, STDIN_FILENO);
 		wrap_close(info->before_cmd_fd);
-		execute(parsed_tokens, path_list, context);
+		execute(parsed_tokens, path_list, context, info);
 		exit(EXIT_FAILURE);
 	}
 	wrap_close(info->before_cmd_fd);
@@ -77,17 +81,9 @@ static int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 static int	exec_cmd(t_node *parsed_tokens, char **path_list,
 		t_context *context, t_exe_info *info)
 {
-
-	// TODO unset PATH 時の挙動
-	// TODO 'EOF'のとき変数を展開しないようにする
 	process_heredoc(parsed_tokens, context);
-	// TODO hoge/test.sh ようなケースを実行できるようにする
 	if (parsed_tokens->next == NULL && parsed_tokens->argv != NULL)
-	{
-		if (is_builtin(parsed_tokens))
-			return (exec_builtin(parsed_tokens, context));
-		return (exec_single_cmd(parsed_tokens, path_list, context));
-	}
+		return (exec_single_cmd(parsed_tokens, path_list, context, info));
 	while (parsed_tokens->next)
 	{
 		if (parsed_tokens->kind == CMD)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 18:04:14 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/23 18:32:12 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/26 18:09:36 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,6 @@
 #include <invoke_commands.h>
 #include <minishell.h>
 #include <builtin.h>
-
-int ft_isspace(int c)
-{
-    return ('\t' == c || '\n' == c || '\v' == c
-            || '\f' == c || '\r' == c || ' ' == c);
-}
 
 int is_operators(int c)
 {
@@ -35,6 +29,20 @@ void	close_redirect_fd(int *fd)
 {
 	wrap_close(*fd);
 	*fd = -1;
+}
+
+void	reset_fd(t_exe_info *info)
+{
+	dup2(info->saved_stdin, STDIN_FILENO);
+	close_redirect_fd(&info->saved_stdin);
+	dup2(info->saved_stdout, STDOUT_FILENO);
+	close_redirect_fd(&info->saved_stdout);
+}
+
+void	init_saved_fd(t_exe_info *info)
+{
+	info->saved_stdin = dup(STDIN_FILENO);
+	info->saved_stdout = dup(STDOUT_FILENO);
 }
 
 char	**convert_to_envp(t_kvs *environ)

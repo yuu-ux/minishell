@@ -28,7 +28,6 @@ t_token    *tokenization(const char *line);
 void    check_syntax(t_token *token);
 
 // utils
-int ft_isspace(int c);
 int is_operators(int c);
 int is_quote(int c);
 
