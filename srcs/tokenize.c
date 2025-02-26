@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 01:24:59 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 01:25:04 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/26 18:27:26 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <debug.h>
-#include <libft.h>
-#include <tokenize.h>
+#include "minishell.h"
 
 static size_t	count_tokens(const char *line)
 {
@@ -69,22 +67,6 @@ static char	**tokenize(const char *line)
 	}
 	tokens[index] = NULL;
 	return (tokens);
-}
-
-static t_token_type	get_token_type(const char *token)
-{
-	if (*token == '|')
-		return (TOKEN_PIPE);
-	else if (*token == '<' && *(token + 1) == '<')
-		return (TOKEN_REDIRECT_HEREDOC);
-	else if (*token == '>' && *(token + 1) == '>')
-		return (TOKEN_REDIRECT_APPEND);
-	else if (*token == '<')
-		return (TOKEN_REDIRECT_IN);
-	else if (*token == '>')
-		return (TOKEN_REDIRECT_OUT);
-	else
-		return (TOKEN_WORD);
 }
 
 t_token	*tokenization(const char *line)

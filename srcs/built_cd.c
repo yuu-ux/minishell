@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   built_cd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:18:11 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/24 20:23:39 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/26 17:26:15 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <builtin.h>
-#include <error.h>
+#include "minishell.h"
 
 void	setup_pwd(char **old_pwd, char **pwd, t_context *context)
 {

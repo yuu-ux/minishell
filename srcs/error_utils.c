@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   error_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:47:39 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/24 18:52:35 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/26 18:19:26 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <builtin.h>
-#include <invoke_commands.h>
+#include "minishell.h"
 
 void	join_perror(const char *s1, const char *s2)
 {

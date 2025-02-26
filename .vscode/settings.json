@@ -1,0 +1,11 @@
+{
+	"files.associations": {
+		"signal_setting.h": "c",
+		"libft.h": "c",
+		"stddef.h": "c",
+		"stdint.h": "c",
+		"invoke_commands.h": "c",
+		"readline.h": "c",
+		"unistd.h": "c"
+	}
+}
