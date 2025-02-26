@@ -1,5 +1,16 @@
-#include <tokenize.h>
-#include <libft.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenize_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/26 18:20:13 by hana/hmori        #+#    #+#             */
+/*   Updated: 2025/02/26 18:20:14 by hana/hmori       ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 t_token	*new_token(const char *line, t_token_type type)
 {

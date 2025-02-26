@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_env.c                                        :+:      :+:    :+:   */
+/*   redirect.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/23 17:19:20 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 17:27:06 by hana/hmori       ###   ########.fr       */
+/*   Created: 2025/02/26 17:49:17 by hana/hmori        #+#    #+#             */
+/*   Updated: 2025/02/26 18:03:48 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef REDIRECT_H
+#define REDIRECT_H
 
-bool	built_env(t_context *context)
-{
-	int	i;
+typedef enum e_token_type	t_token_type;
+typedef struct s_node		t_node;
 
-	i = 0;
-	while (context->environ[i].key)
-	{
-		if (context->environ[i].value)
-			printf("%s=%s\n", context->environ[i].key, context->environ[i].value);
-		i++;
-	}
-    return (EXIT_SUCCESS);
-}
+
+// redirect_utils.c
+bool			is_pipe(char *str);
+bool			is_redirect(char *str);
+t_token_type	get_token_type(const char *token);
+
+// redirect.c
+bool    do_redirections(t_node *parsed_tokens);
+
+#endif

@@ -1,27 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_env.c                                        :+:      :+:    :+:   */
+/*   signal_setting.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/23 17:19:20 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 17:27:06 by hana/hmori       ###   ########.fr       */
+/*   Created: 2025/02/26 16:17:50 by hana/hmori        #+#    #+#             */
+/*   Updated: 2025/02/26 17:21:36 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef SIGNAL_SETTING_H
+# define SIGNAL_SETTING_H
 
-bool	built_env(t_context *context)
-{
-	int	i;
+# include <signal.h>
 
-	i = 0;
-	while (context->environ[i].key)
-	{
-		if (context->environ[i].value)
-			printf("%s=%s\n", context->environ[i].key, context->environ[i].value);
-		i++;
-	}
-    return (EXIT_SUCCESS);
-}
+typedef struct sigaction	t_sigaction;
+
+void	signal_setting(void);
+
+#endif

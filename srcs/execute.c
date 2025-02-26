@@ -3,18 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 01:10:18 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 01:20:13 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/26 18:20:55 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <error.h>
-#include <invoke_commands.h>
-#include <minishell.h>
-#include <redirect.h>
-#include <utils.h>
+#include "minishell.h"
+
 
 static	char	*find_executable_path(const t_node *parsed_tokens, char **path_list, char **error_message)
 {

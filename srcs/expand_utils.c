@@ -1,7 +1,16 @@
-#include <debug.h>
-#include <expand.h>
-#include <libft.h>
-#include <tokenize.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/26 18:19:44 by hana/hmori        #+#    #+#             */
+/*   Updated: 2025/02/26 18:19:46 by hana/hmori       ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 char	*search_env(const char *key, t_kvs *environ)
 {

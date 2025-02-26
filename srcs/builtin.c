@@ -1,6 +1,16 @@
-#include <invoke_commands.h>
-#include <builtin.h>
-#include <minishell.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/26 17:27:42 by hana/hmori        #+#    #+#             */
+/*   Updated: 2025/02/26 17:27:43 by hana/hmori       ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
 
 int exec_builtin(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_info *info)
 {
