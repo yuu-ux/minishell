@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
+/*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:26:05 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 17:51:02 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/02/23 18:11:14 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <expand.h>
+#include <invoke_commands.h>
+#include <libft.h>
+#include <minishell.h>
+#include <readline/history.h>
+#include <readline/readline.h>
+#include <signal_setting.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <tokenize.h>
+#include <utils.h>
 
 static size_t	count_env(char **envp)
 {

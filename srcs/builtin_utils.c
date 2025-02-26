@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
+/*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 15:41:32 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 17:27:37 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/02/23 18:16:03 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <invoke_commands.h>
+#include <builtin.h>
 
 bool    is_builtin(const t_node *parsed_tokens)
 {

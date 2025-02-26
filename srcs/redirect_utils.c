@@ -1,18 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   redirect_utils.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/26 18:20:24 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/02/26 18:21:39 by hana/hmori       ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "tokenize.h"
+#include <invoke_commands.h>
 
-#include "minishell.h"
-
-t_token_type	get_token_type(const char *token)
+t_token_type	get_token_type(char *token)
 {
 	if (ft_strncmp(token, ">>", 3) == 0)
 		return (TOKEN_REDIRECT_APPEND);

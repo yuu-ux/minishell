@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   exec_heredoc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
+/*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:42:52 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 18:20:58 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/02/13 21:18:41 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <invoke_commands.h>
+#include <readline/history.h>
+#include <readline/readline.h>
+#include <utils.h>
 
 bool	is_heredoc(char *argv)
 {

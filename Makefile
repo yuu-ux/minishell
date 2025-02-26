@@ -1,95 +1,62 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2025/02/26 14:55:58 by hana/hmori        #+#    #+#              #
-#    Updated: 2025/02/26 16:59:13 by hana/hmori       ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME = minishell
 
-NAME			=	minishell
+CC = cc
+CFLAGS = -g -Wall -Wextra -Werror -I./includes/ -Ilibft
+SRCS = 	main.c \
+		init.c \
+		tokenize.c \
+		check_syntax.c \
+		utils.c \
+		expand_tokens.c \
+		expand_utils.c \
+		signal_setting.c \
+		parse.c \
+		tokenize_utils.c \
+		invoke_commands.c \
+		invoke_utils.c \
+		execute.c \
+		debug.c \
+		builtin.c \
+		builtin_utils.c \
+		free.c \
+		exec_heredoc.c \
+		redirect.c \
+		redirect_utils.c \
+		built_echo.c \
+		built_cd.c \
+		built_pwd.c \
+		built_export.c \
+		built_unset.c \
+		built_env.c \
+		built_exit.c \
+		error_utils.c \
 
-CC				=	cc
-CFLAGS			=	-g -Wall -Wextra -Werror
-FLAGS			=	-I$(INCLUDE_DIR) -I$(LIBFT_DIR)/include
-LIBREADL		=	-lreadline
-MAKEFLAGS		+=	--no-print-directory
-
-
-INCLUDE_DIR		=	./includes
-
-LIBFT_DIR		=	./libft
-LIBFTA			=	$(LIBFT_DIR)/libft.a
-
-SRC_DIR			=	./srcs
-SRC_FILES		=	main.c \
-					init.c \
-					tokenize.c \
-					check_syntax.c \
-					utils.c \
-					expand_tokens.c \
-					expand_utils.c \
-					signal_setting.c \
-					parse.c \
-					tokenize_utils.c \
-					invoke_commands.c \
-					invoke_utils.c \
-					execute.c \
-					debug.c \
-					builtin.c \
-					builtin_utils.c \
-					free.c \
-					exec_heredoc.c \
-					redirect.c \
-					redirect_utils.c \
-					built_echo.c \
-					built_cd.c \
-					built_pwd.c \
-					built_export.c \
-					built_unset.c \
-					built_env.c \
-					built_exit.c \
-					error_utils.c \
-
-OBJ_DIR 		=	./objs
-OBJS 			=	$(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC_FILES))
-
-DEPENDENCY		=	$(patsubst %.c, $(OBJ_DIR)/%.d, $(SRC_FILES))
-
-
+SRC_DIR = ./srcs
+OBJ_DIR = ./objs
+OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
+LIBFT = libft
 TEST_DIR = ./test
 RED = "\033[31m"
 GREEN = "\033[32m"
 RESET = "\033[0m"
+all: $(NAME)
 
+$(NAME): $(OBJS)
+	git submodule update --init --remote
+	make -C $(LIBFT)
+	$(CC) $(CFLAGS) $^ -o $@ ./libft/libft.a -lreadline
 
-all: $(LIBFT_DIR) $(NAME)
-
-$(NAME): $(OBJS) $(LIBFTA)
-	$(CC) $(CFLAGS) $(FLAGS) $^ -o $@ $(LIBREADL)
-
-$(LIBFT_DIR):
-	@git submodule update --init --remote
-	@make -C $@
-
-$(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)
-
-$(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) $(FLAGS) $(CFLAGS) -MMD -MP -c $< -o $@
-
--include $(DEPENDENCY)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@make -C $(LIBFT_DIR) clean
-	@rm -rf $(OBJ_DIR)
+	make -C $(LIBFT) clean
+	rm -f $(OBJ_DIR)/*.o
 
 fclean: clean
-	@make -C $(LIBFT_DIR) fclean
-	rm -f $(NAME)
+	make -C $(LIBFT) fclean
+	$(RM) $(NAME)
 
 debug: CFLAGS += -fsanitize=address -fsanitize=leak
 debug: all
@@ -106,6 +73,4 @@ test:
 
 re: fclean all
 
-.DEFAULT_GOAL	:=	all
-
-.PHONY: all clean fclean re test debug $(LIBFT_DIR)
+.PHONY: all clean fclean re test debug
