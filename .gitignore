@@ -1,5 +1,9 @@
-a.out
+
+
 minishell
+a.out
+
+
 compile_commands.json
 .cache
 minishell.dSYM/
@@ -8,3 +12,4 @@ playground/*.sh
 libft
 debug.sh
 test.sh
+.vscode
