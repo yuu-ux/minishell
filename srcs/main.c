@@ -3,29 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
+/*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 20:04:57 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 17:23:51 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/02/23 18:22:39 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <expand.h>
+#include <invoke_commands.h>
+#include <libft.h>
+#include <minishell.h>
+#include <readline/history.h>
+#include <readline/readline.h>
+#include <signal_setting.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <tokenize.h>
+#include <utils.h>
 
-int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)), char *envp[])
+int	main(int argc, char *argv[], char *envp[])
 {
 	char		*line;
 	t_context	*context;
 	t_token		*tokens;
 
 	line = NULL;
+	(void)argc;
+	(void)argv;
 	context = init_context(envp);
 	signal_setting();
 	while (true)
 	{
 		line = readline("minishell$ ");
 		if (line == NULL)
+		{
+			ft_printf("exit\n");
 			break ;
+		}
 		else if (*line == '\0')
 			continue ;
 		tokens = tokenization(line);
@@ -36,8 +52,6 @@ int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)),
 		free(line);
 	}
 	free_context(context);
-	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	return (SUCCESS);
 }
 
-	// ft_printf("exit\n");

@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
+/*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 18:04:14 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 18:13:37 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/02/26 02:09:26 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <tokenize.h>
+#include <invoke_commands.h>
+#include <minishell.h>
+#include <builtin.h>
 
 int is_operators(int c)
 {
