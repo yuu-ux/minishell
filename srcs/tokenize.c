@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kmogami <kmogami@student.42.fr>            +#+  +:+       +#+        */
+/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 20:45:02 by kmogami           #+#    #+#             */
-/*   Updated: 2025/01/22 20:27:14 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/26 17:52:09 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <debug.h>
-#include <libft.h>
-#include <tokenize.h>
+#include "minishell.h"
 
 static size_t	count_tokens(const char *line)
 {
@@ -71,7 +69,7 @@ static char	**tokenize(const char *line)
 	return (tokens);
 }
 
-static t_token_type	get_token_type(const char *token)
+t_token_type	get_token_type(const char *token)
 {
 	if (*token == '|')
 		return (TOKEN_PIPE);

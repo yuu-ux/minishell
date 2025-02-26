@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   built_echo.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yehara <yehara@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 22:56:43 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/15 23:19:19 by yehara           ###   ########.fr       */
+/*   Updated: 2025/02/26 17:26:58 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <invoke_commands.h>
+#include "minishell.h"
 
 bool	has_option(char *argv)
 {
