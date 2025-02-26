@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:29:22 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/02/26 19:13:10 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/02/26 20:17:23 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_kvs
 typedef struct s_context
 {
 	t_kvs	*environ;
-	int		exit_status;
+	uint8_t	exit_status;
 	bool	flg_heredoc_expand;
 }	t_context;
 
