@@ -1,7 +1,7 @@
 #include <readline/readline.h>
 #include <signal_setting.h>
 
-static void	sigint_handler(int signum)
+static void	sigint_handler(int signum)  // __attribute__((unused))
 {
 	(void)signum;
 	write(STDOUT_FILENO, "\n", 1); // 改行
