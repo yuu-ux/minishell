@@ -5,7 +5,6 @@
 #define SINGLE_QUOTE '\''
 #define SYNTAX_ERROR 1
 
-#include <libft.h>
 typedef enum e_token_type {
     TOKEN_WORD,
     TOKEN_EOF,

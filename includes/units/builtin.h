@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:46:08 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/02/26 18:18:00 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/02/26 19:11:38 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,7 @@
 typedef struct s_node		t_node;
 typedef struct s_kvs		t_kvs;
 typedef struct s_exe_info	t_exe_info;
-
-typedef struct s_context
-{
-	t_kvs	*environ;
-	int		exit_status;
-	bool	flg_heredoc_expand;
-}	t_context;
-
+typedef struct s_context	t_context;
 
 // built_func
 bool	built_echo(const t_node *parsed_tokens);

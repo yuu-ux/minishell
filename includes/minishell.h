@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:29:22 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/02/26 18:18:33 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/02/26 19:13:10 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,16 @@
 
 typedef struct s_kvs
 {
-    char *key;
-    char *value;
-} t_kvs;
+	char *key;
+	char *value;
+}	t_kvs;
+
+typedef struct s_context
+{
+	t_kvs	*environ;
+	int		exit_status;
+	bool	flg_heredoc_expand;
+}	t_context;
 
 t_context	*init_context(char *envp[]);
 

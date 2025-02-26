@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 20:04:57 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 17:23:51 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/02/26 19:06:19 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)),
 	{
 		line = readline("minishell$ ");
 		if (line == NULL)
+		{
+			ft_putstr_fd("exit\n", STDOUT_FILENO);
 			break ;
+		}
 		else if (*line == '\0')
 			continue ;
 		tokens = tokenization(line);
@@ -36,8 +39,6 @@ int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)),
 		free(line);
 	}
 	free_context(context);
-	ft_putstr_fd("exit\n", STDOUT_FILENO);
 	return (SUCCESS);
 }
 
-	// ft_printf("exit\n");
