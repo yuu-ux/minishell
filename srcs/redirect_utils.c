@@ -25,7 +25,7 @@ t_token_type	get_token_type(const char *token)
 	else if (ft_strncmp(token, "<<", 3) == 0)
 		return (TOKEN_REDIRECT_HEREDOC);
 	else
-		return (TOKEN_UNKNOWN);
+		return (TOKEN_WORD);
 }
 
 bool	is_pipe(char *str)
@@ -37,9 +37,8 @@ bool	is_pipe(char *str)
 
 bool	is_redirect(char *str)
 {
-	if (ft_strncmp(str, ">", 2) == 0 || \
-		ft_strncmp(str, "<", 2) == 0 || \
-		ft_strncmp(str, ">>", 3) == 0)
+	if (ft_strncmp(str, ">", 2) == 0 || ft_strncmp(str, "<", 2) == 0
+		|| ft_strncmp(str, ">>", 3) == 0)
 		return (true);
 	return (false);
 }
