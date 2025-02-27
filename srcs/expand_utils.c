@@ -32,32 +32,40 @@ char	*search_env(const char *key, t_kvs *environ)
 	return (result);
 }
 
-size_t	count_key_len(char *token, int t_index)
+size_t	count_key_len(char *token)
 {
 	size_t	i;
 
 	i = 0;
-	while ((ft_isalnum(token[t_index]) || token[t_index] == '_')
-		&& token[t_index])
-	{
+	while ((ft_isalnum(token[i]) || token[i] == '_')
+		&& token[i])
 		i++;
-		t_index++;
-	}
 	return (i);
 }
 
-size_t	insert_env(char **buffer, char *token, t_kvs *environ)
+size_t	insert_env(char **buffer, char *token, t_context *context)
 {
 	size_t	key_len;
 	char	*value;
     char *substr;
+	int	i;
 
-	if (token[0] == '$')
-		token++;
-	key_len = count_key_len(token, 0);
-    substr = ft_substr(token, 0, key_len);
-	value = search_env(substr, environ);
-    free(substr);
+	i = 0;
+	key_len = 0;
+	if (token[i] == '$')
+		i++;
+	if (token[i - 1] == '$' && token[i] == '?')
+	{
+		value = ft_itoa(context->exit_status);
+		key_len++;
+	}
+	else
+	{
+		key_len = count_key_len(&token[i]);
+		substr = ft_substr(token, i, key_len);
+		value = search_env(substr, context->environ);
+		free(substr);
+	}
 	*buffer = free_strjoin(*buffer, value);
 	return (key_len);
 }
