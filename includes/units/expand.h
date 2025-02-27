@@ -27,5 +27,6 @@ char	*search_env(const char *key, t_kvs *environ);
 size_t	insert_env(char **buffer, char *token, t_context *context);
 size_t	expand_variable(char **result, char *token, t_context *context,
 		int start, int i);
+bool	is_expand(char *token, int i);
 
 #endif

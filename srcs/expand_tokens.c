@@ -27,14 +27,14 @@ static size_t	delete_single_quote(char **result, char *token)
 
 static size_t	expand_double_quote(char **result, char *token, bool flg_heredoc, t_context *context)
 {
-	size_t	i;
+	int	i;
 	int		start;
 
 	i = 1;
 	start = 1;
 	while (token[i] != DOUBLE_QUOTE)
 	{
-		if (token[i] == '$' && !flg_heredoc)
+		if (is_expand(token, i) && !flg_heredoc)
 		{
 			*result = free_strjoin(*result, ft_substr(token, start, i - start));
 			i += insert_env(result, &token[i], context);
@@ -70,7 +70,7 @@ static char	*expand_token(char *token, bool flg_heredoc, t_context *context)
 			i = delete_single_quote(&result, &token[i]);
 		else if (token[i] == DOUBLE_QUOTE)
 			i = expand_double_quote(&result, &token[i], flg_heredoc, context);
-		else if (token[i] == '$' && !flg_heredoc)
+		else if (is_expand(token, i) && !flg_heredoc)
 			i = expand_variable(&result, token, context, start, i);
 		else
 		{
