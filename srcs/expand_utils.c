@@ -12,6 +12,11 @@
 
 #include "minishell.h"
 
+bool	is_expand(char *token, int i)
+{
+	return (token[i] == '$' && !(token[i + 1] == '\0' || token[i + 1] == '$'));
+}
+
 char	*search_env(const char *key, t_kvs *environ)
 {
 	int	i;

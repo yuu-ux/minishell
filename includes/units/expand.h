@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:43:59 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/02/27 10:28:03 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/02/27 23:12:03 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_token	*expand_tokens(t_token **_tokens, t_context *context);
 char	*search_env(const char *key, t_kvs *environ);
 size_t	insert_env(char **buffer, char *token, t_context *context);
 size_t	expand_variable(char **result, char *token, t_context *context,
-			int start, int i);
+		int start, int i);
+bool	is_expand(char *token, int i);
 
 #endif
