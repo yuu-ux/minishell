@@ -32,7 +32,8 @@ int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)),
 		else if (*line == '\0')
 			continue ;
 		tokens = tokenization(line);
-		check_syntax(tokens);
+		if (check_syntax(tokens) == false)
+			continue ;
 		tokens = expand_tokens(&tokens, context);
 		invoke_commands(tokens, context);
 		add_history(line);

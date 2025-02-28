@@ -53,10 +53,12 @@ static void    check_operators_error(t_token *token)
         print_syntax_error();
 }
 
-void    check_syntax(t_token *token)
+bool	check_syntax(t_token *token)
 {
 	int	i;
 
+	if (token == NULL)
+		return (false);
     if (token->data[0] == '|')
         print_syntax_error();
     while (token)
@@ -72,4 +74,5 @@ void    check_syntax(t_token *token)
             check_operators_error(token);
         token = token->next;
     }
+	return (true);
 }
