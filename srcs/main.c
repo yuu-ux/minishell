@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 20:04:57 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 19:06:19 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/02/27 23:10:51 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,4 +41,3 @@ int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)),
 	free_context(context);
 	return (SUCCESS);
 }
-
