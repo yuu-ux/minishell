@@ -27,7 +27,6 @@ typedef enum e_token_type
 	TOKEN_REDIRECT_HEREDOC,
 }	t_token_type;
 
-t_token    *tokenization(const char *line);
 typedef struct s_token
 {
 	char			*data;
@@ -35,6 +34,7 @@ typedef struct s_token
 	t_token_type	type;
 }	t_token;
 
+t_token	*tokenization(const char *line);
 void	check_syntax(t_token *token);
 
 // utils
