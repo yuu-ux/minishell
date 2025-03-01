@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:42:52 by yehara            #+#    #+#             */
-/*   Updated: 2025/03/01 22:08:27 by yehara           ###   ########.fr       */
+/*   Updated: 2025/03/01 23:29:41 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	heredoc_child_process(char *delimiter, int fds[2], t_context *contex
 	exit(EXIT_SUCCESS);
 }
 
-static bool	heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid, t_context *context)
+static void	heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid, t_context *context)
 {
 	int	status;
 
@@ -41,7 +41,6 @@ static bool	heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid,
 	wrap_close(fds[OUT]);
 	parsed_tokens->fds[IN] = fds[IN];
 	context->flg_heredoc_expand = true;
-	return (EXIT_SUCCESS);
 }
 
 static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context)
@@ -60,8 +59,7 @@ static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context)
 			EXIT_FAILURE);
 	if (pid == 0)
 		heredoc_child_process(parsed_tokens->argv[i + 1], fds, context);
-	if (heredoc_parent_process(parsed_tokens, fds, pid, context))
-		return (EXIT_FAILURE);
+	heredoc_parent_process(parsed_tokens, fds, pid, context);
 	return (EXIT_SUCCESS);
 }
 
@@ -74,9 +72,7 @@ static bool	exec_heredoc(t_node *current, t_context *context)
 	{
 		if (is_heredoc(current->argv[i]))
 		{
-			if (current->argv[i + 1] == NULL)
-				return (printf("heredoc error\n"), EXIT_FAILURE);
-			if (!(setup_heredoc(current, i, context)))
+			if (setup_heredoc(current, i, context) == EXIT_FAILURE)
 				return (EXIT_FAILURE);
 			i++;
 		}
@@ -94,8 +90,12 @@ bool	process_heredoc(t_node *parsed_tokens, t_context *context)
 	{
 		if (current->kind == CMD)
 		{
-			if (exec_heredoc(current, context) == EXIT_FAILURE)
+			if (exec_heredoc(current, context) == EXIT_FAILURE
+				|| (current->prev == NULL && is_heredoc(current->argv[0])))
+			{
+				close_redirect_fd(&parsed_tokens->fds[IN]);
 				return (EXIT_FAILURE);
+			}
 		}
 		current = current->next;
 	}
