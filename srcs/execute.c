@@ -46,7 +46,7 @@ static	char	*find_executable_path(const t_node *parsed_tokens, char **path_list,
 int	child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list,
 		t_context *context)
 {
-	signal(SIGINT, SIG_DFL);
+	child_signal_setting();
 	// 最後以外のコマンドの場合
 	// STDOUT → current_pipefd[OUT]
 	if (info->exec_count < info->pipe_num)

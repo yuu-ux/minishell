@@ -70,23 +70,11 @@ static char	**create_argv(t_token *tokens)
     return (result);
 }
 
-// t_node	*parse(t_token *tokens)
-// {
-// 	t_node	*new;
-
-// 	if (tokens == NULL)
-// 		return (NULL);
-// 	new = new_node();
-// 	new->argv = create_argv(tokens);
-// 	new->next = parse(tokens->next);
-// }
-
 t_node *parse(t_token *tokens)
 {
     t_node *head = NULL;
     t_node *current = NULL;
 
-	// print_token(tokens);
     while (tokens)
     {
         if (head == NULL)

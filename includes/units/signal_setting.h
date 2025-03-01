@@ -19,5 +19,6 @@ typedef struct sigaction	t_sigaction;
 
 void	signal_setting(void);
 void	parent_signal_setting(void);
+void	child_signal_setting(void);
 
 #endif
