@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:42:52 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 18:20:58 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/01 14:44:37 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ static bool	exec_heredoc(t_node *current, t_context *context)
 	{
 		if (is_heredoc(current->argv[i]))
 		{
-			if (!(current->argv[i + 1]))
+			if (current->argv[i + 1] == NULL)
 				return (printf("heredoc error\n"), EXIT_FAILURE);
 			if (!(setup_heredoc(current, i, context)))
 				return (EXIT_FAILURE);

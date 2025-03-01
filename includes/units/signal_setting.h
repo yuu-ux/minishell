@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:17:50 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/02/26 17:21:36 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/02/27 10:19:51 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,7 @@
 typedef struct sigaction	t_sigaction;
 
 void	signal_setting(void);
+void	parent_signal_setting(void);
+void	child_signal_setting(void);
 
 #endif
