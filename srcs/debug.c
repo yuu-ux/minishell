@@ -35,6 +35,17 @@ const char	*get_token_type_string(t_token_type type)
 	}
 }
 
+static const char *tokentype[] =
+{
+	"TOKEN_WORD",
+	"TOKEN_EOF",
+	"TOKEN_PIPE",
+	"TOKEN_REDIRECT_IN",
+	"TOKEN_REDIRECT_OUT",
+	"TOKEN_REDIRECT_APPEND",
+	"TOKEN_REDIRECT_HEREDOC",
+};
+
 void	print_token(t_token *head)
 {
 	t_token	*current;
@@ -42,7 +53,8 @@ void	print_token(t_token *head)
 	current = head;
 	while (current)
 	{
-		printf("current->data->%s\n", current->data);
+		printf("current->data : %s\n", current->data);
+		printf("current->type : %s\n", tokentype[current->type]);
 		current = current->next;
 	}
 }

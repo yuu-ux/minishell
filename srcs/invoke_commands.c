@@ -25,6 +25,7 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 		perror("error\n");
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
 		if (access(parsed_tokens->argv[0], F_OK) == 0)
 			execve(parsed_tokens->argv[0], parsed_tokens->argv, convert_to_envp(context->environ));
 		else
@@ -32,6 +33,7 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 	}
 	else
 	{
+		pear_signal_setting();
 		waitpid(pid, NULL, 0);
 		wrap_close(parsed_tokens->fds[IN]);
 	}

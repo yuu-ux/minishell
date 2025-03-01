@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 09:51:12 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/02/27 11:19:49 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/01 14:37:44 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ typedef enum e_node_type
 
 typedef enum e_std_fd
 {
-	IN,
-	OUT,
-	ERR,
+	IN = STDIN_FILENO,
+	OUT = STDOUT_FILENO,
+	ERR = STDERR_FILENO,
 	INVALID_FD = -1,
 }	t_std_fd;
 

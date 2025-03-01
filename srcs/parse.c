@@ -51,7 +51,7 @@ static void    advance_token_after_free(t_token **token)
     free(temp);
 }
 
-static char **create_argv(t_token *tokens)
+static char	**create_argv(t_token *tokens)
 {
     char **result;
     int i;
@@ -60,7 +60,7 @@ static char **create_argv(t_token *tokens)
     word_num = count_word_node(tokens);
 	if (word_num == 0)
 		return NULL;
-    result = (char **)ft_xmalloc((word_num+1) * sizeof(char *));
+    result = (char **)ft_xmalloc((word_num + 1) * sizeof(char *));
     i = 0;
     while (i < (int)word_num)
     {
@@ -70,12 +70,23 @@ static char **create_argv(t_token *tokens)
     return (result);
 }
 
+// t_node	*parse(t_token *tokens)
+// {
+// 	t_node	*new;
+
+// 	if (tokens == NULL)
+// 		return (NULL);
+// 	new = new_node();
+// 	new->argv = create_argv(tokens);
+// 	new->next = parse(tokens->next);
+// }
 
 t_node *parse(t_token *tokens)
 {
     t_node *head = NULL;
     t_node *current = NULL;
 
+	print_token(tokens);
     while (tokens)
     {
         if (head == NULL)

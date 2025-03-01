@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 20:04:57 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/27 23:10:51 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/01 15:33:24 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)),
 
 	line = NULL;
 	context = init_context(envp);
-	signal_setting();
 	while (true)
 	{
+		signal_setting();
 		line = readline("minishell$ ");
 		if (line == NULL)
 		{
@@ -38,6 +38,7 @@ int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)),
 		add_history(line);
 		free(line);
 	}
+	rl_clear_history();
 	free_context(context);
 	return (SUCCESS);
 }

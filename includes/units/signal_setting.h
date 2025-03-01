@@ -18,5 +18,6 @@
 typedef struct sigaction	t_sigaction;
 
 void	signal_setting(void);
+void	pear_signal_setting(void);
 
 #endif
