@@ -42,7 +42,8 @@ SRC_FILES		=	main.c \
 					builtin.c \
 					builtin_utils.c \
 					free.c \
-					exec_heredoc.c \
+					heredoc.c \
+					heredoc_utils.c \
 					redirect.c \
 					redirect_utils.c \
 					built_echo.c \

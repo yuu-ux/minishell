@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 09:51:12 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/03/01 14:37:44 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/01 22:05:19 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,9 @@ int		exec_builtin(t_node *parsed_tokens, char **path_list, t_context *context, t
 // builtin_utils.c
 bool	is_builtin(const t_node *parsed_tokens);
 
-// exec_heredoc.c
+// heredoc.c
 bool	is_heredoc(char *argv);
 bool	process_heredoc(t_node *parsed_tokens, t_context *context);
+char *expand_heredoc(char **line, t_context *context);
 
 #endif

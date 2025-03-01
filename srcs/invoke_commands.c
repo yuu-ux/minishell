@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:48:21 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 18:20:40 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/01 22:22:31 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ static int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 static int	exec_cmd(t_node *parsed_tokens, char **path_list,
 		t_context *context, t_exe_info *info)
 {
-	process_heredoc(parsed_tokens, context);
+	if (process_heredoc(parsed_tokens, context) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	if (parsed_tokens->next == NULL && parsed_tokens->argv != NULL)
 		return (exec_single_cmd(parsed_tokens, path_list, context, info));
 	while (parsed_tokens->next)
