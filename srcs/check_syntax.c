@@ -14,7 +14,7 @@
 
 static  bool    print_syntax_error()
 {
-    ft_putstr_fd("bash: syntax error near unexpected token `newline'\n", 2);
+    ft_putstr_fd("bash: syntax error near unexpected token `newline'\n", STDERR_FILENO);
 	return(EXIT_FAILURE);
 }
 
