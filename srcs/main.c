@@ -12,24 +12,36 @@
 
 #include "minishell.h"
 
-int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)), char *envp[])
+bool	is_space_while(char *line)
+{
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if (ft_isspace(line[i]) == false)
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+void	shell_loop(t_context *context)
 {
 	char		*line;
-	t_context	*context;
 	t_token		*tokens;
 
 	line = NULL;
-	context = init_context(envp);
 	while (true)
 	{
 		signal_setting();
 		line = readline("minishell$ ");
 		if (line == NULL)
 		{
-			ft_putstr_fd("exit\n", STDOUT_FILENO);
+			ft_putstr_fd("exit\n", STDERR_FILENO);
 			break ;
 		}
-		else if (*line == '\0')
+		else if (is_space_while(line))
 			continue ;
 		tokens = tokenization(line);
 		check_syntax(tokens);
@@ -38,7 +50,16 @@ int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)),
 		add_history(line);
 		free(line);
 	}
+}
+
+int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)), char *envp[])
+{
+	t_context	*context;
+
+	context = init_context(envp);
+	signal_setting();
+	shell_loop(context);
 	rl_clear_history();
 	free_context(context);
-	return (SUCCESS);
+	return (context->exit_status);
 }

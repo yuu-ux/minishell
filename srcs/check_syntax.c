@@ -53,7 +53,7 @@ static void    check_operators_error(t_token *token)
         print_syntax_error();
 }
 
-void    check_syntax(t_token *token)
+void	check_syntax(t_token *token)
 {
 	int	i;
 

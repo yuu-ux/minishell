@@ -18,7 +18,7 @@ t_token	*new_token(const char *line, t_token_type type)
 
 	if (!line)
 		return (NULL);
-	token = (t_token *)malloc(sizeof(t_token));
+	token = (t_token *)ft_xmalloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
 	token->data = ft_strdup(line);
