@@ -24,5 +24,6 @@ char	**convert_to_envp(t_kvs *environ);
 void	free_after_invoke(char **path_list, t_node *parsed_tokens, t_exe_info *info);// line too long
 void	init_saved_fd(t_exe_info *info);
 void	reset_fd(t_exe_info *info);
+void	free_tokens(t_token **tokens);
 
 #endif

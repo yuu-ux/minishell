@@ -36,6 +36,7 @@ void	shell_loop(t_context *context)
 	{
 		signal_setting();
 		line = readline("minishell$ ");
+		add_history(line);
 		if (line == NULL)
 		{
 			ft_putstr_fd("exit\n", STDERR_FILENO);
@@ -44,10 +45,13 @@ void	shell_loop(t_context *context)
 		else if (is_space_while(line))
 			continue ;
 		tokens = tokenization(line);
-		check_syntax(tokens);
+		if (check_syntax(tokens) == EXIT_FAILURE)
+		{
+			free_tokens(&tokens);
+			continue ;
+		}
 		tokens = expand_tokens(&tokens, context);
 		invoke_commands(tokens, context);
-		add_history(line);
 		free(line);
 	}
 }

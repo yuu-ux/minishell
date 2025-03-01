@@ -12,6 +12,21 @@
 
 #include "minishell.h"
 
+void	free_tokens(t_token **tokens)
+{
+	t_token *temp;
+	char *data;
+
+	while (*tokens)
+	{
+		temp = *tokens;
+		data = (*tokens)->data;
+		*tokens = (*tokens)->next;
+		free(temp);
+		free(data);
+	}
+}
+
 void	free_after_invoke(char **path_list, t_node *parsed_tokens,
 		t_exe_info *info)
 {
