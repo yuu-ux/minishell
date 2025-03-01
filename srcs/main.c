@@ -43,8 +43,7 @@ void	shell_loop(t_context *context)
 		else if (is_space_while(line))
 			continue ;
 		tokens = tokenization(line);
-		if (check_syntax(tokens) == false)
-			continue ;
+		check_syntax(tokens);
 		tokens = expand_tokens(&tokens, context);
 		invoke_commands(tokens, context);
 		add_history(line);

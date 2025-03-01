@@ -91,8 +91,7 @@ t_token	*tokenization(const char *line)
 		token = new;
 		i++;
 	}
-	if (token != NULL)
-		token->next = NULL;
+	token->next = NULL;
     while (i >= 0)
         free(tokens[i--]);
     free(tokens);

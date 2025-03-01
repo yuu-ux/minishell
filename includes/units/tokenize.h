@@ -23,7 +23,7 @@ struct s_token {
 };
 
 t_token    *tokenization(const char *line);
-bool	check_syntax(t_token *token);
+void	check_syntax(t_token *token);
 
 // utils
 int is_operators(int c);
