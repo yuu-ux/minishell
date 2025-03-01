@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 17:40:48 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 18:22:12 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/01 16:08:28 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ bool	is_greater_than_LONG_MAX(t_node *parsed_tokens)
 
 bool	built_exit(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_info *info)
 {
-	ft_printf("exit\n");
+	if (info->pid[info->exec_count])
+		ft_printf("exit\n");
 	if (parsed_tokens->argv[1] == NULL)
 		;
 	// 引数のひとつめが数字以外

@@ -1,33 +1,45 @@
-#ifndef LEXER_H
-# define LEXER_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenize.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/27 10:04:45 by hana/hmori        #+#    #+#             */
+/*   Updated: 2025/02/27 10:25:30 by hana/hmori       ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#define DOUBLE_QUOTE '\"'
-#define SINGLE_QUOTE '\''
-#define SYNTAX_ERROR 1
+#ifndef TOKENIZE_H
+# define TOKENIZE_H
 
-typedef enum e_token_type {
-    TOKEN_WORD,
-    TOKEN_EOF,
-    TOKEN_PIPE,
-    TOKEN_REDIRECT_IN,
-    TOKEN_REDIRECT_OUT,
-    TOKEN_REDIRECT_APPEND,
-    TOKEN_REDIRECT_HEREDOC,
-} t_token_type;
+# define DOUBLE_QUOTE '\"'
+# define SINGLE_QUOTE '\''
+# define SYNTAX_ERROR 1
 
-typedef struct s_token t_token;
-struct s_token {
-    char            *data;
-    t_token         *next;
-    t_token_type    type;
-};
+typedef enum e_token_type
+{
+	TOKEN_WORD,
+	TOKEN_PIPE,
+	TOKEN_REDIRECT_IN,
+	TOKEN_REDIRECT_OUT,
+	TOKEN_REDIRECT_APPEND,
+	TOKEN_REDIRECT_HEREDOC,
+}	t_token_type;
 
 t_token    *tokenization(const char *line);
+typedef struct s_token
+{
+	char			*data;
+	t_token			*next;
+	t_token_type	type;
+}	t_token;
+
 void	check_syntax(t_token *token);
 
 // utils
-int is_operators(int c);
-int is_quote(int c);
+int		is_operators(int c);
+int		is_quote(int c);
 
 // tokenize_utils
 size_t	skip_quoted_token(char quote_char, const char **line);

@@ -12,18 +12,19 @@
 
 #include "minishell.h"
 
-void	free_after_invoke(char **path_list, t_node *parsed_tokens, t_exe_info *info)
+void	free_after_invoke(char **path_list, t_node *parsed_tokens,
+		t_exe_info *info)
 {
-	int	i;
-	t_node *before_tokens;
+	int		i;
+	t_node	*before_tokens;
 
 	i = 0;
-    if (path_list)
-    {
-        while (path_list[i])
-            free(path_list[i++]);
-        free(path_list);
-    }
+	if (path_list)
+	{
+		while (path_list[i])
+			free(path_list[i++]);
+		free(path_list);
+	}
 	free(info->pid);
 	free(info);
 	while (parsed_tokens)
@@ -38,21 +39,22 @@ void	free_after_invoke(char **path_list, t_node *parsed_tokens, t_exe_info *info
 	}
 }
 
-void    free_context(t_context *context)
+void	free_context(t_context *context)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    if (context->environ)
-    {
-        while (context->environ[i].key)
-        {
-            free(context->environ[i].key);
-            free(context->environ[i].value);
-            i++;
-        }
-        free(context->environ);
-    }
+	i = 0;
+	if (context->environ)
+	{
+		while (context->environ[i].key)
+		{
+			free(context->environ[i].key);
+			free(context->environ[i].value);
+			i++;
+		}
+		free(context->environ);
+	}
 	free(context);
+	wrap_close(STDIN_FILENO);
+	wrap_close(STDOUT_FILENO);
 }
-
