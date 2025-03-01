@@ -46,7 +46,6 @@ static void	heredoc_child_process(char *delimiter, int fds[2], t_context *contex
 {
 	char	*line;
 
-	signal(SIGINT, SIG_DFL);
 	wrap_close(fds[IN]);
 	line = NULL;
 	while (true)
