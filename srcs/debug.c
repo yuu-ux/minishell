@@ -18,8 +18,6 @@ const char	*get_token_type_string(t_token_type type)
 	{
 	case TOKEN_WORD:
 		return ("TOKEN_WORD");
-	case TOKEN_EOF:
-		return ("TOKEN_EOF");
 	case TOKEN_PIPE:
 		return ("TOKEN_PIPE");
 	case TOKEN_REDIRECT_IN:
@@ -38,7 +36,6 @@ const char	*get_token_type_string(t_token_type type)
 static const char *tokentype[] =
 {
 	"TOKEN_WORD",
-	"TOKEN_EOF",
 	"TOKEN_PIPE",
 	"TOKEN_REDIRECT_IN",
 	"TOKEN_REDIRECT_OUT",

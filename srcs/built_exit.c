@@ -57,7 +57,6 @@ bool	is_greater_than_LONG_MAX(t_node *parsed_tokens)
 
 bool	built_exit(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_info *info)
 {
-	ft_printf("%d\n", info->pid);
 	if (info->pid)
 		ft_printf("exit\n");
 	if (parsed_tokens->argv[1] == NULL)

@@ -33,7 +33,7 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 	}
 	else
 	{
-		pear_signal_setting();
+		parent_signal_setting();
 		waitpid(pid, NULL, 0);
 		wrap_close(parsed_tokens->fds[IN]);
 	}

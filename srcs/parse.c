@@ -86,7 +86,7 @@ t_node *parse(t_token *tokens)
     t_node *head = NULL;
     t_node *current = NULL;
 
-	print_token(tokens);
+	// print_token(tokens);
     while (tokens)
     {
         if (head == NULL)

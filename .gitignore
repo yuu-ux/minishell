@@ -1,17 +1,15 @@
+.vscode
 
+libft
+objs
 
 minishell
+
 a.out
 
-
+test.sh
+debug.sh
+playground/*.sh
 compile_commands.json
 .cache
 minishell.dSYM/
-objs
-playground/*.sh
-libft
-debug.sh
-test.sh
-.vscode
-
-test/hmori

@@ -37,14 +37,13 @@ void	signal_setting(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-static void	test(int signum __attribute__((unused)))
+static void	func_sigint_handler(int signum __attribute__((unused)))
 {
-	ft_putnbr_fd(signum, STDOUT_FILENO);
 	ft_putchar_fd('\n', STDOUT_FILENO);
 }
 
-void	pear_signal_setting(void)
+void	parent_signal_setting(void)
 {
-	signal(SIGINT, test);
+	signal(SIGINT, func_sigint_handler);
 }
 

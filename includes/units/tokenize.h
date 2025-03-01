@@ -20,7 +20,6 @@
 typedef enum e_token_type
 {
 	TOKEN_WORD,
-	TOKEN_EOF,
 	TOKEN_PIPE,
 	TOKEN_REDIRECT_IN,
 	TOKEN_REDIRECT_OUT,
