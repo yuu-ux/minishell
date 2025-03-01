@@ -1,46 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_heredoc.c                                     :+:      :+:    :+:   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:42:52 by yehara            #+#    #+#             */
-/*   Updated: 2025/03/01 14:44:37 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/01 22:08:27 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-bool	is_heredoc(char *argv)
-{
-	if (ft_strncmp(argv, "<<", 3) == 0)
-		return (true);
-	return (false);
-}
-
-char *expand_heredoc(char **line, t_context *context)
-{
-	size_t	i;
-	int		start;
-	char *result;
-
-	i = 0;
-	start = 0;
-	result = ft_strdup("");
-	while ((*line)[i])
-	{
-		if ((*line)[i] == '$')
-		{
-			i = expand_variable(&result, *line, context, start, i);
-			start = i;
-		}
-		else
-			i++;
-	}
-	free(*line);
-	return (result);
-}
 
 static void	heredoc_child_process(char *delimiter, int fds[2], t_context *context)
 {
