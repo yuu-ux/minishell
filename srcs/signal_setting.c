@@ -20,7 +20,7 @@ static void	sigint_handler(int signum __attribute__((unused)))
 	rl_redisplay();                // プロンプトを再描画
 }
 
-void	signal_setting(void)
+void	parent_signal_setting(void)
 {
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
@@ -34,7 +34,7 @@ static void	func_sigint_handler(int signum)
 		ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
 }
 
-void	parent_signal_setting(void)
+void	parent_override_signal_setting(void)
 {
 	signal(SIGINT, func_sigint_handler);
 	signal(SIGQUIT, func_sigint_handler);

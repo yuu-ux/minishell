@@ -68,7 +68,7 @@ int	child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list,
 
 int	parent_process(t_node *parsed_tokens, t_exe_info *info)
 {
-	parent_signal_setting();
+	parent_override_signal_setting();
 	close_redirect_fd(&parsed_tokens->fds[OUT]);
 	wrap_close(info->before_cmd_fd);
 	info->before_cmd_fd = parsed_tokens->fds[IN];
