@@ -27,17 +27,17 @@ static size_t	delete_single_quote(char **result, char *token)
 
 static size_t	expand_double_quote(char **result, char *token, bool flg_heredoc, t_context *context)
 {
-	size_t	i;
+	int	i;
 	int		start;
 
 	i = 1;
 	start = 1;
 	while (token[i] != DOUBLE_QUOTE)
 	{
-		if (token[i] == '$' && !flg_heredoc)
+		if (is_expand(token, i) && !flg_heredoc)
 		{
 			*result = free_strjoin(*result, ft_substr(token, start, i - start));
-			i += insert_env(result, &token[i], context->environ);
+			i += insert_env(result, &token[i], context);
 			// 「"」と「$」のため、i+1
 			start = i + 1;
 		}
@@ -51,7 +51,7 @@ size_t	expand_variable(char **result, char *token, t_context *context,
 		int start, int i)
 {
 	*result = free_strjoin(*result, ft_substr(token, start, i - start));
-	i += insert_env(result, &token[i], context->environ);
+	i += insert_env(result, &token[i], context);
 	return (i + 1);
 }
 
@@ -67,11 +67,11 @@ static char	*expand_token(char *token, bool flg_heredoc, t_context *context)
 	while (token[i])
 	{
 		if (token[i] == SINGLE_QUOTE)
-			i += delete_single_quote(&result, &token[i]);
+			i = delete_single_quote(&result, &token[i]);
 		else if (token[i] == DOUBLE_QUOTE)
-			i += expand_double_quote(&result, &token[i], flg_heredoc, context);
-		else if (token[i] == '$' && !flg_heredoc)
-			i += expand_variable(&result, token, context, start, i);
+			i = expand_double_quote(&result, &token[i], flg_heredoc, context);
+		else if (is_expand(token, i) && !flg_heredoc)
+			i = expand_variable(&result, token, context, start, i);
 		else
 		{
 			i++;

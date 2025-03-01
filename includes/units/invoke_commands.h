@@ -4,7 +4,6 @@
 #include "tokenize.h"
 #include <unistd.h>
 #include <fcntl.h>
-#include <libft.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <stdlib.h>

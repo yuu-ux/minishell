@@ -20,8 +20,6 @@ const char	*get_token_type_string(t_token_type type)
 		return ("TOKEN_WORD");
 	case TOKEN_EOF:
 		return ("TOKEN_EOF");
-	case TOKEN_UNKNOWN:
-		return ("TOKEN_UNKNOWN");
 	case TOKEN_PIPE:
 		return ("TOKEN_PIPE");
 	case TOKEN_REDIRECT_IN:

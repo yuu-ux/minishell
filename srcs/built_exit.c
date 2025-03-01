@@ -58,13 +58,15 @@ bool	is_greater_than_LONG_MAX(t_node *parsed_tokens)
 bool	built_exit(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_info *info)
 {
 	ft_printf("exit\n");
+	if (parsed_tokens->argv[1] == NULL)
+		;
 	// 引数のひとつめが数字以外
-	if ((!(is_numeric(parsed_tokens->argv[1]))) || is_greater_than_LONG_MAX(parsed_tokens))
+	else if ((!(is_numeric(parsed_tokens->argv[1]))) || is_greater_than_LONG_MAX(parsed_tokens))
 	{
 		ft_printf("bash: exit: %s: numeric argument required\n", parsed_tokens->argv[1]);
 		context->exit_status = 2;
 	}
-	// 引数の２つ目が存在しない
+	// 引数の2つ目以降が存在する 例：exit 1 2
 	else if (parsed_tokens->argv[2] != NULL)
 	{
 		context->exit_status = EXIT_FAILURE;
