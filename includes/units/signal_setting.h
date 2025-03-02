@@ -15,8 +15,12 @@
 
 # include <signal.h>
 
+typedef struct s_context t_context;
+
+extern volatile sig_atomic_t	g_sig;
 void	parent_signal_setting(void);
 void	parent_override_signal_setting(void);
 void	child_override_signal_setting(void);
+void	setting_status(t_context *context);
 
 #endif
