@@ -50,6 +50,6 @@ typedef struct	s_context
 	bool	flg_heredoc_expand;
 }	t_context;
 
-t_context	*init_context(char *envp[]);
+t_context	init_context(char *envp[]);
 
 #endif
