@@ -17,6 +17,6 @@
 
 void	parent_signal_setting(void);
 void	parent_override_signal_setting(void);
-void	child_signal_setting(void);
+void	child_override_signal_setting(void);
 
 #endif

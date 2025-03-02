@@ -26,7 +26,7 @@ void	parent_signal_setting(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-static void	func_sigint_handler(int signum)
+static void	heredoc_parent_sigint_handler(int signum)
 {
 	if (signum == SIGINT)
 		ft_putchar_fd('\n', STDOUT_FILENO);
@@ -36,11 +36,11 @@ static void	func_sigint_handler(int signum)
 
 void	parent_override_signal_setting(void)
 {
-	signal(SIGINT, func_sigint_handler);
-	signal(SIGQUIT, func_sigint_handler);
+	signal(SIGINT, heredoc_parent_sigint_handler);
+	signal(SIGQUIT, heredoc_parent_sigint_handler);
 }
 
-void	child_signal_setting(void)
+void	child_override_signal_setting(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
