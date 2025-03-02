@@ -12,6 +12,16 @@
 
 #include "minishell.h"
 
+volatile sig_atomic_t	g_sig = 0;
+
+void	signal_setting(t_context *context)
+{
+	parent_signal_setting();
+	if (g_sig != 0)
+		context->exit_status = 128 + g_sig;
+	g_sig = 0;
+}
+
 bool	is_space_while(char *line)
 {
 	int	i;
@@ -26,6 +36,25 @@ bool	is_space_while(char *line)
 	return (true);
 }
 
+bool	preprocess_line(char *line, t_context *context, t_token **tokens)
+{
+	if (line == NULL)
+	{
+		ft_putstr_fd("exit\n", STDERR_FILENO);
+		return (EXIT_FAILURE);
+	}
+	else if (is_space_while(line))
+		return (EXIT_SUCCESS);
+	*tokens = tokenization(line);
+	if (check_syntax(*tokens) == EXIT_FAILURE)
+	{
+		free_tokens(tokens);
+		return (EXIT_SUCCESS);
+	}
+	*tokens = expand_tokens(tokens, context);
+	return (EXIT_SUCCESS);
+}
+
 void	shell_loop(t_context *context)
 {
 	char		*line;
@@ -34,23 +63,14 @@ void	shell_loop(t_context *context)
 	line = NULL;
 	while (true)
 	{
-		signal_setting();
+		signal_setting(context);
 		line = readline("minishell$ ");
 		add_history(line);
-		if (line == NULL)
-		{
-			ft_putstr_fd("exit\n", STDERR_FILENO);
+		tokens = NULL;
+		if (preprocess_line(line, context, &tokens) == EXIT_FAILURE)
 			break ;
-		}
-		else if (is_space_while(line))
+		if (tokens == NULL)
 			continue ;
-		tokens = tokenization(line);
-		if (check_syntax(tokens) == EXIT_FAILURE)
-		{
-			free_tokens(&tokens);
-			continue ;
-		}
-		tokens = expand_tokens(&tokens, context);
 		invoke_commands(tokens, context);
 		free(line);
 	}
@@ -61,7 +81,6 @@ int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)),
 	t_context	*context;
 
 	context = init_context(envp);
-	signal_setting();
 	shell_loop(context);
 	rl_clear_history();
 	free_context(context);
