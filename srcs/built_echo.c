@@ -6,13 +6,13 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 22:56:43 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 17:26:58 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/02 16:59:26 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "builtin.h"
 
-bool	has_option(char *argv)
+static bool	has_option(char *argv)
 {
 	int	i;
 
@@ -30,7 +30,7 @@ bool	has_option(char *argv)
 	return (true);
 }
 
-char *join_message(char *result, char *argv)
+static char	*join_message(char *result, char *argv)
 {
 	result = free_strjoin(result, ft_strdup(argv));
 	result = free_strjoin(result, ft_strdup(" "));
@@ -39,10 +39,10 @@ char *join_message(char *result, char *argv)
 	return (result);
 }
 
-char *create_message(char **argv, bool flg_option)
+static char	*create_message(char **argv, bool flg_option)
 {
-	int	i;
-	char *result;
+	int		i;
+	char	*result;
 
 	i = 1;
 	result = ft_strdup("");
@@ -69,7 +69,7 @@ char *create_message(char **argv, bool flg_option)
 bool	built_echo(const t_node *parsed_tokens)
 {
 	bool	flg_option;
-	char *message;
+	char	*message;
 
 	// はじめのオプションのみ検証する
 	if (parsed_tokens->argv[1] == NULL)
@@ -83,4 +83,3 @@ bool	built_echo(const t_node *parsed_tokens)
 	free(message);
 	return (EXIT_SUCCESS);
 }
-

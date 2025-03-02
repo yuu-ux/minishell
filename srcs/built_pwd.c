@@ -6,16 +6,17 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 23:58:41 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 17:27:22 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/02 17:35:20 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <minishell.h>
+#include "builtin.h"
+#include "utils.h"
 
 bool	built_pwd(t_context *context)
 {
-	char *current_dir;
-	t_kvs *pwd;
+	char	*current_dir;
+	t_kvs	*pwd;
 
 	current_dir = getcwd(NULL, 0);
 	if (current_dir == NULL)
@@ -32,4 +33,3 @@ bool	built_pwd(t_context *context)
 	free(current_dir);
 	return (EXIT_SUCCESS);
 }
-
