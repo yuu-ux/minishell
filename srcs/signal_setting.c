@@ -12,8 +12,16 @@
 
 #include "minishell.h"
 
+void	setting_status(t_context *context)
+{
+	if (g_sig != 0)
+		context->exit_status = 128 + g_sig;
+	g_sig = 0;
+}
+
 static void	sigint_handler(int signum __attribute__((unused)))
 {
+	g_sig = signum;
 	ft_putchar_fd('\n', STDOUT_FILENO); // 改行
 	rl_replace_line("", 0);        // 入力中の行をクリア
 	rl_on_new_line();              // 新しい行を設定
