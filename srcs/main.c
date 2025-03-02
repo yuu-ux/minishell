@@ -27,12 +27,15 @@ bool	is_space_while(char *line)
 	int	i;
 
 	i = 0;
+	if (line[i] == '\0')
+		return (true);
 	while (line[i])
 	{
 		if (ft_isspace(line[i]) == false)
 			return (false);
 		i++;
 	}
+	add_history(line);
 	return (true);
 }
 
@@ -65,13 +68,13 @@ void	shell_loop(t_context *context)
 	{
 		signal_setting(context);
 		line = readline("minishell$ ");
-		add_history(line);
 		tokens = NULL;
 		if (preprocess_line(line, context, &tokens) == EXIT_FAILURE)
 			break ;
 		if (tokens == NULL)
 			continue ;
 		invoke_commands(tokens, context);
+		add_history(line);
 		free(line);
 	}
 }
