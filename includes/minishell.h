@@ -44,7 +44,7 @@ typedef struct s_kvs
 	char	*value;
 }	t_kvs;
 
-typedef struct s_context
+typedef struct  s_context
 {
 	t_kvs	*environ;
 	uint8_t	exit_status;

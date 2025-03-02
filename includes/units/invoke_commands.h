@@ -53,7 +53,7 @@ typedef struct s_node
 
 // invoke_commands.c
 void	invoke_commands(t_token *tokens, t_context *context);
-t_node	*parse(t_token *tokens);
+t_node	*parse(t_token *tokens, t_node *prev_node);
 
 // invoke_utils.c
 char	**get_path_list(char *env_path);

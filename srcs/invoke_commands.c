@@ -106,7 +106,7 @@ void	invoke_commands(t_token *tokens, t_context *context)
 	kvs_path = xgetenv("PATH", context);
 	if (kvs_path != NULL)
 		path_list = get_path_list(kvs_path->value);
-	parsed_tokens = parse(tokens);
+	parsed_tokens = parse(tokens, NULL);
 	info = (t_exe_info *)ft_xmalloc(sizeof(t_exe_info));
 	initialize_info(info, parsed_tokens);
 	exec_cmd(parsed_tokens, path_list, context, info);
