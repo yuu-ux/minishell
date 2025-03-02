@@ -6,7 +6,7 @@
 #    By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/26 14:55:58 by hana/hmori        #+#    #+#              #
-#    Updated: 2025/03/01 12:41:08 by hana/hmori       ###   ########.fr        #
+#    Updated: 2025/03/02 16:55:45 by hana/hmori       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,12 +14,13 @@ NAME			=	minishell
 
 CC				=	cc
 CFLAGS			=	-g -Wall -Wextra -Werror
-FLAGS			=	-I$(INCLUDE_DIR) -I$(LIBFT_DIR)/include
+FLAGS			=	-I$(HEADER_MAIN) -I$(HEADER_UNIT) -I$(LIBFT_DIR)/include
 LIBREADL		=	-lreadline
 MAKEFLAGS		+=	--no-print-directory
 
 
-INCLUDE_DIR		=	./includes
+HEADER_MAIN		=	./includes
+HEADER_UNIT		=	$(HEADER_MAIN)/units
 
 LIBFT_DIR		=	./libft
 LIBFTA			=	$(LIBFT_DIR)/libft.a
@@ -54,6 +55,7 @@ SRC_FILES		=	main.c \
 					built_env.c \
 					built_exit.c \
 					error_utils.c \
+					environ_units.c \
 
 OBJ_DIR 		=	./objs
 OBJS 			=	$(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC_FILES))

@@ -6,13 +6,14 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:18:11 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 17:26:15 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/02 17:43:00 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "builtin.h"
+#include "utils.h"
 
-void	setup_pwd(char **old_pwd, char **pwd, t_context *context)
+static void	setup_pwd(char **old_pwd, char **pwd, t_context *context)
 {
 	if (xgetenv("PWD", context) == NULL)
 	{
@@ -32,7 +33,7 @@ void	setup_pwd(char **old_pwd, char **pwd, t_context *context)
 	free(*pwd);
 }
 
-int	count_argv(const t_node *parsed_tokens)
+static int	count_argv(const t_node *parsed_tokens)
 {
 	int	count;
 
@@ -42,11 +43,11 @@ int	count_argv(const t_node *parsed_tokens)
 	return (count);
 }
 
-bool	cd_parent(char **current_pwd, t_context *context)
+static bool	cd_parent(char **current_pwd, t_context *context)
 {
 	size_t	len;
-	char *next_pwd;
-	char *old_pwd;
+	char	*next_pwd;
+	char	*old_pwd;
 
 	if (*current_pwd == NULL)
 		return (perror("cd_parent"), EXIT_FAILURE);
@@ -100,4 +101,3 @@ bool	built_cd(const t_node *parsed_tokens, t_context *context)
 	setup_pwd(&current_pwd, &next_pwd, context);
 	return (EXIT_SUCCESS);
 }
-

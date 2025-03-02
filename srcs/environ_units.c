@@ -1,28 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   built_env.c                                        :+:      :+:    :+:   */
+/*   environ_units.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/23 17:19:20 by yehara            #+#    #+#             */
-/*   Updated: 2025/03/02 17:00:28 by hana/hmori       ###   ########.fr       */
+/*   Created: 2025/03/02 16:36:31 by hana/hmori        #+#    #+#             */
+/*   Updated: 2025/03/02 17:43:13 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
+#include "utils.h"
 
-bool	built_env(t_context *context)
+int	count_environ(t_kvs *environ)
+{
+	int	i;
+
+	i = 0;
+	while (environ[i].key)
+		i++;
+	return (i);
+}
+
+t_kvs	*xgetenv(const char *name, t_context *context)
 {
 	int	i;
 
 	i = 0;
 	while (context->environ[i].key)
 	{
-		if (context->environ[i].value)
-			printf("%s=%s\n",
-				context->environ[i].key, context->environ[i].value);
+		if (ft_strncmp(context->environ[i].key, name, ft_strlen(name) + 1) == 0)
+			return (&context->environ[i]);
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (NULL);
 }

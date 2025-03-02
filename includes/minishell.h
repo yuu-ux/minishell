@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:29:22 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/02/27 11:17:37 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/02 17:39:19 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
-# include "units/builtin.h"
 # include "units/debug.h"
 # include "units/error.h"
 # include "units/expand.h"
@@ -44,7 +43,7 @@ typedef struct s_kvs
 	char	*value;
 }	t_kvs;
 
-typedef struct  s_context
+typedef struct	s_context
 {
 	t_kvs	*environ;
 	uint8_t	exit_status;
