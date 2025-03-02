@@ -105,7 +105,6 @@ bool	process_heredoc(t_node *parsed_tokens, t_context *context)
 			if (exec_heredoc(current, context) == EXIT_FAILURE
 				|| (current->prev == NULL && is_heredoc(current->argv[0])))
 			{
-				// wrap_dup2(parsed_tokens->fds[IN], STDIN_FILENO);
 				close_redirect_fd(&parsed_tokens->fds[IN]);
 				return (EXIT_FAILURE);
 			}
