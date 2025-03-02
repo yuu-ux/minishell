@@ -16,6 +16,7 @@ static void	heredoc_child_process(char *delimiter, int fds[2], t_context *contex
 {
 	char	*line;
 
+	child_override_signal_setting();
 	wrap_close(fds[IN]);
 	line = NULL;
 	while (true)
@@ -33,14 +34,24 @@ static void	heredoc_child_process(char *delimiter, int fds[2], t_context *contex
 	exit(EXIT_SUCCESS);
 }
 
-static void	heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid, t_context *context)
+static void	heredoc_parent_sigint_handler(int signum)
+{
+	if (signum == SIGINT)
+		ft_putstr_fd("^C\n", STDOUT_FILENO);
+}
+
+static bool	heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid, t_context *context)
 {
 	int	status;
 
+	signal(SIGINT, heredoc_parent_sigint_handler);
 	waitpid(pid, &status, 0);
 	wrap_close(fds[OUT]);
 	parsed_tokens->fds[IN] = fds[IN];
 	context->flg_heredoc_expand = true;
+	if (status)
+		return (false);
+	return (true);
 }
 
 static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context)
@@ -59,7 +70,8 @@ static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context)
 			EXIT_FAILURE);
 	if (pid == 0)
 		heredoc_child_process(parsed_tokens->argv[i + 1], fds, context);
-	heredoc_parent_process(parsed_tokens, fds, pid, context);
+	if (heredoc_parent_process(parsed_tokens, fds, pid, context) == false)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
@@ -93,6 +105,7 @@ bool	process_heredoc(t_node *parsed_tokens, t_context *context)
 			if (exec_heredoc(current, context) == EXIT_FAILURE
 				|| (current->prev == NULL && is_heredoc(current->argv[0])))
 			{
+				// wrap_dup2(parsed_tokens->fds[IN], STDIN_FILENO);
 				close_redirect_fd(&parsed_tokens->fds[IN]);
 				return (EXIT_FAILURE);
 			}
