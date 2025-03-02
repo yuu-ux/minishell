@@ -48,14 +48,13 @@ static t_kvs	*create_env(char **envp)
 	return (environ);
 }
 
-t_context	*init_context(char *envp[])
+t_context	init_context(char *envp[])
 {
-	t_context *context;
+	t_context context;
 
-	context = (t_context *)ft_xmalloc(sizeof(t_context));
-	context->environ = create_env(envp);
-	context->exit_status = EXIT_SUCCESS;
-	context->flg_heredoc_expand = true;
+	context.environ = create_env(envp);
+	context.exit_status = EXIT_SUCCESS;
+	context.flg_heredoc_expand = true;
 	return (context);
 }
 
