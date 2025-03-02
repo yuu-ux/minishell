@@ -6,13 +6,14 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:27:42 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/02/26 17:27:43 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/02 17:36:17 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "builtin.h"
 
-int exec_builtin(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_info *info)
+int	exec_builtin(t_node *parsed_tokens, char **path_list, t_context *context,
+	t_exe_info *info)
 {
 	if (!(ft_strncmp(parsed_tokens->argv[0], "echo", 5)))
 		return (built_echo(parsed_tokens));

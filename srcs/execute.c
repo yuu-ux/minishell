@@ -6,12 +6,12 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 01:10:18 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 18:20:55 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/02 17:09:20 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+#include "builtin.h"
 
 static	char	*find_executable_path(const t_node *parsed_tokens, char **path_list, char **error_message)
 {

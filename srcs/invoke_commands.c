@@ -6,11 +6,13 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:48:21 by yehara            #+#    #+#             */
-/*   Updated: 2025/03/01 22:22:31 by yehara           ###   ########.fr       */
+/*   Updated: 2025/03/02 17:09:28 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "builtin.h"
+#include "utils.h"
 
 static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 		t_context *context, t_exe_info *info)
@@ -106,7 +108,7 @@ void	invoke_commands(t_token *tokens, t_context *context)
 	kvs_path = xgetenv("PATH", context);
 	if (kvs_path != NULL)
 		path_list = get_path_list(kvs_path->value);
-	parsed_tokens = parse(tokens);
+	parsed_tokens = parse(tokens, NULL);
 	info = (t_exe_info *)ft_xmalloc(sizeof(t_exe_info));
 	initialize_info(info, parsed_tokens);
 	exec_cmd(parsed_tokens, path_list, context, info);
