@@ -6,11 +6,11 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 17:19:20 by yehara            #+#    #+#             */
-/*   Updated: 2025/03/02 17:00:28 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/02/26 17:27:06 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
+#include "minishell.h"
 
 bool	built_env(t_context *context)
 {
@@ -20,9 +20,8 @@ bool	built_env(t_context *context)
 	while (context->environ[i].key)
 	{
 		if (context->environ[i].value)
-			printf("%s=%s\n",
-				context->environ[i].key, context->environ[i].value);
+			printf("%s=%s\n", context->environ[i].key, context->environ[i].value);
 		i++;
 	}
-	return (EXIT_SUCCESS);
+    return (EXIT_SUCCESS);
 }

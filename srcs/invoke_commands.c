@@ -6,13 +6,11 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:48:21 by yehara            #+#    #+#             */
-/*   Updated: 2025/03/02 17:09:28 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/01 22:22:31 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "builtin.h"
-#include "utils.h"
 
 static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 		t_context *context, t_exe_info *info)

@@ -6,12 +6,11 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 18:20:02 by yehara            #+#    #+#             */
-/*   Updated: 2025/03/02 17:34:05 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/02/26 17:27:15 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
-#include "utils.h"
+#include "minishell.h"
 
 static	char	*analysis_token(char *argv, char *value)
 {
@@ -92,3 +91,4 @@ bool	built_export(const t_node *parsed_tokens, t_context *context)
 		update_env(parsed_tokens, context);
 	return (EXIT_SUCCESS);
 }
+
