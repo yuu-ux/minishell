@@ -19,7 +19,7 @@ typedef struct s_exe_info	t_exe_info;
 typedef struct s_context	t_context;
 
 // built_func
-bool	built_echo(const t_node *parsed_tokens);
+bool	built_echo(const t_node *parsed_tokens, t_context *context);
 bool	built_cd(const t_node *parsed_tokens, t_context *context);
 bool	built_pwd(t_context *context);
 bool	built_export(const	t_node *parsed_tokens, t_context *context);

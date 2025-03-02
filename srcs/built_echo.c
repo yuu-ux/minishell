@@ -66,7 +66,7 @@ char *create_message(char **argv, bool flg_option)
 	return (ft_chop(result));
 }
 
-bool	built_echo(const t_node *parsed_tokens)
+bool	built_echo(const t_node *parsed_tokens, t_context *context)
 {
 	bool	flg_option;
 	char *message;
@@ -81,6 +81,7 @@ bool	built_echo(const t_node *parsed_tokens)
 	else
 		ft_printf("%s\n", message);
 	free(message);
-	return (EXIT_SUCCESS);
+	context->exit_status = EXIT_SUCCESS;
+	return (context->exit_status);
 }
 
