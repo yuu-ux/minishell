@@ -19,15 +19,6 @@ void	setting_status(t_context *context)
 	g_sig = 0;
 }
 
-static void	sigint_handler(int signum __attribute__((unused)))
-{
-	g_sig = signum;
-	ft_putchar_fd('\n', STDOUT_FILENO); // 改行
-	rl_replace_line("", 0);        // 入力中の行をクリア
-	rl_on_new_line();              // 新しい行を設定
-	rl_redisplay();                // プロンプトを再描画
-}
-
 void	parent_signal_setting(void)
 {
 	signal(SIGINT, sigint_handler);
