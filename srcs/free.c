@@ -69,7 +69,6 @@ void	free_context(t_context *context)
 		}
 		free(context->environ);
 	}
-	free(context);
 	wrap_close(STDIN_FILENO);
 	wrap_close(STDOUT_FILENO);
 }

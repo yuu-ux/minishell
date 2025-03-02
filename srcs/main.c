@@ -78,11 +78,11 @@ void	shell_loop(t_context *context)
 
 int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)), char *envp[])
 {
-	t_context	*context;
+	t_context	context;
 
 	context = init_context(envp);
-	shell_loop(context);
+	shell_loop(&context);
 	rl_clear_history();
-	free_context(context);
-	return (context->exit_status);
+	free_context(&context);
+	return (context.exit_status);
 }
