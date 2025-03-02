@@ -22,6 +22,13 @@ static void	heredoc_child_process(char *delimiter, int fds[2], t_context *contex
 	while (true)
 	{
 		line = readline("> ");
+		if (g_sig == SIGINT)
+		{
+			wrap_close(fds[OUT]);
+			ft_putchar_fd('\n', STDOUT_FILENO);
+			free(line);
+			exit(EXIT_FAILURE);
+		}
 		if (ft_strncmp(delimiter, line, ft_strlen(delimiter) + 1) == 0)
 			break ;
 		if (ft_strchr(line, '$') && context->flg_heredoc_expand)
@@ -39,9 +46,14 @@ static bool	heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid,
 {
 	int	status;
 
-	signal(SIGINT, heredoc_parent_sigint_handler);
+	signal(SIGINT, sigint_handler);
 	waitpid(pid, &status, 0);
-	wrap_close(fds[OUT]);
+	if (context->exit_status)
+	{
+		wrap_close(fds[IN]);
+		wrap_close(fds[OUT]);
+		return (false);
+	}
 	parsed_tokens->fds[IN] = fds[IN];
 	context->flg_heredoc_expand = true;
 	if (status)

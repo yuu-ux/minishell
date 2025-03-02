@@ -25,6 +25,7 @@ void	parent_override_signal_setting(void);
 void	child_signal_setting(void);
 
 // signal_handler.c
+void	signal_handler(int signum);
 void	heredoc_parent_sigint_handler(int signum);
 void	sigint_handler(int signum);
 void	parent_override_signal_handler(int signum);

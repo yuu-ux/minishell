@@ -12,10 +12,15 @@
 
 #include "minishell.h"
 
+void	signal_handler(int signum)
+{
+	g_sig = signum;
+}
+
 void	heredoc_parent_sigint_handler(int signum)
 {
 	if (signum == SIGINT)
-		ft_putstr_fd("^C\n", STDOUT_FILENO);
+		ft_putstr_fd("\n", STDOUT_FILENO);
 }
 
 void	sigint_handler(int signum)
