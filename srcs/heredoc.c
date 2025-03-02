@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:42:52 by yehara            #+#    #+#             */
-/*   Updated: 2025/03/01 23:29:41 by yehara           ###   ########.fr       */
+/*   Updated: 2025/03/02 15:23:59 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static void	heredoc_child_process(char *delimiter, int fds[2], t_context *contex
 {
 	char	*line;
 
-	child_override_signal_setting();
+	heredoc_child_signal_setting();
 	wrap_close(fds[IN]);
 	line = NULL;
 	while (true)
@@ -34,11 +34,6 @@ static void	heredoc_child_process(char *delimiter, int fds[2], t_context *contex
 	exit(EXIT_SUCCESS);
 }
 
-static void	heredoc_parent_sigint_handler(int signum)
-{
-	if (signum == SIGINT)
-		ft_putstr_fd("^C\n", STDOUT_FILENO);
-}
 
 static bool	heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid, t_context *context)
 {

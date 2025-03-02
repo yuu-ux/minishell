@@ -16,7 +16,7 @@ int	exec_builtin(t_node *parsed_tokens, char **path_list, t_context *context,
 	t_exe_info *info)
 {
 	if (!(ft_strncmp(parsed_tokens->argv[0], "echo", 5)))
-		return (built_echo(parsed_tokens));
+		return (built_echo(parsed_tokens, context));
 	else if (!(ft_strncmp(parsed_tokens->argv[0], "cd", 3)))
 		return (built_cd(parsed_tokens, context));
 	else if (!(ft_strncmp(parsed_tokens->argv[0], "pwd", 4)))

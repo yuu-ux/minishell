@@ -12,15 +12,8 @@
 
 #include "minishell.h"
 
+// シグナルの途中で変更されても、未定義動作が起こらない
 volatile sig_atomic_t	g_sig = 0;
-
-void	signal_setting(t_context *context)
-{
-	parent_signal_setting();
-	if (g_sig != 0)
-		context->exit_status = 128 + g_sig;
-	g_sig = 0;
-}
 
 bool	is_space_while(char *line)
 {
@@ -63,9 +56,10 @@ void	shell_loop(t_context *context)
 	line = NULL;
 	while (true)
 	{
-		signal_setting(context);
+		parent_signal_setting();
 		line = readline("minishell$ ");
 		add_history(line);
+		setting_status(context);
 		tokens = NULL;
 		if (preprocess_line(line, context, &tokens) == EXIT_FAILURE)
 			break ;
