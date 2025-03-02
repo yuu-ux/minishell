@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 16:33:54 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/03/01 13:48:42 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/02 15:26:02 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,22 +34,20 @@ void	parent_signal_setting(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-static void	heredoc_parent_sigint_handler(int signum)
-{
-	if (signum == SIGINT)
-		ft_putchar_fd('\n', STDOUT_FILENO);
-	if (signum == SIGQUIT)
-		ft_putstr_fd("Quit (core dumped)\n", STDOUT_FILENO);
-}
-
 void	parent_override_signal_setting(void)
 {
-	signal(SIGINT, heredoc_parent_sigint_handler);
-	signal(SIGQUIT, heredoc_parent_sigint_handler);
+	signal(SIGINT, parent_override_signal_handler);
+	signal(SIGQUIT, parent_override_signal_handler);
 }
 
-void	child_override_signal_setting(void)
+void	child_signal_setting(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
+}
+
+void	heredoc_child_signal_setting(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_IGN);
 }

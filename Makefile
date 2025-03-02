@@ -33,6 +33,7 @@ SRC_FILES		=	main.c \
 					expand_tokens.c \
 					expand_utils.c \
 					signal_setting.c \
+					signal_handler.c \
 					parse.c \
 					tokenize_utils.c \
 					invoke_commands.c \
