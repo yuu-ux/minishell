@@ -113,7 +113,7 @@ int	execute(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_i
 		free(path);
 		reset_fd(info);
 		free_after_invoke(path_list, parsed_tokens, info);
-		free_context(context);
+		free_environ(context);
 		exit(EXIT_FAILURE);
 	}
 	close_redirect_fd(&info->saved_stdin);
