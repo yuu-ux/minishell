@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 20:48:21 by yehara            #+#    #+#             */
-/*   Updated: 2025/03/02 17:09:28 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/03 17:19:12 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 		perror("error\n");
 	if (pid == 0)
 	{
-		child_override_signal_setting();
+		child_signal_setting();
 		if (access(parsed_tokens->argv[0], F_OK) == 0)
 			execve(parsed_tokens->argv[0], parsed_tokens->argv, convert_to_envp(context->environ));
 		else

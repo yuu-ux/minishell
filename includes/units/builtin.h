@@ -16,7 +16,7 @@
 # include "minishell.h"
 
 // built_func
-bool	built_echo(const t_node *parsed_tokens);
+bool	built_echo(const t_node *parsed_tokens, t_context *context);
 bool	built_cd(const t_node *parsed_tokens, t_context *context);
 bool	built_pwd(t_context *context);
 bool	built_export(const	t_node *parsed_tokens, t_context *context);
