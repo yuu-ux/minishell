@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 10:00:57 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/03/02 17:43:49 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/03 21:35:29 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,9 @@ void	free_tokens(t_token **tokens);
 /* environ_units.c */
 int		count_environ(t_kvs *environ);
 t_kvs	*xgetenv(const char *name, t_context *context);
+
+/* status_units.c */
+void	setting_status(t_context *context);
+bool	setting_exit_status(t_context *context, int status);
 
 #endif
