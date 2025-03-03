@@ -27,7 +27,7 @@ static void	heredoc_child_process(char *delimiter, int fds[2], t_context *contex
 			wrap_close(fds[OUT]);
 			ft_putchar_fd('\n', STDOUT_FILENO);
 			free(line);
-			free_context(context);
+			free_environ(context);
 			exit(EXIT_FAILURE);
 		}
 		if (ft_strncmp(delimiter, line, ft_strlen(delimiter) + 1) == 0)

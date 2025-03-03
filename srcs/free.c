@@ -54,7 +54,7 @@ void	free_after_invoke(char **path_list, t_node *parsed_tokens,
 	}
 }
 
-void	free_context(t_context *context)
+void	free_environ(t_context *context)
 {
 	int	i;
 
