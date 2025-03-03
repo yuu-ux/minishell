@@ -61,7 +61,6 @@ void	shell_loop(t_context *context)
 	{
 		parent_signal_setting();
 		line = readline("minishell$ ");
-		add_history(line);
 		setting_status(context);
 		tokens = NULL;
 		if (preprocess_line(line, context, &tokens) == EXIT_FAILURE)
