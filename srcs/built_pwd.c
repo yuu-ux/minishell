@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 23:58:41 by yehara            #+#    #+#             */
-/*   Updated: 2025/03/02 17:35:20 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/03 21:36:30 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ bool	built_pwd(t_context *context)
 		if (pwd == NULL)
 		{
 			perror("pwd");
-			return (EXIT_FAILURE);
+			return (setting_exit_status(context, EXIT_FAILURE));
 		}
 		return (ft_printf("%s\n", pwd->value), EXIT_SUCCESS);
 	}
 	ft_printf("%s\n", current_dir);
 	free(current_dir);
-	return (EXIT_SUCCESS);
+	return (setting_exit_status(context, EXIT_SUCCESS));
 }
