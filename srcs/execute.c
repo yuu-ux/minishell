@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 #include "builtin.h"
+#include "utils.h"
 
 static	char	*find_executable_path(const t_node *parsed_tokens, char **path_list, char **error_message)
 {
@@ -20,10 +21,7 @@ static	char	*find_executable_path(const t_node *parsed_tokens, char **path_list,
 	char	*path;
 
 	if (path_list == NULL)
-	{
-		*error_message = ft_strdup("No such file or directory");
-		return (NULL);
-	}
+		return (*error_message = ft_strdup("No such file or directory"), NULL);
 	i = 0;
 	path = NULL;
 	slash_cmd = ft_strjoin("/", parsed_tokens->argv[0]);
@@ -39,8 +37,7 @@ static	char	*find_executable_path(const t_node *parsed_tokens, char **path_list,
 		i++;
 	}
 	free(slash_cmd);
-	*error_message = ft_strdup("command not found");
-	return (NULL);
+	return (*error_message = ft_strdup("command not found"), NULL);
 }
 
 int	child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list,
@@ -114,7 +111,7 @@ int	execute(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_i
 		reset_fd(info);
 		free_after_invoke(path_list, parsed_tokens, info);
 		free_environ(context);
-		exit(EXIT_FAILURE);
+		exit(EXIT_STATUS_COMMAND_NOT_FOUND);
 	}
 	close_redirect_fd(&info->saved_stdin);
 	close_redirect_fd(&info->saved_stdout);

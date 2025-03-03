@@ -39,12 +39,10 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 	{
 		parent_override_signal_setting();
 		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			context->exit_status = WEXITSTATUS(status);
-		;
+		catch_exit_status(context, status);
 		wrap_close(parsed_tokens->fds[IN]);
 	}
-	return (EXIT_FAILURE);
+	return (context->exit_status);
 }
 
 static int	exec_pipe(t_node *parsed_tokens, t_exe_info *info, char **path_list,

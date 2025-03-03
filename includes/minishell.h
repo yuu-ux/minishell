@@ -33,9 +33,8 @@
 # include "units/utils.h"
 
 # include "libft.h"
-
-# define SUCCESS 0
-# define FAILURE 1
+# define EXIT_STATUS_COMMAND_NOT_FOUND 127
+# define EXIT_STATUS_INVALID 128
 
 typedef struct s_kvs
 {

@@ -14,6 +14,7 @@
 # define UTILS_H
 
 # include "minishell.h"
+#include <stdint.h>
 
 /* utils.c */
 void	free_environ(t_context *context);
@@ -30,6 +31,7 @@ t_kvs	*xgetenv(const char *name, t_context *context);
 
 /* status_units.c */
 void	setting_status(t_context *context);
-bool	setting_exit_status(t_context *context, int status);
+uint8_t	setting_exit_status(t_context *context, uint8_t status);
+void	catch_exit_status(t_context *context, int status);
 
 #endif
