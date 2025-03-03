@@ -73,7 +73,7 @@ bool	built_echo(const t_node *parsed_tokens, t_context *context)
 
 	// はじめのオプションのみ検証する
 	if (parsed_tokens->argv[1] == NULL)
-		return (ft_printf("\n"), EXIT_SUCCESS);
+		return (ft_printf("\n"), setting_exit_status(context, EXIT_SUCCESS));
 	flg_option = has_option(parsed_tokens->argv[1]);
 	message = create_message(parsed_tokens->argv, flg_option);
 	if (flg_option)
@@ -81,6 +81,5 @@ bool	built_echo(const t_node *parsed_tokens, t_context *context)
 	else
 		ft_printf("%s\n", message);
 	free(message);
-	context->exit_status = EXIT_SUCCESS;
-	return (context->exit_status);
+	return (setting_exit_status(context, EXIT_SUCCESS));
 }
