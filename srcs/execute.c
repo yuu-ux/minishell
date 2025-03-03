@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 01:10:18 by yehara            #+#    #+#             */
-/*   Updated: 2025/03/02 17:09:20 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/03 17:32:42 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ int	execute(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_i
 		free(error_message);
 		free(path);
 		reset_fd(info);
+		free_after_invoke(path_list, parsed_tokens, info);
+		free_context(context);
 		exit(EXIT_FAILURE);
 	}
 	close_redirect_fd(&info->saved_stdin);

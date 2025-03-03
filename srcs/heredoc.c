@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 15:42:52 by yehara            #+#    #+#             */
-/*   Updated: 2025/03/02 15:23:59 by yehara           ###   ########.fr       */
+/*   Updated: 2025/03/03 17:02:27 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static void	heredoc_child_process(char *delimiter, int fds[2], t_context *contex
 			wrap_close(fds[OUT]);
 			ft_putchar_fd('\n', STDOUT_FILENO);
 			free(line);
+			free_context(context);
 			exit(EXIT_FAILURE);
 		}
 		if (ft_strncmp(delimiter, line, ft_strlen(delimiter) + 1) == 0)
