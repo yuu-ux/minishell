@@ -90,5 +90,6 @@ bool	built_export(const t_node *parsed_tokens, t_context *context)
 		sorted_print(context);
 	else
 		update_env(parsed_tokens, context);
-	return (EXIT_SUCCESS);
+	return (setting_exit_status(context, EXIT_SUCCESS));
 }
+

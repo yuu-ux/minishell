@@ -24,5 +24,5 @@ bool	built_env(t_context *context)
 				context->environ[i].key, context->environ[i].value);
 		i++;
 	}
-	return (EXIT_SUCCESS);
+	return (setting_exit_status(context, EXIT_SUCCESS));
 }
