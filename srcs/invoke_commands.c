@@ -10,14 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "builtin.h"
+#include "minishell.h"
 #include "utils.h"
 
 static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 		t_context *context, t_exe_info *info)
 {
 	pid_t	pid;
+	int		status;
 
 	do_redirections(parsed_tokens);
 	if (is_builtin(parsed_tokens))
@@ -29,14 +30,18 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 	{
 		child_signal_setting();
 		if (access(parsed_tokens->argv[0], F_OK) == 0)
-			execve(parsed_tokens->argv[0], parsed_tokens->argv, convert_to_envp(context->environ));
+			execve(parsed_tokens->argv[0], parsed_tokens->argv,
+				convert_to_envp(context->environ));
 		else
 			execute(parsed_tokens, path_list, context, info);
 	}
 	else
 	{
 		parent_override_signal_setting();
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			context->exit_status = WEXITSTATUS(status);
+		;
 		wrap_close(parsed_tokens->fds[IN]);
 	}
 	return (EXIT_FAILURE);
@@ -99,10 +104,10 @@ static int	exec_cmd(t_node *parsed_tokens, char **path_list,
 
 void	invoke_commands(t_token *tokens, t_context *context)
 {
-	t_node	*parsed_tokens;
-	char	**path_list;
+	t_node		*parsed_tokens;
+	char		**path_list;
 	t_exe_info	*info;
-	t_kvs *kvs_path;
+	t_kvs		*kvs_path;
 
 	path_list = NULL;
 	kvs_path = xgetenv("PATH", context);
