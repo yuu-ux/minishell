@@ -35,6 +35,7 @@
 # include "libft.h"
 # define EXIT_STATUS_COMMAND_NOT_FOUND 127
 # define EXIT_STATUS_INVALID 128
+# define EXIT_STATUS_SYNTAX_ERROR 2
 
 typedef struct s_kvs
 {
