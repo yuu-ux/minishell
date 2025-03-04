@@ -12,10 +12,17 @@
 
 #include "minishell.h"
 
+void	all_free(t_exe_info *info, char **path_list, t_node *parsed_tokens, t_context *context)
+{
+	reset_fd(info);
+	free_after_invoke(path_list, parsed_tokens, info);
+	free_environ(context);
+}
+
 void	free_tokens(t_token **tokens)
 {
-	t_token *temp;
-	char *data;
+	t_token	*temp;
+	char	*data;
 
 	while (*tokens)
 	{

@@ -6,21 +6,12 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 18:04:14 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 18:13:37 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/04 20:53:56 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int is_operators(int c)
-{
-    return ('|' == c || c == '<' || c == '>');
-}
-
-int is_quote(int c)
-{
-    return (c == SINGLE_QUOTE || c == DOUBLE_QUOTE);
-}
 
 void	close_redirect_fd(int *fd)
 {
@@ -28,12 +19,18 @@ void	close_redirect_fd(int *fd)
 	*fd = -1;
 }
 
+
+void	double_close_fd(int *fd1, int *fd2)
+{
+	close_redirect_fd(fd1);
+	close_redirect_fd(fd2);
+}
+
 void	reset_fd(t_exe_info *info)
 {
 	dup2(info->saved_stdin, STDIN_FILENO);
-	close_redirect_fd(&info->saved_stdin);
 	dup2(info->saved_stdout, STDOUT_FILENO);
-	close_redirect_fd(&info->saved_stdout);
+	double_close_fd(&info->saved_stdin, &info->saved_stdout);
 }
 
 void	init_saved_fd(t_exe_info *info)
@@ -44,10 +41,10 @@ void	init_saved_fd(t_exe_info *info)
 
 char	**convert_to_envp(t_kvs *environ)
 {
-	int	i;
-	char **envp;
-	char *temp;
-	int environ_num;
+	int		i;
+	char	**envp;
+	char	*temp;
+	int		environ_num;
 
 	i = 0;
 	environ_num = count_environ(environ);
@@ -61,4 +58,3 @@ char	**convert_to_envp(t_kvs *environ)
 	}
 	return (envp);
 }
-
