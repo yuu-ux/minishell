@@ -10,11 +10,12 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "builtin.h"
+#include "minishell.h"
 #include "utils.h"
 
-static	char	*find_executable_path(const t_node *parsed_tokens, char **path_list, char **error_message)
+static char	*find_executable_path(const t_node *parsed_tokens, char **path_list,
+		char **error_message)
 {
 	int		i;
 	char	*slash_cmd;
@@ -39,7 +40,7 @@ static	char	*find_executable_path(const t_node *parsed_tokens, char **path_list,
 		free(path);
 	}
 	free(slash_cmd);
-	*error_message = ft_strdup("command not found")	;
+	*error_message = ft_strdup("command not found");
 	return (NULL);
 }
 
@@ -52,8 +53,7 @@ int	child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list,
 	if (info->exec_count < info->pipe_num)
 	{
 		wrap_dup2(parsed_tokens->fds[OUT], STDOUT_FILENO);
-		close_redirect_fd(&parsed_tokens->fds[OUT]);
-		close_redirect_fd(&parsed_tokens->fds[IN]);
+		double_close_fd(&parsed_tokens->fds[OUT], &parsed_tokens->fds[IN]);
 	}
 	// 初めのコマンド以外は、入力を前のpipefd[IN]にリダイレクトする
 	// STDIN → before_pipe_fd[IN]
@@ -89,11 +89,11 @@ void	set_redirect_fd(t_node *parsed_tokens)
 	}
 }
 
-
-int	execute(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_info *info)
+int	execute(t_node *parsed_tokens, char **path_list, t_context *context,
+		t_exe_info *info)
 {
 	char	*path;
-	char *error_message;
+	char	*error_message;
 
 	init_saved_fd(info);
 	do_redirections(parsed_tokens);
@@ -111,13 +111,10 @@ int	execute(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_i
 		ft_printf("bash: %s: %s\n", parsed_tokens->argv[0], error_message);
 		free(error_message);
 		free(path);
-		reset_fd(info);
-		free_after_invoke(path_list, parsed_tokens, info);
-		free_environ(context);
+		all_free(info, path_list, parsed_tokens, context);
 		exit(EXIT_STATUS_COMMAND_NOT_FOUND);
 	}
-	close_redirect_fd(&info->saved_stdin);
-	close_redirect_fd(&info->saved_stdout);
+	double_close_fd(&info->saved_stdin, &info->saved_stdout);
 	execve(path, parsed_tokens->argv, convert_to_envp(context->environ));
 	exit(EXIT_FAILURE);
 }

@@ -45,11 +45,11 @@ static bool	is_greater_than_long_max(t_node *parsed_tokens)
 	}
 	while (parsed_tokens->argv[1][i])
 	{
-		if ((ret > LONG_MAX / 10)
-			|| (ret == LONG_MAX / 10 && parsed_tokens->argv[1][i] > '7'))
+		if ((ret > LONG_MAX / 10) || (ret == LONG_MAX / 10
+				&& parsed_tokens->argv[1][i] > '7'))
 			return (true);
-		else if ((ret < LONG_MIN / 10)
-			|| (ret == LONG_MIN / 10 && parsed_tokens->argv[1][i] > '8'))
+		else if ((ret < LONG_MIN / 10) || (ret == LONG_MIN / 10
+				&& parsed_tokens->argv[1][i] > '8'))
 			return (true);
 		ret = ret * 10 + (parsed_tokens->argv[1][i] - '0') * sign;
 		i++;
@@ -58,7 +58,7 @@ static bool	is_greater_than_long_max(t_node *parsed_tokens)
 }
 
 bool	built_exit(t_node *parsed_tokens, char **path_list, t_context *context,
-	t_exe_info *info)
+		t_exe_info *info)
 {
 	if (info->pid[info->exec_count])
 		ft_printf("exit\n");
@@ -79,9 +79,7 @@ bool	built_exit(t_node *parsed_tokens, char **path_list, t_context *context,
 	}
 	if (context->exit_status == 0)
 		context->exit_status = ft_atol(parsed_tokens->argv[1]);
-	reset_fd(info);
-	free_after_invoke(path_list, parsed_tokens, info);
-	free_environ(context);
+	all_free(info, path_list, parsed_tokens, context);
 	exit(context->exit_status);
 }
 
