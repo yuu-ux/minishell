@@ -12,13 +12,11 @@
 
 #include "minishell.h"
 
-
 void	close_redirect_fd(int *fd)
 {
 	wrap_close(*fd);
 	*fd = -1;
 }
-
 
 void	double_close_fd(int *fd1, int *fd2)
 {
