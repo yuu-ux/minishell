@@ -17,8 +17,8 @@ typedef enum e_token_type	t_token_type;
 typedef struct s_token		t_token;
 typedef struct s_node		t_node;
 
-const char	*get_token_type_string(t_token_type type);
-void		print_token(t_token *head);
-void		print_node(t_node *head);
+const char					*get_token_type_string(t_token_type type);
+void						print_token(t_token *head);
+void						print_node(t_node *head);
 
 #endif
