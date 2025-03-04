@@ -13,7 +13,7 @@
 #include "builtin.h"
 
 int	exec_builtin(t_node *parsed_tokens, char **path_list, t_context *context,
-	t_exe_info *info)
+		t_exe_info *info)
 {
 	if (!(ft_strncmp(parsed_tokens->argv[0], "echo", 5)))
 		return (built_echo(parsed_tokens, context));
