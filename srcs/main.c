@@ -42,7 +42,7 @@ bool	preprocess_line(char *line, t_context *context, t_token **tokens)
 	else if (is_space_while(line))
 		return (EXIT_SUCCESS);
 	*tokens = tokenization(line);
-	if (check_syntax(*tokens) == EXIT_FAILURE)
+	if (check_syntax(*tokens, context) == EXIT_FAILURE)
 	{
 		free_tokens(tokens);
 		return (EXIT_SUCCESS);
