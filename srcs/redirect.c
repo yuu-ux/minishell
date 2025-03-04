@@ -47,7 +47,6 @@ static bool	find_set_redirect(t_node *parsed_tokens)
 	return (false);
 }
 
-
 char	**remove_redirect(t_node *parsed_tokens)
 {
 	char	**new_argv;
