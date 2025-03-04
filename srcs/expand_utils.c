@@ -12,6 +12,13 @@
 
 #include "minishell.h"
 
+void	set_flg_heredoc_expand(t_token *token, t_context *context)
+{
+	if (ft_strchr(token->data, SINGLE_QUOTE) != NULL
+		|| ft_strchr(token->data, DOUBLE_QUOTE) != NULL)
+		context->flg_heredoc_expand = false;
+}
+
 bool	is_expand(char *token, int i)
 {
 	return (token[i] == '$' && !(token[i + 1] == '\0' || token[i + 1] == '$'));
@@ -19,8 +26,8 @@ bool	is_expand(char *token, int i)
 
 char	*search_env(const char *key, t_kvs *environ)
 {
-	int	i;
-	char *result;
+	int		i;
+	char	*result;
 
 	i = 0;
 	result = NULL;
@@ -42,8 +49,7 @@ size_t	count_key_len(char *token)
 	size_t	i;
 
 	i = 0;
-	while ((ft_isalnum(token[i]) || token[i] == '_')
-		&& token[i])
+	while ((ft_isalnum(token[i]) || token[i] == '_') && token[i])
 		i++;
 	return (i);
 }
@@ -52,8 +58,8 @@ size_t	insert_env(char **buffer, char *token, t_context *context)
 {
 	size_t	key_len;
 	char	*value;
-    char *substr;
-	int	i;
+	char	*substr;
+	int		i;
 
 	i = 0;
 	key_len = 0;
@@ -74,4 +80,3 @@ size_t	insert_env(char **buffer, char *token, t_context *context)
 	*buffer = free_strjoin(*buffer, value);
 	return (key_len);
 }
-
