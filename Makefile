@@ -6,7 +6,7 @@
 #    By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/26 14:55:58 by hana/hmori        #+#    #+#              #
-#    Updated: 2025/03/03 21:35:41 by yehara           ###   ########.fr        #
+#    Updated: 2025/03/04 20:57:40 by yehara           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,6 +58,7 @@ SRC_FILES		=	main.c \
 					error_utils.c \
 					environ_units.c \
 					status_utils.c \
+					is_utils.c
 
 OBJ_DIR 		=	./objs
 OBJS 			=	$(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC_FILES))
