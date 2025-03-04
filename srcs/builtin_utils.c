@@ -86,3 +86,20 @@ void	xunsetenv(const char *name, t_context *context)
 		i++;
 	}
 }
+
+bool	is_variable(char *argv)
+{
+	int	i;
+
+	i = 0;
+	if (ft_isdigit(argv[i]))
+		return (false);
+	while (argv[i])
+	{
+		if (!(ft_isalnum(argv[i]) || argv[i] == '_'))
+			return (false);
+		i++;
+	}
+	return (true);
+}
+

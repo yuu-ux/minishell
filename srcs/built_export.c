@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "builtin.h"
-#include "utils.h"
 
 static	char	*analysis_token(char *argv, char *value)
 {
@@ -34,6 +33,11 @@ static bool	update_env(const t_node *parsed_tokens, t_context *context)
 	i = 1;
 	while (parsed_tokens->argv[i])
 	{
+		if (is_variable(parsed_tokens->argv[i]) == false)
+		{
+			ft_printf("minishell: export: `%s': not a valid identifier\n", parsed_tokens->argv[i]);
+			return (EXIT_FAILURE);
+		}
 		temp = ft_split(parsed_tokens->argv[i], '=');
 		temp[1] = analysis_token(parsed_tokens->argv[i], temp[1]);
 		if (xsetenv(temp[0], temp[1], context))
@@ -89,6 +93,7 @@ bool	built_export(const t_node *parsed_tokens, t_context *context)
 	if (!(parsed_tokens->argv[1]))
 		sorted_print(context);
 	else
-		update_env(parsed_tokens, context);
-	return (EXIT_SUCCESS);
+		return (setting_exit_status(context, update_env(parsed_tokens, context)));
+	return (setting_exit_status(context, EXIT_SUCCESS));
 }
+

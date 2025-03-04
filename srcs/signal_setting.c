@@ -12,13 +12,6 @@
 
 #include "minishell.h"
 
-void	setting_status(t_context *context)
-{
-	if (g_sig != 0)
-		context->exit_status = 128 + g_sig;
-	g_sig = 0;
-}
-
 void	parent_signal_setting(void)
 {
 	signal(SIGINT, sigint_handler);

@@ -75,11 +75,13 @@ bool	built_exit(t_node *parsed_tokens, char **path_list, t_context *context,
 	{
 		context->exit_status = EXIT_FAILURE;
 		ft_printf("bash: exit: too many arguments\n");
-		return (EXIT_FAILURE);
+		return (context->exit_status);
 	}
-	context->exit_status = ft_atol(parsed_tokens->argv[1]);
+	if (context->exit_status == 0)
+		context->exit_status = ft_atol(parsed_tokens->argv[1]);
 	reset_fd(info);
 	free_after_invoke(path_list, parsed_tokens, info);
-	free_context(context);
-	exit(EXIT_SUCCESS);
+	free_environ(context);
+	exit(context->exit_status);
 }
+

@@ -25,7 +25,8 @@ static bool	heredoc_child_process(char *delimiter, int fds[2], t_context *contex
 		{
 			wrap_close(fds[PIPE_IN]);
 			free(line);
-			return (EXIT_FAILURE);
+			free_environ(context);
+			exit(EXIT_FAILURE);
 		}
 		if (line == NULL)
 			ft_printf("-minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", delimiter);

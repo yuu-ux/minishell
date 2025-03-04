@@ -25,6 +25,7 @@ void	free_tokens(t_token **tokens)
 		free(temp);
 		free(data);
 	}
+	tokens = NULL;
 }
 
 void	free_after_invoke(char **path_list, t_node *parsed_tokens,
@@ -54,7 +55,7 @@ void	free_after_invoke(char **path_list, t_node *parsed_tokens,
 	}
 }
 
-void	free_context(t_context *context)
+void	free_environ(t_context *context)
 {
 	int	i;
 

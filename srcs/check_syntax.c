@@ -12,10 +12,10 @@
 
 #include "minishell.h"
 
-static  bool    print_syntax_error()
+static	int	print_syntax_error()
 {
     ft_putstr_fd("bash: syntax error near unexpected token `newline'\n", STDERR_FILENO);
-	return(EXIT_FAILURE);
+	return(EXIT_STATUS_SYNTAX_ERROR);
 }
 
 static bool    check_quote_error(t_token *token)
@@ -25,7 +25,7 @@ static bool    check_quote_error(t_token *token)
 
     i = 0;
     if (ft_strlen(token->data) == 1)
-        return (print_syntax_error());
+        return (EXIT_FAILURE);
     while (token->data[i])
     {
         if (is_quote(token->data[i]))
@@ -34,7 +34,7 @@ static bool    check_quote_error(t_token *token)
             while (token->data[i] != quote)
             {
                 if (!token->data[i])
-                    return (print_syntax_error());
+                    return (EXIT_FAILURE);
                 i++;
             }
         }
@@ -45,32 +45,38 @@ static bool    check_quote_error(t_token *token)
 
 static bool    check_operators_error(t_token *token)
 {
-	if (!token->next)
-		return (print_syntax_error());
+	if (token->next == NULL)
+		return (EXIT_FAILURE);
 	if (token->next->type != TOKEN_WORD)
-		return (print_syntax_error());
+		return (EXIT_FAILURE);
 	if (token->data[0] == '|' && token->data[1] == '|')
-		return (print_syntax_error());
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
-bool	check_syntax(t_token *token)
+bool	check_syntax(t_token *token, t_context *context)
 {
 	int	i;
 
     if (token->data[0] == '|')
-        return (print_syntax_error());
+		return (setting_exit_status(context, print_syntax_error()));
     while (token)
     {
 		i = 0;
 		while (token->data[i])
 		{
 			if (is_quote(token->data[i]))
-				return (check_quote_error(token));
+			{
+				if (check_quote_error(token) == EXIT_FAILURE)
+					return (setting_exit_status(context, print_syntax_error()));
+			}
 			i++;
 		}
         if (is_operators(token->data[0]))
-            return (check_operators_error(token));
+		{
+			if (check_operators_error(token) == EXIT_FAILURE)
+				return (setting_exit_status(context, print_syntax_error()));
+		}
         token = token->next;
     }
 	return (EXIT_SUCCESS);
