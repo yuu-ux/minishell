@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 18:20:24 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/02/26 18:21:39 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/04 20:55:52 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,56 @@ t_token_type	get_token_type(const char *token)
 		return (TOKEN_WORD);
 }
 
-bool	is_pipe(char *str)
+
+int	count_argv_cmd(char **argv)
 {
-	if (ft_strncmp(str, "|", 2) == 0)
-		return (true);
-	return (false);
+	int	count;
+	int	i;
+
+	count = 0;
+	i = 0;
+	while (argv[i])
+	{
+		if (is_redirect(argv[i]) || is_heredoc(argv[i]))
+		{
+			i += 2;
+			continue ;
+		}
+		count++;
+		i++;
+	}
+	return (count);
 }
 
-bool	is_redirect(char *str)
+bool	redirect_in(t_node *parsed_tokens, int i)
 {
-	if (ft_strncmp(str, ">", 2) == 0 || ft_strncmp(str, "<", 2) == 0
-		|| ft_strncmp(str, ">>", 3) == 0)
-		return (true);
-	return (false);
+	int	fd;
+
+	fd = open(parsed_tokens->argv[i + 1], O_RDONLY);
+	if (fd == -1)
+		return (printf("fd error\n"), false);
+	parsed_tokens->fds[IN] = fd;
+	return (true);
+}
+
+bool	redirect_out(t_node *parsed_tokens, int i)
+{
+	int	fd;
+
+	fd = open(parsed_tokens->argv[i + 1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	if (fd == -1)
+		return (printf("fd error\n"), false);
+	parsed_tokens->fds[OUT] = fd;
+	return (true);
+}
+
+bool	redirect_append(t_node *parsed_tokens, int i)
+{
+	int	fd;
+
+	fd = open(parsed_tokens->argv[i + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
+	if (fd == -1)
+		return (printf("fd error\n"), false);
+	parsed_tokens->fds[OUT] = fd;
+	return (true);
 }
