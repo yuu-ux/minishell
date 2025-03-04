@@ -67,8 +67,7 @@ size_t	skip_non_delimiter(const char **line)
 	size_t	moved;
 
 	moved = 0;
-	while (!(is_operators(**line) || ft_isspace(**line))
-		&& **line)
+	while (!(is_operators(**line) || ft_isspace(**line)) && **line)
 	{
 		moved++;
 		(*line)++;
@@ -77,4 +76,3 @@ size_t	skip_non_delimiter(const char **line)
 	}
 	return (moved);
 }
-

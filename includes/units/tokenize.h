@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 10:04:45 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/02/27 10:25:30 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/04 20:58:37 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,6 @@ typedef struct s_token
 
 t_token				*tokenization(const char *line);
 bool				check_syntax(t_token *token, t_context *context);
-
-// utils
-int					is_operators(int c);
-int					is_quote(int c);
 
 // tokenize_utils
 size_t				skip_quoted_token(char quote_char, const char **line);
