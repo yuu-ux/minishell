@@ -21,23 +21,26 @@ static	char	*find_executable_path(const t_node *parsed_tokens, char **path_list,
 	char	*path;
 
 	if (path_list == NULL)
-		return (*error_message = ft_strdup("No such file or directory"), NULL);
+	{
+		*error_message = ft_strdup("No such file or directory");
+		return (NULL);
+	}
 	i = 0;
 	path = NULL;
 	slash_cmd = ft_strjoin("/", parsed_tokens->argv[0]);
 	while (path_list[i])
 	{
-		path = ft_strjoin(path_list[i], slash_cmd);
+		path = ft_strjoin(path_list[i++], slash_cmd);
 		if (access(path, F_OK) == 0)
 		{
 			free(slash_cmd);
 			return (path);
 		}
 		free(path);
-		i++;
 	}
 	free(slash_cmd);
-	return (*error_message = ft_strdup("command not found"), NULL);
+	*error_message = ft_strdup("command not found")	;
+	return (NULL);
 }
 
 int	child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list,
