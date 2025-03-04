@@ -13,15 +13,6 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "libft.h"
-# include "units/debug.h"
-# include "units/error.h"
-# include "units/expand.h"
-# include "units/invoke_commands.h"
-# include "units/redirect.h"
-# include "units/signal_setting.h"
-# include "units/tokenize.h"
-# include "units/utils.h"
 # include <errno.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -30,6 +21,17 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include "units/debug.h"
+# include "units/error.h"
+# include "units/expand.h"
+# include "units/invoke_commands.h"
+# include "units/redirect.h"
+# include "units/signal_setting.h"
+# include "units/tokenize.h"
+# include "units/utils.h"
+
+# include "libft.h"
+
 # define EXIT_STATUS_COMMAND_NOT_FOUND 127
 # define EXIT_STATUS_INVALID 128
 # define EXIT_STATUS_SYNTAX_ERROR 2
