@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+void	set_flg_heredoc_expand(t_token *token, t_context *context)
+{
+	if (ft_strchr(token->data, SINGLE_QUOTE) != NULL || ft_strchr(token->data, DOUBLE_QUOTE) != NULL)
+		context->flg_heredoc_expand = false;
+}
+
 bool	is_expand(char *token, int i)
 {
 	return (token[i] == '$' && !(token[i + 1] == '\0' || token[i + 1] == '$'));

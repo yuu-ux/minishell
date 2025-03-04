@@ -121,3 +121,4 @@ bool	process_heredoc(t_node *parsed_tokens, t_context *context)
 	}
 	return (EXIT_SUCCESS);
 }
+

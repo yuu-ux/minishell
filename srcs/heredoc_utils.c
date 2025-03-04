@@ -24,20 +24,23 @@ char *expand_heredoc(char **line, t_context *context)
 	size_t	i;
 	int		start;
 	char *result;
+	t_expand expand;
 
+	expand.context = context;
+	expand.token = *line;
 	i = 0;
 	start = 0;
 	result = ft_strdup("");
-	while ((*line)[i])
+	while (expand.token[i])
 	{
-		if ((*line)[i] == '$')
+		if (expand.token[i] == '$')
 		{
-			i = expand_variable(&result, *line, context, start, i);
+			i = expand_variable(&result, expand, start, i);
 			start = i;
 		}
 		else
 			i++;
 	}
-	free(*line);
+	free(expand.token);
 	return (result);
 }
