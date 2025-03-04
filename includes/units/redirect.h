@@ -17,11 +17,11 @@ typedef enum e_token_type	t_token_type;
 typedef struct s_node		t_node;
 
 // redirect_utils.c
-bool			is_pipe(char *str);
-bool			is_redirect(char *str);
-t_token_type	get_token_type(const char *token);
+bool						is_pipe(char *str);
+bool						is_redirect(char *str);
+t_token_type				get_token_type(const char *token);
 
 // redirect.c
-bool			do_redirections(t_node *parsed_tokens);
+bool						do_redirections(t_node *parsed_tokens);
 
 #endif
