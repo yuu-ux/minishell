@@ -25,10 +25,11 @@ static size_t	delete_single_quote(char **result, char *token)
 	return (i + 1);
 }
 
-static size_t	expand_double_quote(char **result, t_expand expand, bool flg_heredoc)
+static size_t	expand_double_quote(char **result, t_expand expand,
+		bool flg_heredoc)
 {
 	int	i;
-	int		start;
+	int	start;
 
 	i = 1;
 	start = 1;
@@ -36,7 +37,8 @@ static size_t	expand_double_quote(char **result, t_expand expand, bool flg_hered
 	{
 		if (is_expand(expand.token, i) && !flg_heredoc)
 		{
-			*result = free_strjoin(*result, ft_substr(expand.token, start, i - start));
+			*result = free_strjoin(*result, ft_substr(expand.token, start,
+						i - start));
 			i += insert_env(result, &expand.token[i], expand.context);
 			// 「"」と「$」のため、i+1
 			start = i + 1;
@@ -74,7 +76,8 @@ static char	*expand_token(t_expand expand, bool flg_heredoc)
 		else
 		{
 			if (is_quote(expand.token[i++]))
-				result = free_strjoin(result, ft_substr(expand.token, start, i - start));
+				result = free_strjoin(result, ft_substr(expand.token, start,
+							i - start));
 			// 変数展開したときのみ、start を更新したいため、continue する
 			continue ;
 		}
@@ -86,11 +89,11 @@ static char	*expand_token(t_expand expand, bool flg_heredoc)
 
 t_token	*expand_tokens(t_token **_tokens, t_context *context)
 {
-	t_token	*head;
-	t_token	*tokens;
-    char    *temp;
-	bool	flg_heredoc;
-	t_expand expand;
+	t_token		*head;
+	t_token		*tokens;
+	char		*temp;
+	bool		flg_heredoc;
+	t_expand	expand;
 
 	flg_heredoc = false;
 	head = *_tokens;
@@ -98,7 +101,7 @@ t_token	*expand_tokens(t_token **_tokens, t_context *context)
 	expand.context = context;
 	while (tokens)
 	{
-        temp = tokens->data;
+		temp = tokens->data;
 		if (is_heredoc(tokens->data))
 		{
 			flg_heredoc = true;
@@ -106,9 +109,8 @@ t_token	*expand_tokens(t_token **_tokens, t_context *context)
 		}
 		expand.token = tokens->data;
 		tokens->data = expand_token(expand, flg_heredoc);
-        free(temp);
+		free(temp);
 		tokens = tokens->next;
 	}
 	return (head);
 }
-
