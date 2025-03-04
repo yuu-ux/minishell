@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 10:00:57 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/03/03 21:35:29 by yehara           ###   ########.fr       */
+/*   Updated: 2025/03/04 20:57:56 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,5 +34,11 @@ t_kvs	*xgetenv(const char *name, t_context *context);
 void	setting_status(t_context *context);
 uint8_t	setting_exit_status(t_context *context, uint8_t status);
 void	catch_exit_status(t_context *context, int status);
+
+/* is_utils.c */
+int		is_operators(int c);
+int		is_quote(int c);
+bool	is_pipe(char *str);
+bool	is_redirect(char *str);
 
 #endif
