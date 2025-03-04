@@ -12,38 +12,39 @@
 
 #include "minishell.h"
 
-static	int	print_syntax_error()
+static int	print_syntax_error(void)
 {
-    ft_putstr_fd("bash: syntax error near unexpected token `newline'\n", STDERR_FILENO);
-	return(EXIT_STATUS_SYNTAX_ERROR);
+	ft_putstr_fd("bash: syntax error near unexpected token `newline'\n",
+		STDERR_FILENO);
+	return (EXIT_STATUS_SYNTAX_ERROR);
 }
 
-static bool    check_quote_error(t_token *token)
+static bool	check_quote_error(t_token *token)
 {
-    char quote;
-    int i;
+	char	quote;
+	int		i;
 
-    i = 0;
-    if (ft_strlen(token->data) == 1)
-        return (EXIT_FAILURE);
-    while (token->data[i])
-    {
-        if (is_quote(token->data[i]))
-        {
-            quote = token->data[i++];
-            while (token->data[i] != quote)
-            {
-                if (!token->data[i])
-                    return (EXIT_FAILURE);
-                i++;
-            }
-        }
-        i++;
-    }
-    return (EXIT_SUCCESS);
+	i = 0;
+	if (ft_strlen(token->data) == 1)
+		return (EXIT_FAILURE);
+	while (token->data[i])
+	{
+		if (is_quote(token->data[i]))
+		{
+			quote = token->data[i++];
+			while (token->data[i] != quote)
+			{
+				if (!token->data[i])
+					return (EXIT_FAILURE);
+				i++;
+			}
+		}
+		i++;
+	}
+	return (EXIT_SUCCESS);
 }
 
-static bool    check_operators_error(t_token *token)
+static bool	check_operators_error(t_token *token)
 {
 	if (token->next == NULL)
 		return (EXIT_FAILURE);
@@ -58,10 +59,10 @@ bool	check_syntax(t_token *token, t_context *context)
 {
 	int	i;
 
-    if (token->data[0] == '|')
+	if (token->data[0] == '|')
 		return (setting_exit_status(context, print_syntax_error()));
-    while (token)
-    {
+	while (token)
+	{
 		i = 0;
 		while (token->data[i])
 		{
@@ -72,13 +73,12 @@ bool	check_syntax(t_token *token, t_context *context)
 			}
 			i++;
 		}
-        if (is_operators(token->data[0]))
+		if (is_operators(token->data[0]))
 		{
 			if (check_operators_error(token) == EXIT_FAILURE)
 				return (setting_exit_status(context, print_syntax_error()));
 		}
-        token = token->next;
-    }
+		token = token->next;
+	}
 	return (EXIT_SUCCESS);
 }
-
