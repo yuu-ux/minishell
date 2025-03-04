@@ -98,6 +98,8 @@ int	execute(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_i
 	init_saved_fd(info);
 	do_redirections(parsed_tokens);
 	set_redirect_fd(parsed_tokens);
+	ft_putnbr_fd(parsed_tokens->fds[PIPE_OUT], STDOUT_FILENO);
+	ft_putstr_fd("#\n", STDOUT_FILENO);
 	if (is_builtin(parsed_tokens))
 	{
 		exec_builtin(parsed_tokens, path_list, context, info);

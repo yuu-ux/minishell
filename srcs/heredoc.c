@@ -55,8 +55,9 @@ static bool	heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid,
 		wrap_close(fds[PIPE_OUT]);
 		return (false);
 	}
-	// dup2(fds[PIPE_OUT], STDOUT_FILENO);
 	parsed_tokens->fds[PIPE_OUT] = fds[PIPE_OUT];
+	ft_putnbr_fd(fds[PIPE_OUT], STDOUT_FILENO);
+	ft_putstr_fd("@\n", STDOUT_FILENO);
 	context->flg_heredoc_expand = true;
 	if (status)
 		return (false);
@@ -82,7 +83,7 @@ static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context, char
 	{
 		child_exit_st = heredoc_child_process(parsed_tokens->argv[i + 1], fds, context);
 		free_after_invoke(path_list, parsed_tokens, info);
-		free_context(context);
+		free_environ(context);
 		exit(child_exit_st);
 	}
 	if (heredoc_parent_process(parsed_tokens, fds, pid, context) == false)
