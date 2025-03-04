@@ -13,7 +13,8 @@
 NAME			=	minishell
 
 CC				=	cc
-CFLAGS			=	-g -Wall -Wextra -Werror
+CFLAGS			=	
+# CFLAGS			=	-g -Wall -Wextra -Werror
 FLAGS			=	-I$(HEADER_MAIN) -I$(HEADER_UNIT) -I$(LIBFT_DIR)/include
 LIBREADL		=	-lreadline
 MAKEFLAGS		+=	--no-print-directory

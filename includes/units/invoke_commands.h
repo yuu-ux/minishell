@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 09:51:12 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/03/01 22:05:19 by yehara           ###   ########.fr       */
+/*   Updated: 2025/03/03 18:06:48 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,8 @@ typedef enum e_node_type
 
 typedef enum e_std_fd
 {
-	IN = STDIN_FILENO,
-	OUT = STDOUT_FILENO,
-	ERR = STDERR_FILENO,
+	PIPE_OUT = 0,
+	PIPE_IN = 1,
 	INVALID_FD = -1,
 }	t_std_fd;
 
@@ -75,7 +74,7 @@ bool	is_builtin(const t_node *parsed_tokens);
 
 // heredoc.c
 bool	is_heredoc(char *argv);
-bool	process_heredoc(t_node *parsed_tokens, t_context *context);
+bool	process_heredoc(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_info *info);
 char	*expand_heredoc(char **line, t_context *context);
 
 #endif

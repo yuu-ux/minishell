@@ -43,7 +43,7 @@ void	child_process(int fds[2])
 {
 	char	*temp;
 
-	wrap_close(fds[IN]);
+	wrap_close(fds[PIPE_OUT]);
 	while (true)
 	{
 		temp = readline("> ");
@@ -52,11 +52,11 @@ void	child_process(int fds[2])
 			free(temp);
 			break ;
 		}
-		write(fds[OUT], temp, strlen(temp));
-		write(fds[OUT], "\n", 1);
+		write(fds[PIPE_IN], temp, strlen(temp));
+		write(fds[PIPE_IN], "\n", 1);
 		free(temp);
 	}
-	wrap_close(fds[OUT]);
+	wrap_close(fds[PIPE_IN]);
 	exit(EXIT_SUCCESS);
 }
 
@@ -65,8 +65,8 @@ int	parent_process(pid_t pid, int fds[2])
 	int	status;
 
 	waitpid(pid, &status, 0);
-	wrap_close(fds[OUT]);
-	return (fds[IN]);
+	wrap_close(fds[PIPE_IN]);
+	return (fds[PIPE_OUT]);
 }
 
 int	exec_heredoc(void)

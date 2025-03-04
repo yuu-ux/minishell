@@ -37,6 +37,12 @@ void	child_signal_setting(void)
 	signal(SIGQUIT, SIG_DFL);
 }
 
+void	heredoc_parent_signal_setting(void)
+{
+	signal(SIGINT, heredoc_parent_sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
+}
+
 void	heredoc_child_signal_setting(void)
 {
 	signal(SIGINT, signal_handler);
