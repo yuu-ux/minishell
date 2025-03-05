@@ -37,7 +37,7 @@ static void	heredoc_child_process(char *delimiter, int fds[2],
 			wrap_close(fds[OUT]);
 			free(line);
 			free_environ(context);
-			exit(EXIT_FAILURE);
+			exit(EXIT_STATUS_INVALID + SIGINT);
 		}
 		if (ft_strncmp(delimiter, line, ft_strlen(delimiter) + 1) == 0)
 			break ;
@@ -60,6 +60,7 @@ static bool	heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid,
 	waitpid(pid, &status, 0);
 	if (WIFSIGNALED(status) == EXIT_SUCCESS)
 	{
+		catch_exit_status(context, status);
 		wrap_close(fds[IN]);
 		wrap_close(fds[OUT]);
 		return (false);
