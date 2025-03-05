@@ -24,6 +24,9 @@ static void	heredoc_child_process(char *delimiter, int fds[2],
 	while (true)
 	{
 		line = readline("> ");
+		if (line == NULL)
+			ft_printf("minishell: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n",
+				delimiter);
 		if (g_sig == SIGINT)
 		{
 			rl_done = 0;
@@ -80,7 +83,8 @@ static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context)
 			EXIT_FAILURE);
 	if (pid == 0)
 		heredoc_child_process(parsed_tokens->argv[i + 1], fds, context);
-	if (heredoc_parent_process(parsed_tokens, fds, pid, context) == EXIT_FAILURE)
+	if (heredoc_parent_process(parsed_tokens, fds, pid,
+			context) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
