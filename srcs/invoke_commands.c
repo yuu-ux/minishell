@@ -76,7 +76,7 @@ static int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 	if (info->pid[info->exec_count] == 0)
 	{
 		wrap_dup2(info->before_cmd_fd, STDIN_FILENO);
-		wrap_close(info->before_cmd_fd);
+		close_redirect_fd(&info->before_cmd_fd);
 		execute(parsed_tokens, path_list, context, info);
 		exit(EXIT_FAILURE);
 	}
@@ -92,7 +92,8 @@ static int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 static int	exec_cmd(t_node *parsed_tokens, char **path_list,
 		t_context *context, t_exe_info *info)
 {
-	if (process_heredoc(parsed_tokens, path_list, context, info) == EXIT_FAILURE)
+	if (process_heredoc(parsed_tokens, path_list, context,
+			info) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (parsed_tokens->next == NULL && parsed_tokens->argv != NULL)
 		return (exec_single_cmd(parsed_tokens, path_list, context, info));
