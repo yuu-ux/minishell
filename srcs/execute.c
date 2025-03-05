@@ -113,7 +113,7 @@ int	execute(t_node *parsed_tokens, char **path_list, t_context *context,
 	path = find_executable_path(parsed_tokens, path_list, &error_message);
 	if (path == NULL)
 	{
-		ft_printf("bash: %s: %s\n", parsed_tokens->argv[0], error_message);
+		ft_printf("minishell: %s: %s\n", parsed_tokens->argv[0], error_message);
 		free(error_message);
 		free(path);
 		all_free(info, path_list, parsed_tokens, context);

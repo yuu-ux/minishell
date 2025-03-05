@@ -93,7 +93,7 @@ bool	built_cd(const t_node *parsed_tokens, t_context *context)
 
 	if (count_argv(parsed_tokens) > 2)
 	{
-		ft_printf("bash: cd: too many arguments\n");
+		ft_printf("minishell: cd: too many arguments\n");
 		return (setting_exit_status(context, EXIT_FAILURE));
 	}
 	current_pwd = getcwd(NULL, 0);
