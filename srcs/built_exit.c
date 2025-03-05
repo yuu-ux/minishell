@@ -60,7 +60,7 @@ static bool	is_greater_than_long_max(t_node *parsed_tokens)
 bool	built_exit(t_node *parsed_tokens, char **path_list, t_context *context,
 		t_exe_info *info)
 {
-	if (info->pid[info->exec_count])
+	if (info->pid[info->exec_count] == -1)
 		ft_printf("exit\n");
 	if (parsed_tokens->argv[1] == NULL)
 		;
@@ -73,13 +73,12 @@ bool	built_exit(t_node *parsed_tokens, char **path_list, t_context *context,
 	}
 	else if (parsed_tokens->argv[2] != NULL) // 引数の2つ目以降が存在する 例：exit 1 2
 	{
-		context->exit_status = EXIT_FAILURE;
 		ft_printf("minishell: exit: too many arguments\n");
+		context->exit_status = EXIT_FAILURE;
 		return (context->exit_status);
 	}
-	if (context->exit_status == 0)
+	if (context->exit_status == 0 && parsed_tokens->argv[1])
 		context->exit_status = ft_atol(parsed_tokens->argv[1]);
 	all_free(info, path_list, parsed_tokens, context);
 	exit(context->exit_status);
 }
-
