@@ -12,7 +12,7 @@
 
 #include "builtin.h"
 
-static	char	*analysis_token(char *argv, char *value)
+static char	*analysis_token(char *argv, char *value)
 {
 	char	*equal_char;
 
@@ -35,7 +35,8 @@ static bool	update_env(const t_node *parsed_tokens, t_context *context)
 	{
 		if (is_variable(parsed_tokens->argv[i]) == false)
 		{
-			ft_printf("minishell: export: `%s': not a valid identifier\n", parsed_tokens->argv[i]);
+			ft_printf("minishell: export: `%s': not a valid identifier\n",
+				parsed_tokens->argv[i]);
 			return (EXIT_FAILURE);
 		}
 		temp = ft_split(parsed_tokens->argv[i], '=');
@@ -50,7 +51,7 @@ static bool	update_env(const t_node *parsed_tokens, t_context *context)
 	return (EXIT_SUCCESS);
 }
 
-static	void	kvs_swap(t_kvs *env1, t_kvs *env2)
+static void	kvs_swap(t_kvs *env1, t_kvs *env2)
 {
 	t_kvs	temp;
 
@@ -59,10 +60,10 @@ static	void	kvs_swap(t_kvs *env1, t_kvs *env2)
 	*env2 = temp;
 }
 
-static	void	sorted_print(t_context *context)
+static void	sorted_print(t_context *context)
 {
-	int		i;
-	int		j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (context->environ[i + 1].key)
@@ -93,7 +94,7 @@ bool	built_export(const t_node *parsed_tokens, t_context *context)
 	if (!(parsed_tokens->argv[1]))
 		sorted_print(context);
 	else
-		return (setting_exit_status(context, update_env(parsed_tokens, context)));
+		return (setting_exit_status(context, update_env(parsed_tokens,
+					context)));
 	return (setting_exit_status(context, EXIT_SUCCESS));
 }
-

@@ -53,8 +53,8 @@ bool	preprocess_line(char *line, t_context *context, t_token **tokens)
 
 void	shell_loop(t_context *context)
 {
-	char		*line;
-	t_token		*tokens;
+	char	*line;
+	t_token	*tokens;
 
 	line = NULL;
 	while (true)
@@ -73,7 +73,8 @@ void	shell_loop(t_context *context)
 	}
 }
 
-int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)), char *envp[])
+int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)),
+		char *envp[])
 {
 	t_context	context;
 

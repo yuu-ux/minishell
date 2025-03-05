@@ -12,7 +12,7 @@
 
 #include "builtin.h"
 
-bool	built_unset(const	t_node *parsed_tokens, t_context *context)
+bool	built_unset(const t_node *parsed_tokens, t_context *context)
 {
 	int	i;
 
@@ -23,11 +23,11 @@ bool	built_unset(const	t_node *parsed_tokens, t_context *context)
 			xunsetenv(parsed_tokens->argv[i], context);
 		else
 		{
-			ft_printf("minishell: unset: `%s': not a valid identifier\n", parsed_tokens->argv[i]);
+			ft_printf("minishell: unset: `%s': not a valid identifier\n",
+				parsed_tokens->argv[i]);
 			return (setting_exit_status(context, EXIT_FAILURE));
 		}
 		i++;
 	}
 	return (setting_exit_status(context, EXIT_SUCCESS));
 }
-

@@ -15,22 +15,22 @@
 
 # include <signal.h>
 
-typedef struct s_context t_context;
+typedef struct s_context		t_context;
 
 extern volatile sig_atomic_t	g_sig;
 
 /* signal_setting.c */
-void	parent_signal_setting(void);
-void	parent_override_signal_setting(void);
-void	child_signal_setting(void);
-void	heredoc_parent_signal_setting(void);
-void	heredoc_child_signal_setting(void);
+void							parent_signal_setting(void);
+void							parent_override_signal_setting(void);
+void							child_signal_setting(void);
+void							heredoc_parent_signal_setting(void);
+void							heredoc_child_signal_setting(void);
 
 /* signal_handler.c */
-void	signal_handler(int signum);
-void	heredoc_parent_sigint_handler(int signum);
-void	sigint_handler(int signum);
-void	parent_override_signal_handler(int signum);
-void	setting_status(t_context *context);
+void							signal_handler(int signum);
+void							heredoc_parent_sigint_handler(int signum);
+void							sigint_handler(int signum);
+void							parent_override_signal_handler(int signum);
+void							setting_status(t_context *context);
 
 #endif

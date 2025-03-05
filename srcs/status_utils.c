@@ -32,4 +32,3 @@ uint8_t	setting_exit_status(t_context *context, uint8_t status)
 	context->exit_status = status;
 	return (status);
 }
-

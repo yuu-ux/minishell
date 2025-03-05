@@ -14,7 +14,7 @@
 
 void	join_perror(const char *s1, const char *s2)
 {
-	char *message;
+	char	*message;
 
 	message = ft_strjoin(s1, s2);
 	perror(message);

@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 10:04:45 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/02/27 10:25:30 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/04 20:58:37 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,26 +25,22 @@ typedef enum e_token_type
 	TOKEN_REDIRECT_OUT,
 	TOKEN_REDIRECT_APPEND,
 	TOKEN_REDIRECT_HEREDOC,
-}	t_token_type;
+}					t_token_type;
 
 typedef struct s_token
 {
 	char			*data;
 	t_token			*next;
 	t_token_type	type;
-}	t_token;
+}					t_token;
 
-t_token	*tokenization(const char *line);
-bool	check_syntax(t_token *token, t_context *context);
-
-// utils
-int		is_operators(int c);
-int		is_quote(int c);
+t_token				*tokenization(const char *line);
+bool				check_syntax(t_token *token, t_context *context);
 
 // tokenize_utils
-size_t	skip_quoted_token(char quote_char, const char **line);
-size_t	skip_while(int (*is_skip)(int), const char **line);
-size_t	skip_non_delimiter(const char **line);
-t_token	*new_token(const char *line, t_token_type type);
+size_t				skip_quoted_token(char quote_char, const char **line);
+size_t				skip_while(int (*is_skip)(int), const char **line);
+size_t				skip_non_delimiter(const char **line);
+t_token				*new_token(const char *line, t_token_type type);
 
 #endif

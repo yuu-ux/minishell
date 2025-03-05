@@ -92,9 +92,8 @@ t_token	*tokenization(const char *line)
 		i++;
 	}
 	token->next = NULL;
-    while (i >= 0)
-        free(tokens[i--]);
-    free(tokens);
-    return (head);
+	while (i >= 0)
+		free(tokens[i--]);
+	free(tokens);
+	return (head);
 }
-

@@ -24,7 +24,7 @@ static size_t	count_env(char **envp)
 
 static t_kvs	*create_env(char **envp)
 {
-	t_kvs		*environ;
+	t_kvs	*environ;
 	char	**temp;
 	int		i;
 	int		j;
@@ -50,11 +50,10 @@ static t_kvs	*create_env(char **envp)
 
 t_context	init_context(char *envp[])
 {
-	t_context context;
+	t_context	context;
 
 	context.environ = create_env(envp);
 	context.exit_status = EXIT_SUCCESS;
 	context.flg_heredoc_expand = true;
 	return (context);
 }
-

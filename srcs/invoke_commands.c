@@ -35,13 +35,10 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 		else
 			execute(parsed_tokens, path_list, context, info);
 	}
-	else
-	{
-		parent_override_signal_setting();
-		waitpid(pid, &status, 0);
-		catch_exit_status(context, status);
-		wrap_close(parsed_tokens->fds[IN]);
-	}
+	parent_override_signal_setting();
+	waitpid(pid, &status, 0);
+	catch_exit_status(context, status);
+	wrap_close(parsed_tokens->fds[IN]);
 	return (context->exit_status);
 }
 

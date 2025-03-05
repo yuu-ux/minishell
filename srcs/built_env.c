@@ -20,8 +20,8 @@ bool	built_env(t_context *context)
 	while (context->environ[i].key)
 	{
 		if (context->environ[i].value)
-			printf("%s=%s\n",
-				context->environ[i].key, context->environ[i].value);
+			printf("%s=%s\n", context->environ[i].key,
+				context->environ[i].value);
 		i++;
 	}
 	return (setting_exit_status(context, EXIT_SUCCESS));
