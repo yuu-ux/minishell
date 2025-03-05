@@ -71,7 +71,7 @@ static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context,
 {
 	int				fds[2];
 	pid_t			pid;
-	unsigned char	child_exit_st;
+	unsigned char	child_exit_status;
 
 	if (pipe(fds) == -1)
 	{
@@ -84,10 +84,10 @@ static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context,
 			EXIT_FAILURE);
 	if (pid == 0)
 	{
-		child_exit_st = heredoc_child_process(parsed_tokens->argv[i + 1], fds, context);
+		child_exit_status = heredoc_child_process(parsed_tokens->argv[i + 1], fds, context);
 		free_after_invoke(path_list, parsed_tokens, info);
 		free_environ(context);
-		exit(child_exit_st);
+		exit(child_exit_status);
 	}
 	if (heredoc_parent_process(parsed_tokens, fds, pid,
 			context) == EXIT_FAILURE)
