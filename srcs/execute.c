@@ -52,8 +52,13 @@ int	child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list,
 	// STDOUT → current_pipefd[OUT]
 	if (info->exec_count < info->pipe_num)
 	{
+		if (parsed_tokens->fds[IN] != INVALID_FD)
+		{
+			wrap_dup2(parsed_tokens->fds[IN], STDIN_FILENO);
+			close_redirect_fd(&parsed_tokens->fds[IN]);
+		}
 		wrap_dup2(parsed_tokens->fds[OUT], STDOUT_FILENO);
-		double_close_fd(&parsed_tokens->fds[OUT], &parsed_tokens->fds[IN]);
+		close_redirect_fd(&parsed_tokens->fds[OUT]);
 	}
 	// 初めのコマンド以外は、入力を前のpipefd[IN]にリダイレクトする
 	// STDIN → before_pipe_fd[IN]
