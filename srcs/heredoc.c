@@ -12,11 +12,20 @@
 
 #include "minishell.h"
 
-static void	heredoc_child_process(char *delimiter, int fds[2], t_context *context)
+int	here_document_rl_event_hook(void)
+{
+	if (g_sig == SIGINT)
+		rl_done = 1;
+	return (0);
+}
+
+static void	heredoc_child_process(char *delimiter, int fds[2],
+		t_context *context)
 {
 	char	*line;
 
 	heredoc_child_signal_setting();
+	rl_event_hook = here_document_rl_event_hook;
 	wrap_close(fds[IN]);
 	line = NULL;
 	while (true)
@@ -24,8 +33,8 @@ static void	heredoc_child_process(char *delimiter, int fds[2], t_context *contex
 		line = readline("> ");
 		if (g_sig == SIGINT)
 		{
+			rl_done = 0;
 			wrap_close(fds[OUT]);
-			ft_putchar_fd('\n', STDOUT_FILENO);
 			free(line);
 			free_environ(context);
 			exit(EXIT_FAILURE);
@@ -42,23 +51,22 @@ static void	heredoc_child_process(char *delimiter, int fds[2], t_context *contex
 	exit(EXIT_SUCCESS);
 }
 
-
-static bool	heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid, t_context *context)
+static bool	heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid,
+		t_context *context)
 {
 	int	status;
 
-	signal(SIGINT, sigint_handler);
+	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
-	if (context->exit_status)
+	if (WIFSIGNALED(status) == EXIT_SUCCESS)
 	{
 		wrap_close(fds[IN]);
 		wrap_close(fds[OUT]);
 		return (false);
 	}
+	wrap_close(fds[OUT]);
 	parsed_tokens->fds[IN] = fds[IN];
 	context->flg_heredoc_expand = true;
-	if (status)
-		return (false);
 	return (true);
 }
 
@@ -119,5 +127,6 @@ bool	process_heredoc(t_node *parsed_tokens, t_context *context)
 		}
 		current = current->next;
 	}
+	rl_event_hook = NULL;
 	return (EXIT_SUCCESS);
 }
