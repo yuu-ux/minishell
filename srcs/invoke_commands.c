@@ -45,12 +45,24 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 static int	exec_pipe(t_node *parsed_tokens, t_exe_info *info, char **path_list,
 		t_context *context)
 {
+	int	saved_fd;
+
+	saved_fd = INVALID_FD;
+	do_redirections(parsed_tokens);
+	if (parsed_tokens->fds[IN] != INVALID_FD)
+		saved_fd = parsed_tokens->fds[IN];
 	pipe(parsed_tokens->fds);
 	info->pid[info->exec_count] = fork();
 	if (info->pid[info->exec_count] == -1)
 		return (EXIT_FAILURE);
 	if (info->pid[info->exec_count] == 0)
+	{
+		close_redirect_fd(&parsed_tokens->fds[IN]);
+		if (saved_fd != INVALID_FD)
+			parsed_tokens->fds[IN] = saved_fd;
 		child_process(parsed_tokens, info, path_list, context);
+	}
+	wrap_close(saved_fd);
 	parent_process(parsed_tokens, info);
 	info->exec_count++;
 	return (EXIT_SUCCESS);
@@ -65,11 +77,11 @@ static int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 	if (info->pid[info->exec_count] == 0)
 	{
 		wrap_dup2(info->before_cmd_fd, STDIN_FILENO);
-		wrap_close(info->before_cmd_fd);
+		close_redirect_fd(&info->before_cmd_fd);
 		execute(parsed_tokens, path_list, context, info);
 		exit(EXIT_FAILURE);
 	}
-	wrap_close(info->before_cmd_fd);
+	close_redirect_fd(&info->before_cmd_fd);
 	while (info->exec_count >= 0)
 	{
 		waitpid(info->pid[info->exec_count], NULL, 0);
@@ -81,7 +93,8 @@ static int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 static int	exec_cmd(t_node *parsed_tokens, char **path_list,
 		t_context *context, t_exe_info *info)
 {
-	if (process_heredoc(parsed_tokens, path_list, context, info) == EXIT_FAILURE)
+	if (process_heredoc(parsed_tokens, path_list, context,
+			info) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (parsed_tokens->next == NULL && parsed_tokens->argv != NULL)
 		return (exec_single_cmd(parsed_tokens, path_list, context, info));
