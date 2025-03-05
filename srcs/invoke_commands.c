@@ -62,6 +62,7 @@ static int	exec_pipe(t_node *parsed_tokens, t_exe_info *info, char **path_list,
 			parsed_tokens->fds[IN] = saved_fd;
 		child_process(parsed_tokens, info, path_list, context);
 	}
+	wrap_close(saved_fd);
 	parent_process(parsed_tokens, info);
 	info->exec_count++;
 	return (EXIT_SUCCESS);
