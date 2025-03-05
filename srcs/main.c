@@ -59,6 +59,7 @@ void	shell_loop(t_context *context)
 	line = NULL;
 	while (true)
 	{
+		g_sig = 0;
 		parent_signal_setting();
 		line = readline("minishell$ ");
 		setting_status(context);

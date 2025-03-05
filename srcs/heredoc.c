@@ -12,23 +12,28 @@
 
 #include "minishell.h"
 
-static void	heredoc_child_process(char *delimiter, int fds[2], t_context *context)
+static void	heredoc_child_process(char *delimiter, int fds[2],
+		t_context *context)
 {
 	char	*line;
 
 	heredoc_child_signal_setting();
+	rl_event_hook = here_document_rl_event_hook;
 	wrap_close(fds[IN]);
 	line = NULL;
 	while (true)
 	{
 		line = readline("> ");
+		if (line == NULL)
+			ft_printf("minishell: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n",
+				delimiter);
 		if (g_sig == SIGINT)
 		{
+			rl_done = 0;
 			wrap_close(fds[OUT]);
-			ft_putchar_fd('\n', STDOUT_FILENO);
 			free(line);
 			free_environ(context);
-			exit(EXIT_FAILURE);
+			exit(EXIT_STATUS_INVALID + SIGINT);
 		}
 		if (ft_strncmp(delimiter, line, ft_strlen(delimiter) + 1) == 0)
 			break ;
@@ -42,24 +47,24 @@ static void	heredoc_child_process(char *delimiter, int fds[2], t_context *contex
 	exit(EXIT_SUCCESS);
 }
 
-
-static bool	heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid, t_context *context)
+static bool	heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid,
+		t_context *context)
 {
 	int	status;
 
-	signal(SIGINT, sigint_handler);
+	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
-	if (context->exit_status)
+	if (WEXITSTATUS(status) == (EXIT_STATUS_INVALID + SIGINT))
 	{
+		catch_exit_status(context, status);
 		wrap_close(fds[IN]);
 		wrap_close(fds[OUT]);
-		return (false);
+		return (EXIT_FAILURE);
 	}
+	wrap_close(fds[OUT]);
 	parsed_tokens->fds[IN] = fds[IN];
 	context->flg_heredoc_expand = true;
-	if (status)
-		return (false);
-	return (true);
+	return (EXIT_SUCCESS);
 }
 
 static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context)
@@ -78,7 +83,8 @@ static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context)
 			EXIT_FAILURE);
 	if (pid == 0)
 		heredoc_child_process(parsed_tokens->argv[i + 1], fds, context);
-	if (heredoc_parent_process(parsed_tokens, fds, pid, context) == false)
+	if (heredoc_parent_process(parsed_tokens, fds, pid,
+			context) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -119,5 +125,6 @@ bool	process_heredoc(t_node *parsed_tokens, t_context *context)
 		}
 		current = current->next;
 	}
+	rl_event_hook = NULL;
 	return (EXIT_SUCCESS);
 }

@@ -12,6 +12,13 @@
 
 #include "minishell.h"
 
+int	here_document_rl_event_hook(void)
+{
+	if (g_sig == SIGINT)
+		rl_done = 1;
+	return (EXIT_SUCCESS);
+}
+
 bool	is_heredoc(char *argv)
 {
 	if (ft_strncmp(argv, "<<", 3) == 0)
