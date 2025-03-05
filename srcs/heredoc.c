@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	heredoc_child_process(char *delimiter, int fds[2],
+static unsigned char	heredoc_child_process(char *delimiter, int fds[2],
 		t_context *context)
 {
 	char	*line;
@@ -32,8 +32,7 @@ static void	heredoc_child_process(char *delimiter, int fds[2],
 			rl_done = 0;
 			wrap_close(fds[OUT]);
 			free(line);
-			free_environ(context);
-			exit(EXIT_STATUS_INVALID + SIGINT);
+			return (EXIT_STATUS_INVALID + SIGINT);
 		}
 		if (ft_strncmp(delimiter, line, ft_strlen(delimiter) + 1) == 0)
 			break ;
@@ -44,7 +43,7 @@ static void	heredoc_child_process(char *delimiter, int fds[2],
 		free(line);
 	}
 	wrap_close(fds[OUT]);
-	exit(EXIT_SUCCESS);
+	return (EXIT_SUCCESS);
 }
 
 static bool	heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid,
@@ -67,10 +66,12 @@ static bool	heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid,
 	return (EXIT_SUCCESS);
 }
 
-static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context)
+static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context,
+		char **path_list, t_exe_info *info)
 {
-	int		fds[2];
-	pid_t	pid;
+	int				fds[2];
+	pid_t			pid;
+	unsigned char	child_exit_st;
 
 	if (pipe(fds) == -1)
 	{
@@ -82,14 +83,20 @@ static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context)
 		return (wrap_close(fds[IN]), wrap_close(fds[OUT]), printf("error\n"),
 			EXIT_FAILURE);
 	if (pid == 0)
-		heredoc_child_process(parsed_tokens->argv[i + 1], fds, context);
+	{
+		child_exit_st = heredoc_child_process(parsed_tokens->argv[i + 1], fds, context);
+		free_after_invoke(path_list, parsed_tokens, info);
+		free_environ(context);
+		exit(child_exit_st);
+	}
 	if (heredoc_parent_process(parsed_tokens, fds, pid,
 			context) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
-static bool	exec_heredoc(t_node *current, t_context *context)
+static bool	exec_heredoc(t_node *current, char **path_list,
+		t_context *context, t_exe_info *info)
 {
 	int	i;
 
@@ -98,7 +105,7 @@ static bool	exec_heredoc(t_node *current, t_context *context)
 	{
 		if (is_heredoc(current->argv[i]))
 		{
-			if (setup_heredoc(current, i, context) == EXIT_FAILURE)
+			if (setup_heredoc(current, i, context, path_list, info) == EXIT_FAILURE)
 				return (EXIT_FAILURE);
 			i++;
 		}
@@ -107,7 +114,8 @@ static bool	exec_heredoc(t_node *current, t_context *context)
 	return (EXIT_SUCCESS);
 }
 
-bool	process_heredoc(t_node *parsed_tokens, t_context *context)
+bool	process_heredoc(t_node *parsed_tokens, char **path_list,
+		t_context *context, t_exe_info *info)
 {
 	t_node	*current;
 
@@ -116,7 +124,7 @@ bool	process_heredoc(t_node *parsed_tokens, t_context *context)
 	{
 		if (current->kind == CMD)
 		{
-			if (exec_heredoc(current, context) == EXIT_FAILURE
+			if (exec_heredoc(current, path_list, context, info) == EXIT_FAILURE
 				|| (current->prev == NULL && is_heredoc(current->argv[0])))
 			{
 				close_redirect_fd(&parsed_tokens->fds[IN]);
