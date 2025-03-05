@@ -12,13 +12,6 @@
 
 #include "minishell.h"
 
-int	here_document_rl_event_hook(void)
-{
-	if (g_sig == SIGINT)
-		rl_done = 1;
-	return (0);
-}
-
 static void	heredoc_child_process(char *delimiter, int fds[2],
 		t_context *context)
 {
@@ -58,17 +51,17 @@ static bool	heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid,
 
 	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
-	if (WIFSIGNALED(status) == EXIT_SUCCESS)
+	if (WEXITSTATUS(status) == (EXIT_STATUS_INVALID + SIGINT))
 	{
 		catch_exit_status(context, status);
 		wrap_close(fds[IN]);
 		wrap_close(fds[OUT]);
-		return (false);
+		return (EXIT_FAILURE);
 	}
 	wrap_close(fds[OUT]);
 	parsed_tokens->fds[IN] = fds[IN];
 	context->flg_heredoc_expand = true;
-	return (true);
+	return (EXIT_SUCCESS);
 }
 
 static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context)
@@ -87,7 +80,7 @@ static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context)
 			EXIT_FAILURE);
 	if (pid == 0)
 		heredoc_child_process(parsed_tokens->argv[i + 1], fds, context);
-	if (heredoc_parent_process(parsed_tokens, fds, pid, context) == false)
+	if (heredoc_parent_process(parsed_tokens, fds, pid, context) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

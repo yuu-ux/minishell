@@ -79,5 +79,6 @@ bool		is_builtin(const t_node *parsed_tokens);
 bool		is_heredoc(char *argv);
 bool		process_heredoc(t_node *parsed_tokens, t_context *context);
 char		*expand_heredoc(char **line, t_context *context);
+int			here_document_rl_event_hook(void);
 
 #endif
