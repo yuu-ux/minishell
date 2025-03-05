@@ -51,12 +51,12 @@ int	child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list,
 	// STDOUT → current_pipefd[OUT]
 	if (info->exec_count < info->pipe_num)
 	{
-		wrap_dup2(parsed_tokens->fds[PIPE_IN], STDOUT_FILENO);
-		close_redirect_fd(&parsed_tokens->fds[PIPE_IN]);
-		close_redirect_fd(&parsed_tokens->fds[PIPE_OUT]);
+		wrap_dup2(parsed_tokens->fds[OUT], STDOUT_FILENO);
+		close_redirect_fd(&parsed_tokens->fds[OUT]);
+		close_redirect_fd(&parsed_tokens->fds[IN]);
 	}
-	// 初めのコマンド以外は、入力を前のpipefd[PIPE_OUT]にリダイレクトする
-	// STDIN → before_pipe_fd[PIPE_OUT]
+	// 初めのコマンド以外は、入力を前のpipefd[IN]にリダイレクトする
+	// STDIN → before_pipe_fd[IN]
 	if (info->exec_count > 0)
 	{
 		wrap_dup2(info->before_cmd_fd, STDIN_FILENO);
@@ -69,23 +69,23 @@ int	child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list,
 int	parent_process(t_node *parsed_tokens, t_exe_info *info)
 {
 	parent_override_signal_setting();
-	close_redirect_fd(&parsed_tokens->fds[PIPE_IN]);
+	close_redirect_fd(&parsed_tokens->fds[OUT]);
 	wrap_close(info->before_cmd_fd);
-	info->before_cmd_fd = parsed_tokens->fds[PIPE_OUT];
+	info->before_cmd_fd = parsed_tokens->fds[IN];
 	return (EXIT_SUCCESS);
 }
 
 void	set_redirect_fd(t_node *parsed_tokens)
 {
-	if (parsed_tokens->fds[PIPE_OUT] != INVALID_FD)
+	if (parsed_tokens->fds[IN] != INVALID_FD)
 	{
-		wrap_dup2(parsed_tokens->fds[PIPE_OUT], STDIN_FILENO);
-		close_redirect_fd(&parsed_tokens->fds[PIPE_OUT]);
+		wrap_dup2(parsed_tokens->fds[IN], STDIN_FILENO);
+		close_redirect_fd(&parsed_tokens->fds[IN]);
 	}
-	if (parsed_tokens->fds[PIPE_IN] != INVALID_FD)
+	if (parsed_tokens->fds[OUT] != INVALID_FD)
 	{
-		wrap_dup2(parsed_tokens->fds[PIPE_IN], STDOUT_FILENO);
-		close_redirect_fd(&parsed_tokens->fds[PIPE_IN]);
+		wrap_dup2(parsed_tokens->fds[OUT], STDOUT_FILENO);
+		close_redirect_fd(&parsed_tokens->fds[OUT]);
 	}
 }
 
@@ -98,8 +98,6 @@ int	execute(t_node *parsed_tokens, char **path_list, t_context *context, t_exe_i
 	init_saved_fd(info);
 	do_redirections(parsed_tokens);
 	set_redirect_fd(parsed_tokens);
-	ft_putnbr_fd(parsed_tokens->fds[PIPE_OUT], STDOUT_FILENO);
-	ft_putstr_fd("#\n", STDOUT_FILENO);
 	if (is_builtin(parsed_tokens))
 	{
 		exec_builtin(parsed_tokens, path_list, context, info);

@@ -36,8 +36,8 @@ typedef enum e_node_type
 
 typedef enum e_std_fd
 {
-	PIPE_OUT = 0,
-	PIPE_IN = 1,
+	IN = 0,
+	OUT = 1,
 	INVALID_FD = -1,
 }	t_std_fd;
 

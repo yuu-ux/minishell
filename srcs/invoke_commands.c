@@ -40,7 +40,7 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 		parent_override_signal_setting();
 		waitpid(pid, &status, 0);
 		catch_exit_status(context, status);
-		wrap_close(parsed_tokens->fds[PIPE_OUT]);
+		wrap_close(parsed_tokens->fds[IN]);
 	}
 	return (context->exit_status);
 }

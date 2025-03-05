@@ -16,14 +16,14 @@ static bool	heredoc_child_process(char *delimiter, int fds[2], t_context *contex
 {
 	char	*line;
 
-	wrap_close(fds[PIPE_OUT]);
+	wrap_close(fds[IN]);
 	heredoc_child_signal_setting();
 	while (true)
 	{
 		line = readline("> ");
 		if (g_sig == SIGINT)
 		{
-			wrap_close(fds[PIPE_IN]);
+			wrap_close(fds[OUT]);
 			free(line);
 			free_environ(context);
 			exit(EXIT_FAILURE);
@@ -34,11 +34,11 @@ static bool	heredoc_child_process(char *delimiter, int fds[2], t_context *contex
 			break ;
 		if (ft_strchr(line, '$') && context->flg_heredoc_expand)
 			line = expand_heredoc(&line, context);
-		ft_putstr_fd(line, fds[PIPE_IN]);
-		ft_putstr_fd("\n", fds[PIPE_IN]);
+		ft_putstr_fd(line, fds[OUT]);
+		ft_putstr_fd("\n", fds[OUT]);
 		free(line);
 	}
-	wrap_close(fds[PIPE_IN]);
+	wrap_close(fds[OUT]);
 	return (EXIT_SUCCESS);
 }
 
@@ -46,18 +46,16 @@ static bool	heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid,
 {
 	int	status;
 
-	wrap_close(fds[PIPE_IN]);
+	wrap_close(fds[OUT]);
 	heredoc_parent_signal_setting();
 	waitpid(pid, &status, 0);
 	if (context->exit_status)
 	{
 		ft_putstr_fd("\n", STDOUT_FILENO);
-		wrap_close(fds[PIPE_OUT]);
+		wrap_close(fds[IN]);
 		return (false);
 	}
-	parsed_tokens->fds[PIPE_OUT] = fds[PIPE_OUT];
-	ft_putnbr_fd(fds[PIPE_OUT], STDOUT_FILENO);
-	ft_putstr_fd("@\n", STDOUT_FILENO);
+	parsed_tokens->fds[IN] = fds[IN];
 	context->flg_heredoc_expand = true;
 	if (status)
 		return (false);
@@ -77,7 +75,7 @@ static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context, char
 	}
 	pid = fork();
 	if (pid == -1)
-		return (wrap_close(fds[PIPE_OUT]), wrap_close(fds[PIPE_IN]), printf("error\n"),
+		return (wrap_close(fds[IN]), wrap_close(fds[OUT]), printf("error\n"),
 			EXIT_FAILURE);
 	if (pid == 0)
 	{
@@ -86,6 +84,7 @@ static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context, char
 		free_environ(context);
 		exit(child_exit_st);
 	}
+	info->before_cmd_fd = fds[IN];
 	if (heredoc_parent_process(parsed_tokens, fds, pid, context) == false)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
@@ -123,7 +122,7 @@ bool	process_heredoc(t_node *parsed_tokens, char **path_list,
 			if (exec_heredoc(current, path_list, context, info) == EXIT_FAILURE
 				|| (current->prev == NULL && is_heredoc(current->argv[0])))
 			{
-				close_redirect_fd(&parsed_tokens->fds[PIPE_OUT]);
+				close_redirect_fd(&parsed_tokens->fds[IN]);
 				return (EXIT_FAILURE);
 			}
 		}

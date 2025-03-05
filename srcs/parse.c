@@ -19,8 +19,8 @@ static t_node	*new_node(char **argv)
 	node = (t_node *)ft_xmalloc(sizeof(t_node));
 	if (node == NULL)
 		return (NULL);
-	node->fds[PIPE_OUT] = INVALID_FD;
-	node->fds[PIPE_IN] = INVALID_FD;
+	node->fds[IN] = INVALID_FD;
+	node->fds[OUT] = INVALID_FD;
 	node->argv = argv;
 	node->next = NULL;
 	node->prev = NULL;

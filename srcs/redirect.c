@@ -19,7 +19,7 @@ bool	redirect_in(t_node *parsed_tokens, int i)
 	fd = open(parsed_tokens->argv[i + 1], O_RDONLY);
 	if (fd == -1)
 		return (printf("fd error\n"), false);
-	parsed_tokens->fds[PIPE_OUT] = fd;
+	parsed_tokens->fds[IN] = fd;
 	return (true);
 }
 
@@ -30,7 +30,7 @@ bool	redirect_out(t_node *parsed_tokens, int i)
 	fd = open(parsed_tokens->argv[i + 1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd == -1)
 		return (printf("fd error\n"), false);
-	parsed_tokens->fds[PIPE_IN] = fd;
+	parsed_tokens->fds[OUT] = fd;
 	return (true);
 }
 
@@ -41,7 +41,7 @@ bool	redirect_append(t_node *parsed_tokens, int i)
 	fd = open(parsed_tokens->argv[i + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
 	if (fd == -1)
 		return (printf("fd error\n"), false);
-	parsed_tokens->fds[PIPE_IN] = fd;
+	parsed_tokens->fds[OUT] = fd;
 	return (true);
 }
 
