@@ -44,6 +44,7 @@ bool	preprocess_line(char *line, t_context *context, t_token **tokens)
 	*tokens = tokenization(line);
 	if (check_syntax(*tokens, context) == EXIT_FAILURE)
 	{
+		add_history(line);
 		free_tokens(tokens);
 		return (EXIT_SUCCESS);
 	}
