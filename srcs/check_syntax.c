@@ -14,7 +14,7 @@
 
 static int	print_syntax_error(void)
 {
-	ft_putstr_fd("bash: syntax error near unexpected token `newline'\n",
+	ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n",
 		STDERR_FILENO);
 	return (EXIT_STATUS_SYNTAX_ERROR);
 }
