@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "tokenize.h"
 
 void	set_flg_heredoc_expand(t_token *token, t_context *context)
 {

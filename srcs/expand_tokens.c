@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "expand.h"
+#include "tokenize.h"
 
 static size_t	delete_single_quote(char **result, char *token)
 {

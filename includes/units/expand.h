@@ -14,6 +14,7 @@
 # define EXPAND_H
 
 # include <aio.h>
+# include <stdbool.h>
 
 typedef struct s_token		t_token;
 typedef struct s_context	t_context;

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "tokenize.h"
 
 static size_t	count_tokens(const char *line)
 {

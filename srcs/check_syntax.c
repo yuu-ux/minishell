@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "tokenize.h"
 
 static int	print_syntax_error(void)
 {

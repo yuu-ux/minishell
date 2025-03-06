@@ -26,8 +26,6 @@
 # include "units/expand.h"
 # include "units/invoke_commands.h"
 # include "units/redirect.h"
-// # include "units/signal_setting.h"
-# include "units/tokenize.h"
 # include "units/utils.h"
 
 # include "libft.h"
@@ -48,6 +46,23 @@ typedef struct s_context
 	uint8_t	exit_status;
 	bool	flg_heredoc_expand;
 }			t_context;
+
+typedef enum e_token_type
+{
+	TOKEN_WORD,
+	TOKEN_PIPE,
+	TOKEN_REDIRECT_IN,
+	TOKEN_REDIRECT_OUT,
+	TOKEN_REDIRECT_APPEND,
+	TOKEN_REDIRECT_HEREDOC,
+}			t_token_type;
+
+typedef struct s_token
+{
+	char			*data;
+	t_token			*next;
+	t_token_type	type;
+}			t_token;
 
 t_context	init_context(char *envp[]);
 
