@@ -35,7 +35,8 @@ static bool	has_option(char *argv)
 static char	*join_message(char *result, char *argv)
 {
 	result = free_strjoin(result, ft_strdup(argv));
-	result = free_strjoin(result, ft_strdup(" "));
+	if (ft_strncmp(argv, "", 1) != 0)
+		result = free_strjoin(result, ft_strdup(" "));
 	if (result == NULL)
 		exit(EXIT_FAILURE);
 	return (result);
