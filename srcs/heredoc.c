@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "invoke_commands.h"
 #include "signal_setting.h"
+#include "utils.h"
 
 static unsigned char	heredoc_child_process(char *delimiter, int fds[2],
 		t_context *context)

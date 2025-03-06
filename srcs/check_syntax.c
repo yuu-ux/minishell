@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "tokenize.h"
+#include "utils.h"
 
 static int	print_syntax_error(void)
 {

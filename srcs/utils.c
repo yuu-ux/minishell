@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "invoke_commands.h"
+#include "utils.h"
 
 void	close_redirect_fd(int *fd)
 {

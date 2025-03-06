@@ -10,13 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "expand.h"
+#include "invoke_commands.h"
 #include "signal_setting.h"
 #include "tokenize.h"
+#include "utils.h"
 
 // シグナルの途中で変更されても、未定義動作が起こらない
 volatile sig_atomic_t	g_sig = 0;
 
-bool	is_space_while(char *line)
+static bool	is_space_while(char *line)
 {
 	int	i;
 
@@ -33,7 +36,7 @@ bool	is_space_while(char *line)
 	return (true);
 }
 
-bool	preprocess_line(char *line, t_context *context, t_token **tokens)
+static bool	preprocess_line(char *line, t_context *context, t_token **tokens)
 {
 	if (line == NULL)
 	{
@@ -53,7 +56,7 @@ bool	preprocess_line(char *line, t_context *context, t_token **tokens)
 	return (EXIT_SUCCESS);
 }
 
-void	shell_loop(t_context *context)
+static void	shell_loop(t_context *context)
 {
 	char	*line;
 	t_token	*tokens;

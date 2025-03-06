@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "builtin.h"
+#include "error.h"
 #include "utils.h"
 
 static void	setup_pwd(char **old_pwd, char **pwd, t_context *context)

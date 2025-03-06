@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "invoke_commands.h"
 
 static t_node	*new_node(char **argv)
 {

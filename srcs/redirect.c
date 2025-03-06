@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "invoke_commands.h"
+#include "redirect.h"
+#include "utils.h"
 
 static bool	set_redirect(t_node *parsed_tokens, int i)
 {

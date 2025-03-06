@@ -11,9 +11,10 @@
 /* ************************************************************************** */
 
 #include "builtin.h"
-#include "minishell.h"
-#include "utils.h"
+#include "invoke_commands.h"
+#include "redirect.h"
 #include "signal_setting.h"
+#include "utils.h"
 
 static char	*find_executable_path(const t_node *parsed_tokens, char **path_list,
 		char **error_message)

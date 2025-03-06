@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "invoke_commands.h"
 
 char	**get_path_list(char *env_path)
 {

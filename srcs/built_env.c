@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "builtin.h"
+#include "utils.h"
 
 bool	built_env(t_context *context)
 {

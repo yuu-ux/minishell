@@ -10,8 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "invoke_commands.h"
 #include "expand.h"
 #include "tokenize.h"
+#include "utils.h"
 
 static size_t	delete_single_quote(char **result, char *token)
 {

@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "tokenize.h"
+#include "utils.h"
 
 t_token	*new_token(const char *line, t_token_type type)
 {
