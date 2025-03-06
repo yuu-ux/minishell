@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "signal_setting.h"
 
 void	signal_handler(int signum)
 {

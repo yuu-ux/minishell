@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "signal_setting.h"
 
 static unsigned char	heredoc_child_process(char *delimiter, int fds[2],
 		t_context *context)

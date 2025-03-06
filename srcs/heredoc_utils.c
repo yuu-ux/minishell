@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "signal_setting.h"
 
 int	here_document_rl_event_hook(void)
 {

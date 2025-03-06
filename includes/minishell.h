@@ -26,7 +26,7 @@
 # include "units/expand.h"
 # include "units/invoke_commands.h"
 # include "units/redirect.h"
-# include "units/signal_setting.h"
+// # include "units/signal_setting.h"
 # include "units/tokenize.h"
 # include "units/utils.h"
 
