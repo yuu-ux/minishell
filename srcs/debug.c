@@ -43,6 +43,12 @@ static const char *tokentype[] =
 	"TOKEN_REDIRECT_HEREDOC",
 };
 
+static const char *nodetype[] =
+{
+	"CMD",
+	"PIPE",
+};
+
 void	print_token(t_token *head)
 {
 	t_token	*current;
@@ -64,7 +70,7 @@ void	print_node(t_node *head)
 	current = head;
 	while (current)
 	{
-		printf("kind:%d\n", current->kind);
+		printf("kind:%s\n", nodetype[current->kind]);
 		if (current->argv != NULL)
 		{
 			i = 0;

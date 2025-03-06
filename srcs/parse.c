@@ -34,7 +34,8 @@ static size_t	count_word_node(t_token *tokens)
 	count = 0;
 	while (tokens && (tokens->type != TOKEN_PIPE))
 	{
-		count++;
+		if (tokens->data[0] || tokens->next == NULL)
+			count++;
 		tokens = tokens->next;
 	}
 	return (count);
@@ -70,7 +71,12 @@ static char	**create_argv(t_token **tokens)
 	result = (char **)ft_xmalloc((word_num + 1) * sizeof(char *));
 	i = 0;
 	while (i < (int)word_num)
-		result[i++] = token_set_send_free(tokens, ft_strdup);
+	{
+		if ((*tokens)->data[0] || (*tokens)->next == NULL)
+			result[i++] = token_set_send_free(tokens, ft_strdup);
+		else
+			token_set_send_free(tokens, NULL);
+	}
 	return (result);
 }
 
