@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "error.h"
 #include "builtin.h"
+#include "utils.h"
 
 static bool	has_option(char *argv)
 {

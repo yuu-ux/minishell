@@ -21,20 +21,54 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-# include "units/debug.h"
-# include "units/error.h"
-# include "units/expand.h"
-# include "units/invoke_commands.h"
-# include "units/redirect.h"
-# include "units/signal_setting.h"
-# include "units/tokenize.h"
-# include "units/utils.h"
 
 # include "libft.h"
 
 # define EXIT_STATUS_COMMAND_NOT_FOUND 127
 # define EXIT_STATUS_INVALID 128
 # define EXIT_STATUS_SYNTAX_ERROR 2
+
+typedef enum e_token_type
+{
+	TOKEN_WORD,
+	TOKEN_PIPE,
+	TOKEN_REDIRECT_IN,
+	TOKEN_REDIRECT_OUT,
+	TOKEN_REDIRECT_APPEND,
+	TOKEN_REDIRECT_HEREDOC,
+}			t_token_type;
+
+typedef struct s_token
+{
+	char			*data;
+	struct s_token	*next;
+	t_token_type	type;
+}					t_token;
+
+typedef struct s_exe_info
+{
+	pid_t	*pid;
+	int		pipe_num;
+	int		exec_count;
+	int		before_cmd_fd;
+	int		saved_stdin;
+	int		saved_stdout;
+}			t_exe_info;
+
+typedef enum e_node_type
+{
+	CMD,
+	PIPE,
+}	t_node_type;
+
+typedef struct s_node
+{
+	int				fds[2];
+	t_node_type		kind; // CMD:0 PIPE:1
+	char			**argv;
+	struct s_node	*next;
+	struct s_node	*prev;
+}					t_node;
 
 typedef struct s_kvs
 {

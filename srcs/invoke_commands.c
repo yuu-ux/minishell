@@ -11,7 +11,9 @@
 /* ************************************************************************** */
 
 #include "builtin.h"
-#include "minishell.h"
+#include "invoke_commands.h"
+#include "redirect.h"
+#include "signal_setting.h"
 #include "utils.h"
 
 static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "signal_setting.h"
 
 void	catch_exit_status(t_context *context, int status)
 {

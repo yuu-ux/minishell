@@ -13,8 +13,8 @@
 #ifndef UTILS_H
 # define UTILS_H
 
-# include "minishell.h"
 # include <stdint.h>
+# include "minishell.h"
 
 /* utils.c */
 void	free_environ(t_context *context);
@@ -25,7 +25,8 @@ void	free_after_invoke(char **path_list, t_node *parsed_tokens,
 void	init_saved_fd(t_exe_info *info);
 void	reset_fd(t_exe_info *info);
 void	free_tokens(t_token **tokens);
-void	all_free(t_exe_info *info, char **path_list, t_node *parsed_tokens, t_context *context);
+void	all_free(t_exe_info *info, char **path_list, t_node *parsed_tokens,
+			t_context *context);
 void	double_close_fd(int *fd1, int *fd2);
 
 /* environ_units.c */

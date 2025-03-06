@@ -10,7 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "redirect.h"
+#include "tokenize.h"
+#include "utils.h"
 
 static size_t	count_tokens(const char *line)
 {

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "builtin.h"
+#include "utils.h"
 
 static char	*analysis_token(char *argv, char *value)
 {

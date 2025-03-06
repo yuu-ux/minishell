@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "builtin.h"
+#include "utils.h"
 
 static bool	is_numeric(char *argv)
 {

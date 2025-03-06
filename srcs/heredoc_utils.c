@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "expand.h"
+#include "signal_setting.h"
 
 int	here_document_rl_event_hook(void)
 {
@@ -28,10 +29,10 @@ bool	is_heredoc(char *argv)
 
 char *expand_heredoc(char **line, t_context *context)
 {
-	size_t	i;
-	int		start;
-	char *result;
-	t_expand expand;
+	size_t		i;
+	int			start;
+	char		*result;
+	t_expand	expand;
 
 	expand.context = context;
 	expand.token = *line;

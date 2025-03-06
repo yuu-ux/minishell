@@ -13,17 +13,16 @@
 #ifndef REDIRECT_H
 # define REDIRECT_H
 
-typedef enum e_token_type	t_token_type;
-typedef struct s_node		t_node;
+# include "minishell.h"
 
-// redirect_utils.c
-t_token_type				get_token_type(const char *token);
-int							count_argv_cmd(char **argv);
-bool						redirect_in(t_node *parsed_tokens, int i);
-bool						redirect_out(t_node *parsed_tokens, int i);
-bool						redirect_append(t_node *parsed_tokens, int i);
+/* redirect_utils.c */
+t_token_type	get_token_type(const char *token);
+int				count_argv_cmd(char **argv);
+bool			redirect_in(t_node *parsed_tokens, int i);
+bool			redirect_out(t_node *parsed_tokens, int i);
+bool			redirect_append(t_node *parsed_tokens, int i);
 
-// redirect.c
-bool						do_redirections(t_node *parsed_tokens);
+/* redirect.c */
+bool			do_redirections(t_node *parsed_tokens);
 
 #endif

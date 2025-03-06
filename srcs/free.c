@@ -10,7 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "invoke_commands.h"
+#include "utils.h"
 
 void	all_free(t_exe_info *info, char **path_list, t_node *parsed_tokens,
 		t_context *context)

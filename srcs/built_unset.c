@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "builtin.h"
+#include "utils.h"
 
 bool	built_unset(const t_node *parsed_tokens, t_context *context)
 {

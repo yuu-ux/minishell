@@ -13,6 +13,9 @@
 #ifndef ERROR_H
 # define ERROR_H
 
+# include "minishell.h"
+
+/* error_utils.c */
 void	join_perror(const char *s1, const char *s2);
 
 #endif
