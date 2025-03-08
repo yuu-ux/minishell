@@ -34,7 +34,7 @@ static bool	update_env(const t_node *parsed_tokens, t_context *context)
 	i = 1;
 	while (parsed_tokens->argv[i])
 	{
-		if (is_variable(parsed_tokens->argv[i]) == false)
+		if (is_register(parsed_tokens->argv[i]) == false)
 		{
 			ft_printf("minishell: export: `%s': not a valid identifier\n",
 				parsed_tokens->argv[i]);
