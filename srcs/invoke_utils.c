@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 17:58:54 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 18:20:33 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/09 03:15:33 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,7 @@ int	initialize_info(t_exe_info *info, t_node *parsed_tokens)
 	ft_memset(info->pid, -1, (info->pipe_num + 1) * sizeof(pid_t));
 	info->saved_stdin = INVALID_FD;
 	info->saved_stdout = INVALID_FD;
+	info->path = NULL;
+	info->error_message = NULL;
 	return (EXIT_SUCCESS);
 }

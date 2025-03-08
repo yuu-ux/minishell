@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 01:10:18 by yehara            #+#    #+#             */
-/*   Updated: 2025/03/03 17:32:42 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/09 04:09:33 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,7 @@ void	set_redirect_fd(t_node *parsed_tokens)
 int	execute(t_node *parsed_tokens, char **path_list, t_context *context,
 		t_exe_info *info)
 {
-	char	*path;
-	char	*error_message;
+	char **envp;
 
 	init_saved_fd(info);
 	do_redirections(parsed_tokens);
@@ -112,17 +111,14 @@ int	execute(t_node *parsed_tokens, char **path_list, t_context *context,
 		// ビルトインの終了ステータスを返したい
 		return (EXIT_SUCCESS);
 	}
-	path = find_executable_path(parsed_tokens, path_list, &error_message);
-	if (path == NULL)
-	{
-		ft_printf("minishell: %s: %s\n", parsed_tokens->argv[0], error_message);
-		free(error_message);
-		free(path);
-		all_free(info, path_list, parsed_tokens, context);
-		exit(EXIT_STATUS_COMMAND_NOT_FOUND);
-	}
+	if (is_absolute(parsed_tokens->argv[0]) == true)
+		exec_abcolute(parsed_tokens, path_list, info, context);
+	info->path = find_executable_path(parsed_tokens, path_list, &info->error_message);
+	check_path(parsed_tokens, info, path_list, context);
 	double_close_fd(&info->saved_stdin, &info->saved_stdout);
-	execve(path, parsed_tokens->argv, convert_to_envp(context->environ));
+	envp = convert_to_envp(context->environ);
+	execve(info->path, parsed_tokens->argv, envp);
+	free_envp(envp);
 	exit(EXIT_FAILURE);
 }
 

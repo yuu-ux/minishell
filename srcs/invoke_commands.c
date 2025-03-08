@@ -37,9 +37,8 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 	if (pid == 0)
 	{
 		child_signal_setting();
-		if (access(parsed_tokens->argv[0], F_OK) == 0)
-			execve(parsed_tokens->argv[0], parsed_tokens->argv,
-				convert_to_envp(context->environ));
+		if (access(parsed_tokens->argv[0], X_OK) == 0)
+			execute(parsed_tokens, path_list, context, info);
 		else
 			execute(parsed_tokens, path_list, context, info);
 	}

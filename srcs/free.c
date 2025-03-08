@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 20:14:52 by yehara            #+#    #+#             */
-/*   Updated: 2025/02/26 18:20:48 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/09 03:50:02 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,14 @@ void	free_environ(t_context *context)
 	}
 	wrap_close(STDIN_FILENO);
 	wrap_close(STDOUT_FILENO);
+}
+
+void	free_envp(char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (envp[i])
+		free(envp[i++]);
+	free(envp);
 }
