@@ -23,6 +23,8 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 	int		status;
 
 	do_redirections(parsed_tokens);
+	if (parsed_tokens->argv[0] == NULL)
+		return (setting_exit_status(context, EXIT_SUCCESS));
 	if (is_builtin(parsed_tokens))
 		return (execute(parsed_tokens, path_list, context, info));
 	pid = fork();
