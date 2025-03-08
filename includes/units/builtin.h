@@ -30,6 +30,6 @@ bool	is_builtin(const t_node *parsed_tokens);
 int		xsetenv(char *name, char *value, t_context *context);
 void	xaddenv(char *name, char *value, t_context *context);
 void	xunsetenv(const char *name, t_context *context);
-bool	is_variable(char *argv);
+bool	is_register(char *argv);
 
 #endif
