@@ -13,76 +13,70 @@
 #include "tokenize.h"
 #include "utils.h"
 
-static size_t	delete_single_quote(char **result, t_expand expand, int start, int i)
+static size_t	delete_single_quote(char **result, t_expand expand)
 {
-	*result = free_strjoin(*result, ft_substr(expand.token, start, i - start));
-	start = ++i;
-	while (expand.token[i] != SINGLE_QUOTE)
-		i++;
-	*result = free_strjoin(*result, ft_substr(expand.token, start, i - start));
+	*result = free_strjoin(*result, ft_substr(expand.token, expand.start, expand.index - expand.start));
+	expand.start = ++expand.index;
+	while (expand.token[expand.index] != SINGLE_QUOTE)
+		expand.index++;
+	*result = free_strjoin(*result, ft_substr(expand.token, expand.start, expand.index - expand.start));
 	// 「'」の次を指すために、+1
-	return (i + 1);
+	return (expand.index + 1);
 }
 
-static size_t	expand_double_quote(char **result, t_expand expand,
-		bool flg_heredoc)
+static size_t	expand_double_quote(char **result, t_expand expand, bool flg_heredoc)
 {
-	int	i;
-	int	start;
-
-	i = 1;
-	start = 1;
-	while (expand.token[i] != DOUBLE_QUOTE)
+	*result = free_strjoin(*result, ft_substr(expand.token, expand.start, expand.index - expand.start));
+	expand.start = ++expand.index;
+	while (expand.token[expand.index] != DOUBLE_QUOTE)
 	{
-		if (is_expand(expand.token, i) && !flg_heredoc)
+		if (is_expand(expand.token, expand.index) && !flg_heredoc)
 		{
-			*result = free_strjoin(*result, ft_substr(expand.token, start,
-						i - start));
-			i += insert_env(result, &expand.token[i], expand.context);
+			*result = free_strjoin(*result, ft_substr(expand.token, expand.start,
+						expand.index - expand.start));
+			expand.index += insert_env(result, &expand.token[expand.index], expand.context);
 			// 「"」と「$」のため、i+1
-			start = i + 1;
+			expand.start = expand.index + 1;
 		}
-		i++;
+		expand.index++;
 	}
-	*result = free_strjoin(*result, ft_substr(expand.token, start, i - start));
-	return (i + 1);
+	*result = free_strjoin(*result, ft_substr(expand.token, expand.start, expand.index - expand.start));
+	return (expand.index + 1);
 }
 
-size_t	expand_variable(char **result, t_expand expand, int start, int i)
+size_t	expand_variable(char **result, t_expand expand)
 {
-	*result = free_strjoin(*result, ft_substr(expand.token, start, i - start));
-	i += insert_env(result, &expand.token[i], expand.context);
-	return (i + 1);
+	*result = free_strjoin(*result, ft_substr(expand.token, expand.start, expand.index - expand.start));
+	expand.index += insert_env(result, &expand.token[expand.index], expand.context);
+	return (expand.index + 1);
 }
 
 static char	*expand_token(t_expand expand, bool flg_heredoc)
 {
-	int		i;
 	char	*result;
-	int		start;
 
-	i = 0;
-	start = 0;
+	expand.index = 0;
+	expand.start = 0;
 	result = ft_strdup("");
-	while (expand.token[i])
+	while (expand.token[expand.index])
 	{
-		if (expand.token[i] == SINGLE_QUOTE)
-			i = delete_single_quote(&result, expand, start, i);
-		else if (expand.token[i] == DOUBLE_QUOTE)
-			i = expand_double_quote(&result, expand, flg_heredoc);
-		else if (is_expand(expand.token, i) && !flg_heredoc)
-			i = expand_variable(&result, expand, start, i);
+		if (expand.token[expand.index] == SINGLE_QUOTE)
+			expand.index = delete_single_quote(&result, expand);
+		else if (expand.token[expand.index] == DOUBLE_QUOTE)
+			expand.index = expand_double_quote(&result, expand, flg_heredoc);
+		else if (is_expand(expand.token, expand.index) && !flg_heredoc)
+			expand.index = expand_variable(&result, expand);
 		else
 		{
-			if (is_quote(expand.token[i++]))
-				result = free_strjoin(result, ft_substr(expand.token, start,
-							i - start));
+			if (is_quote(expand.token[expand.index++]))
+				result = free_strjoin(result, ft_substr(expand.token, expand.start,
+							expand.index - expand.start));
 			// 変数展開したときのみ、start を更新したいため、continue する
 			continue ;
 		}
-		start = i;
+		expand.start = expand.index;
 	}
-	result = free_strjoin(result, ft_substr(expand.token, start, i - start));
+	result = free_strjoin(result, ft_substr(expand.token, expand.start, expand.index - expand.start));
 	return (result);
 }
 
