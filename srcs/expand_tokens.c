@@ -1,5 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   expand_tokens.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
@@ -15,15 +13,13 @@
 #include "tokenize.h"
 #include "utils.h"
 
-static size_t	delete_single_quote(char **result, char *token)
+static size_t	delete_single_quote(char **result, t_expand expand, int start, int i)
 {
-	size_t	i;
-
-	i = 0;
-	i++;
-	while (token[i] != SINGLE_QUOTE)
+	*result = free_strjoin(*result, ft_substr(expand.token, start, i - start));
+	start = ++i;
+	while (expand.token[i] != SINGLE_QUOTE)
 		i++;
-	*result = free_strjoin(*result, ft_substr(token, 1, i - 1));
+	*result = free_strjoin(*result, ft_substr(expand.token, start, i - start));
 	// 「'」の次を指すために、+1
 	return (i + 1);
 }
@@ -71,7 +67,7 @@ static char	*expand_token(t_expand expand, bool flg_heredoc)
 	while (expand.token[i])
 	{
 		if (expand.token[i] == SINGLE_QUOTE)
-			i = delete_single_quote(&result, &expand.token[i]);
+			i = delete_single_quote(&result, expand, start, i);
 		else if (expand.token[i] == DOUBLE_QUOTE)
 			i = expand_double_quote(&result, expand, flg_heredoc);
 		else if (is_expand(expand.token, i) && !flg_heredoc)
