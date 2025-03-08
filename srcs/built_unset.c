@@ -20,14 +20,7 @@ bool	built_unset(const t_node *parsed_tokens, t_context *context)
 	i = 1;
 	while (parsed_tokens->argv[i])
 	{
-		if (is_variable(parsed_tokens->argv[i]))
-			xunsetenv(parsed_tokens->argv[i], context);
-		else
-		{
-			ft_printf("minishell: unset: `%s': not a valid identifier\n",
-				parsed_tokens->argv[i]);
-			return (setting_exit_status(context, EXIT_FAILURE));
-		}
+		xunsetenv(parsed_tokens->argv[i], context);
 		i++;
 	}
 	return (setting_exit_status(context, EXIT_SUCCESS));
