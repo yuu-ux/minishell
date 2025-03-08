@@ -24,7 +24,11 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 
 	do_redirections(parsed_tokens);
 	if (parsed_tokens->argv[0] == NULL)
+	{
+		double_close_fd(&parsed_tokens->fds[IN], &parsed_tokens->fds[OUT]);
+		double_close_fd(&info->saved_stdin, &info->saved_stdout);
 		return (setting_exit_status(context, EXIT_SUCCESS));
+	}
 	if (is_builtin(parsed_tokens))
 		return (execute(parsed_tokens, path_list, context, info));
 	pid = fork();
@@ -42,7 +46,7 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 	parent_override_signal_setting();
 	waitpid(pid, &status, 0);
 	catch_exit_status(context, status);
-	wrap_close(parsed_tokens->fds[IN]);
+	double_close_fd(&parsed_tokens->fds[IN], &parsed_tokens->fds[OUT]);
 	return (context->exit_status);
 }
 
@@ -52,7 +56,6 @@ static int	exec_pipe(t_node *parsed_tokens, t_exe_info *info, char **path_list,
 	int	saved_fd;
 
 	saved_fd = INVALID_FD;
-	do_redirections(parsed_tokens);
 	if (parsed_tokens->fds[IN] != INVALID_FD)
 		saved_fd = parsed_tokens->fds[IN];
 	pipe(parsed_tokens->fds);
