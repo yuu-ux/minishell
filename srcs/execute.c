@@ -101,16 +101,17 @@ int	execute(t_node *parsed_tokens, char **path_list, t_context *context,
 {
 	char	*path;
 	char	*error_message;
+	unsigned char	exit_status;
 
 	init_saved_fd(info);
 	do_redirections(parsed_tokens);
 	set_redirect_fd(parsed_tokens);
 	if (is_builtin(parsed_tokens))
 	{
-		exec_builtin(parsed_tokens, path_list, context, info);
+		exit_status = exec_builtin(parsed_tokens, path_list, context, info);
 		reset_fd(info);
 		// ビルトインの終了ステータスを返したい
-		return (EXIT_SUCCESS);
+		exit(exit_status);
 	}
 	path = find_executable_path(parsed_tokens, path_list, &error_message);
 	if (path == NULL)
