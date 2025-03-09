@@ -37,10 +37,7 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 	if (pid == 0)
 	{
 		child_signal_setting();
-		if (access(parsed_tokens->argv[0], X_OK) == 0)
-			execute(parsed_tokens, path_list, context, info);
-		else
-			execute(parsed_tokens, path_list, context, info);
+		execute(parsed_tokens, path_list, context, info);
 	}
 	parent_override_signal_setting();
 	waitpid(pid, &status, 0);

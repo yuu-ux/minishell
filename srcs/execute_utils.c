@@ -33,66 +33,55 @@ bool	is_directory(char *path)
 {
 	struct stat	st;
 
-	if (stat(path, &st))
+	if (stat(path, &st) == -1)
 	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(path, STDERR_FILENO);
-		ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
-		return (false);
+		perror("stat error\n");
+		exit(EXIT_FAILURE);
 	}
 	if (S_ISDIR(st.st_mode))
-	{
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(path, STDERR_FILENO);
-		ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
-		return (false);
-	}
-	return (true);
+		return (true);
+	return (false);
+}
+
+uint8_t setting_message_and_status(t_exe_info *info, t_context *context, char *message, uint8_t status)
+{
+	free(info->error_message);
+	info->error_message = ft_strdup(message);
+	return (setting_exit_status(context, status));
 }
 
 int	exec_abcolute(t_node *parsed_tokens, char **path_list, t_exe_info *info, t_context *context)
 {
 	char **envp;
 
-	if (access(parsed_tokens->argv[0], F_OK) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	if (is_directory(parsed_tokens->argv[0]) == false)
-	{
-		free(info->error_message);
-		all_free(info, path_list, parsed_tokens, context);
-		exit(setting_exit_status(context, EXIT_STATUS_PERMISSION_DENIED));
-	}
-	envp = convert_to_envp(context->environ);
 	double_close_fd(&info->saved_stdin, &info->saved_stdout);
-	if (access(parsed_tokens->argv[0], X_OK) == EXIT_SUCCESS)
+	if (access(parsed_tokens->argv[0], F_OK) == -1)
+		setting_message_and_status(info, context, "No such file or directory", EXIT_STATUS_COMMAND_NOT_FOUND);
+	else if (is_directory(parsed_tokens->argv[0]) == true)
+		setting_message_and_status(info, context, "Is a directory", EXIT_STATUS_PERMISSION_DENIED);
+	else if (access(parsed_tokens->argv[0], X_OK) == EXIT_SUCCESS)
 	{
+		envp = convert_to_envp(context->environ);
 		execve(parsed_tokens->argv[0], parsed_tokens->argv, envp);
 		free_envp(envp);
-		double_close_fd(&info->saved_stdin, &info->saved_stdout);
 		all_free(info, path_list, parsed_tokens, context);
 		exit(setting_exit_status(context, EXIT_FAILURE));
 	}
 	else
-	{
-		free(info->error_message);
-		info->error_message = ft_strdup("Permission denied");
-		print_error(parsed_tokens, info);
-		all_free(info, path_list, parsed_tokens, context);
-		exit(setting_exit_status(context, EXIT_STATUS_PERMISSION_DENIED));
-	}
-	exit(setting_exit_status(context, EXIT_SUCCESS));
+		setting_message_and_status(info, context, "Permission denied", EXIT_STATUS_PERMISSION_DENIED);
+	print_error(parsed_tokens, info);
+	exit(context->exit_status);
 }
 
 void	check_path(t_node *parsed_tokens, t_exe_info *info, char **path_list, t_context *context)
 {
 	if (info->path == NULL)
 	{
-		exec_abcolute(parsed_tokens, path_list, info, context);
+		if (!(ft_strncmp(parsed_tokens->argv[0], "..", 3) == 0))
+			exec_abcolute(parsed_tokens, path_list, info, context);
 		print_error(parsed_tokens, info);
 		free(info->path);
 		all_free(info, path_list, parsed_tokens, context);
-		if (context->exit_status == 0)
-			context->exit_status = EXIT_STATUS_COMMAND_NOT_FOUND;
 		exit(context->exit_status);
 	}
 }
