@@ -26,8 +26,6 @@ static bool	check_quote_error(t_token *token)
 	int		i;
 
 	i = 0;
-	if (ft_strlen(token->data) == 1)
-		return (EXIT_FAILURE);
 	while (token->data[i])
 	{
 		if (is_quote(token->data[i]))
@@ -58,22 +56,12 @@ static bool	check_operators_error(t_token *token)
 
 bool	check_syntax(t_token *token, t_context *context)
 {
-	int	i;
-
 	if (token->data[0] == '|')
 		return (setting_exit_status(context, print_syntax_error()));
 	while (token)
 	{
-		i = 0;
-		while (token->data[i])
-		{
-			if (is_quote(token->data[i]))
-			{
-				if (check_quote_error(token) == EXIT_FAILURE)
-					return (setting_exit_status(context, print_syntax_error()));
-			}
-			i++;
-		}
+		if (check_quote_error(token) == EXIT_FAILURE)
+			return (setting_exit_status(context, print_syntax_error()));
 		if (is_operators(token->data[0]))
 		{
 			if (check_operators_error(token) == EXIT_FAILURE)

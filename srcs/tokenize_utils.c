@@ -31,18 +31,27 @@ t_token	*new_token(const char *line, t_token_type type)
 size_t	skip_quoted_token(char quote_char, const char **line)
 {
 	size_t	moved;
+	bool	flg_close;
 
 	moved = 0;
+	flg_close = false;
 	(*line)++;
 	moved++;
 	while (**line)
 	{
-		// echo "hello""world"をひとつのトークンとして持ちたいため次がスペースかチェックする
-		if (**line == quote_char && *(*line + 1) == ' ')
+		if (**line == quote_char)
 		{
 			(*line)++;
 			moved++;
-			break ;
+			if (flg_close == false)
+				flg_close = true;
+			else
+				flg_close = false;
+			if (**line == '\0')
+				break ;
+			if ((**line == ' ' || **line == '\t') && (flg_close == true))
+				break;
+			continue ;
 		}
 		(*line)++;
 		moved++;
