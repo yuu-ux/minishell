@@ -75,7 +75,9 @@ static int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 		char **path_list, t_context *context)
 {
 	int	status;
+	bool	flg_first_cmd;
 
+	flg_first_cmd = true;
 	info->pid[info->exec_count] = fork();
 	if (info->pid[info->exec_count] == -1)
 		return (ft_printf("error\n"), EXIT_FAILURE);
@@ -90,7 +92,11 @@ static int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 	while (info->exec_count >= 0)
 	{
 		waitpid(info->pid[info->exec_count], &status, 0);
-		catch_exit_status(context, status);
+		if (flg_first_cmd)
+		{
+			catch_exit_status(context, status);
+			flg_first_cmd = false;
+		}
 		info->exec_count--;
 	}
 	return (EXIT_SUCCESS);
