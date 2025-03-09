@@ -15,6 +15,8 @@
 
 bool	is_builtin(const t_node *parsed_tokens)
 {
+	if (parsed_tokens->argv[0] == NULL)
+		return (false);
 	if (!(ft_strncmp(parsed_tokens->argv[0], "echo", 5))
 		|| !(ft_strncmp(parsed_tokens->argv[0], "cd", 3))
 		|| !(ft_strncmp(parsed_tokens->argv[0], "pwd", 4))
