@@ -50,6 +50,7 @@ static bool	preprocess_line(char *line, t_context *context, t_token **tokens)
 	{
 		add_history(line);
 		free_tokens(tokens);
+		free(line);
 		return (EXIT_SUCCESS);
 	}
 	*tokens = expand_tokens(tokens, context);

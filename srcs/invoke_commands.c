@@ -23,6 +23,12 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 	int		status;
 
 	do_redirections(parsed_tokens);
+	if (parsed_tokens->argv[0] == NULL)
+	{
+		double_close_fd(&parsed_tokens->fds[IN], &parsed_tokens->fds[OUT]);
+		double_close_fd(&info->saved_stdin, &info->saved_stdout);
+		return (setting_exit_status(context, EXIT_SUCCESS));
+	}
 	if (is_builtin(parsed_tokens))
 		return (execute(parsed_tokens, path_list, context, info));
 	pid = fork();
@@ -31,16 +37,12 @@ static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 	if (pid == 0)
 	{
 		child_signal_setting();
-		if (access(parsed_tokens->argv[0], F_OK) == 0)
-			execve(parsed_tokens->argv[0], parsed_tokens->argv,
-				convert_to_envp(context->environ));
-		else
-			execute(parsed_tokens, path_list, context, info);
+		execute(parsed_tokens, path_list, context, info);
 	}
 	parent_override_signal_setting();
 	waitpid(pid, &status, 0);
 	catch_exit_status(context, status);
-	wrap_close(parsed_tokens->fds[IN]);
+	double_close_fd(&parsed_tokens->fds[IN], &parsed_tokens->fds[OUT]);
 	return (context->exit_status);
 }
 
@@ -50,7 +52,6 @@ static int	exec_pipe(t_node *parsed_tokens, t_exe_info *info, char **path_list,
 	int	saved_fd;
 
 	saved_fd = INVALID_FD;
-	do_redirections(parsed_tokens);
 	if (parsed_tokens->fds[IN] != INVALID_FD)
 		saved_fd = parsed_tokens->fds[IN];
 	pipe(parsed_tokens->fds);
@@ -74,7 +75,9 @@ static int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 		char **path_list, t_context *context)
 {
 	int	status;
+	bool	flg_first_cmd;
 
+	flg_first_cmd = true;
 	info->pid[info->exec_count] = fork();
 	if (info->pid[info->exec_count] == -1)
 		return (ft_printf("error\n"), EXIT_FAILURE);
@@ -89,7 +92,11 @@ static int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 	while (info->exec_count >= 0)
 	{
 		waitpid(info->pid[info->exec_count], &status, 0);
-		catch_exit_status(context, status);
+		if (flg_first_cmd)
+		{
+			catch_exit_status(context, status);
+			flg_first_cmd = false;
+		}
 		info->exec_count--;
 	}
 	return (EXIT_SUCCESS);

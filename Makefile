@@ -6,7 +6,7 @@
 #    By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/26 14:55:58 by hana/hmori        #+#    #+#              #
-#    Updated: 2025/03/04 20:57:40 by yehara           ###   ########.fr        #
+#    Updated: 2025/03/09 03:19:02 by yehara           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ SRC_FILES		=	main.c \
 					invoke_commands.c \
 					invoke_utils.c \
 					execute.c \
+					execute_utils.c \
 					debug.c \
 					builtin.c \
 					builtin_utils.c \
