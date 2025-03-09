@@ -29,25 +29,23 @@ bool	is_heredoc(char *argv)
 
 char *expand_heredoc(char **line, t_context *context)
 {
-	size_t		i;
-	int			start;
 	char		*result;
 	t_expand	expand;
 
 	expand.context = context;
 	expand.token = *line;
-	i = 0;
-	start = 0;
+	expand.index = 0;
+	expand.start = 0;
 	result = ft_strdup("");
-	while (expand.token[i])
+	while (expand.token[expand.index])
 	{
-		if (expand.token[i] == '$')
+		if (expand.token[expand.index] == '$')
 		{
-			i = expand_variable(&result, expand, start, i);
-			start = i;
+			expand.index = expand_variable(&result, expand);
+			expand.start = expand.index;
 		}
 		else
-			i++;
+			expand.index++;
 	}
 	free(expand.token);
 	return (result);
