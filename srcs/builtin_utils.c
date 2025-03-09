@@ -93,6 +93,8 @@ bool	is_register(char *argv)
 	i = 0;
 	if (ft_isdigit(argv[i]))
 		return (false);
+	if (argv[i] == '=')
+		return (false);
 	while (argv[i] && argv[i] != '=')
 	{
 		if (!(ft_isalnum(argv[i]) || argv[i] == '_'))
