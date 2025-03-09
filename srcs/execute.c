@@ -68,7 +68,7 @@ int	child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list,
 		wrap_close(info->before_cmd_fd);
 	}
 	execute(parsed_tokens, path_list, context, info);
-	exit(EXIT_FAILURE);
+	exit(EXIT_SUCCESS);
 }
 
 int	parent_process(t_node *parsed_tokens, t_exe_info *info)
