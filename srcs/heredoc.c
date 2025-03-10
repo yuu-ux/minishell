@@ -27,7 +27,7 @@ static unsigned char	heredoc_child_process(char *delimiter, int fds[2],
 	{
 		line = readline("> ");
 		if (line == NULL)
-			ft_printf("minishell: warning: here-document at line 1 delimited by end-of-file (wanted `%s')\n",
+			ft_printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n",
 				delimiter);
 		if (g_sig == SIGINT)
 		{
@@ -36,7 +36,7 @@ static unsigned char	heredoc_child_process(char *delimiter, int fds[2],
 			free(line);
 			return (EXIT_STATUS_INVALID + SIGINT);
 		}
-		if (ft_strncmp(delimiter, line, ft_strlen(delimiter) + 1) == 0)
+		if (line == NULL || ft_strncmp(delimiter, line, ft_strlen(delimiter) + 1) == 0)
 			break ;
 		if (ft_strchr(line, '$') && context->flg_heredoc_expand)
 			line = expand_heredoc(&line, context);
