@@ -57,7 +57,7 @@ bool	redirect_in(t_node *parsed_tokens, int i)
 	close_redirect_fd(&parsed_tokens->fds[IN]);
 	fd = open(parsed_tokens->argv[i + 1], O_RDONLY);
 	if (fd == -1)
-		return (printf("fd error\n"), false);
+		return (ft_putstr_fd("fd error\n", STDERR_FILENO), false);
 	parsed_tokens->fds[IN] = fd;
 	return (true);
 }
@@ -69,7 +69,7 @@ bool	redirect_out(t_node *parsed_tokens, int i)
 	close_redirect_fd(&parsed_tokens->fds[OUT]);
 	fd = open(parsed_tokens->argv[i + 1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd == -1)
-		return (printf("fd error\n"), false);
+		return (ft_putstr_fd("fd error\n", STDERR_FILENO), false);
 	parsed_tokens->fds[OUT] = fd;
 	return (true);
 }
@@ -81,7 +81,7 @@ bool	redirect_append(t_node *parsed_tokens, int i)
 	close_redirect_fd(&parsed_tokens->fds[OUT]);
 	fd = open(parsed_tokens->argv[i + 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
 	if (fd == -1)
-		return (printf("fd error\n"), false);
+		return (ft_putstr_fd("fd error\n", STDERR_FILENO), false);
 	parsed_tokens->fds[OUT] = fd;
 	return (true);
 }

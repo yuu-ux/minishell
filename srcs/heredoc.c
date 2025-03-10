@@ -77,12 +77,12 @@ static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context,
 
 	if (pipe(fds) == -1)
 	{
-		printf("error\n");
+		ft_putstr_fd("error\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
 	}
 	pid = fork();
 	if (pid == -1)
-		return (wrap_close(fds[IN]), wrap_close(fds[OUT]), printf("error\n"),
+		return (wrap_close(fds[IN]), wrap_close(fds[OUT]), ft_putstr_fd("error\n", STDERR_FILENO),
 			EXIT_FAILURE);
 	if (pid == 0)
 	{
