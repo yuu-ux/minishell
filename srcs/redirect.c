@@ -40,13 +40,13 @@ static bool	find_set_redirect(t_node *parsed_tokens)
 		if (is_redirect(parsed_tokens->argv[i])
 			|| is_heredoc(parsed_tokens->argv[i]))
 		{
-			if (set_redirect(parsed_tokens, i))
+			if (set_redirect(parsed_tokens, i) == false)
 				return (true);
 			i++;
 		}
 		i++;
 	}
-	return (false);
+	return (true);
 }
 
 char	**remove_redirect(t_node *parsed_tokens)

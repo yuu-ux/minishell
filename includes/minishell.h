@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:29:22 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/03/02 17:39:19 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/09 03:31:59 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,11 @@
 
 # include "libft.h"
 
+# define EXIT_STATUS_PERMISSION_DENIED 126
 # define EXIT_STATUS_COMMAND_NOT_FOUND 127
 # define EXIT_STATUS_INVALID 128
 # define EXIT_STATUS_SYNTAX_ERROR 2
+# define COMMAND_NOT_FOUND_NUM 18
 
 typedef enum e_token_type
 {
@@ -53,6 +55,8 @@ typedef struct s_exe_info
 	int		before_cmd_fd;
 	int		saved_stdin;
 	int		saved_stdout;
+	char 	*path;
+	char	*error_message;
 }			t_exe_info;
 
 typedef enum e_node_type

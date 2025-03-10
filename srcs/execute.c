@@ -6,44 +6,42 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 01:10:18 by yehara            #+#    #+#             */
-/*   Updated: 2025/03/03 17:32:42 by hana/hmori       ###   ########.fr       */
+/*   Updated: 2025/03/09 04:09:33 by yehara           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 #include "invoke_commands.h"
+#include "minishell.h"
 #include "redirect.h"
 #include "signal_setting.h"
 #include "utils.h"
 
-static char	*find_executable_path(const t_node *parsed_tokens, char **path_list,
-		char **error_message)
+static uint8_t	find_executable_path(const t_node *parsed_tokens, char **path_list, t_exe_info *info)
 {
 	int		i;
 	char	*slash_cmd;
-	char	*path;
 
 	if (path_list == NULL)
-	{
-		*error_message = ft_strdup("No such file or directory");
-		return (NULL);
-	}
+		return (info->error_message = ft_strdup("No such file or directory"), EXIT_STATUS_COMMAND_NOT_FOUND);
+	if (ft_strncmp(parsed_tokens->argv[0], "..", 3) == 0)
+		return (info->error_message = ft_strdup("command not found"), EXIT_STATUS_COMMAND_NOT_FOUND);
 	i = 0;
-	path = NULL;
 	slash_cmd = ft_strjoin("/", parsed_tokens->argv[0]);
 	while (path_list[i])
 	{
-		path = ft_strjoin(path_list[i++], slash_cmd);
-		if (access(path, F_OK) == 0)
+		info->path = ft_strjoin(path_list[i++], slash_cmd);
+		if (access(info->path, F_OK) == 0)
 		{
 			free(slash_cmd);
-			return (path);
+			return (EXIT_SUCCESS);
 		}
-		free(path);
+		free(info->path);
 	}
 	free(slash_cmd);
-	*error_message = ft_strdup("command not found");
-	return (NULL);
+	info->path = NULL;
+	info->error_message = ft_strdup("command not found");
+	return (EXIT_STATUS_COMMAND_NOT_FOUND);
 }
 
 int	child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list,
@@ -70,7 +68,7 @@ int	child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list,
 		wrap_close(info->before_cmd_fd);
 	}
 	execute(parsed_tokens, path_list, context, info);
-	exit(EXIT_FAILURE);
+	exit(EXIT_SUCCESS);
 }
 
 int	parent_process(t_node *parsed_tokens, t_exe_info *info)
@@ -99,8 +97,7 @@ void	set_redirect_fd(t_node *parsed_tokens)
 int	execute(t_node *parsed_tokens, char **path_list, t_context *context,
 		t_exe_info *info)
 {
-	char	*path;
-	char	*error_message;
+	char **envp;
 
 	init_saved_fd(info);
 	do_redirections(parsed_tokens);
@@ -109,20 +106,17 @@ int	execute(t_node *parsed_tokens, char **path_list, t_context *context,
 	{
 		exec_builtin(parsed_tokens, path_list, context, info);
 		reset_fd(info);
-		// ビルトインの終了ステータスを返したい
-		return (EXIT_SUCCESS);
+		return (context->exit_status);
 	}
-	path = find_executable_path(parsed_tokens, path_list, &error_message);
-	if (path == NULL)
-	{
-		ft_printf("minishell: %s: %s\n", parsed_tokens->argv[0], error_message);
-		free(error_message);
-		free(path);
-		all_free(info, path_list, parsed_tokens, context);
-		exit(EXIT_STATUS_COMMAND_NOT_FOUND);
-	}
+	// ./ がある場合相対パスを優先して実行するため PATH 探索して /bin/./ls とかでも実行できてしまう
+	if (is_absolute(parsed_tokens->argv[0]) == true)
+		exec_abcolute(parsed_tokens, path_list, info, context);
+	context->exit_status = find_executable_path(parsed_tokens, path_list, info);
+	check_path(parsed_tokens, info, path_list, context);
 	double_close_fd(&info->saved_stdin, &info->saved_stdout);
-	execve(path, parsed_tokens->argv, convert_to_envp(context->environ));
+	envp = convert_to_envp(context->environ);
+	execve(info->path, parsed_tokens->argv, envp);
+	free_envp(envp);
 	exit(EXIT_FAILURE);
 }
 
