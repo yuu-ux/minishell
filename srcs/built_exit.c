@@ -62,7 +62,7 @@ bool	built_exit(t_node *parsed_tokens, char **path_list, t_context *context,
 		t_exe_info *info)
 {
 	if (info->pid[info->exec_count] == -1)
-		ft_printf("exit\n");
+		ft_putstr_fd("exit\n", EXIT_FAILURE);
 	if (parsed_tokens->argv[1] == NULL)
 		;
 	else if ((!(is_numeric(parsed_tokens->argv[1])))

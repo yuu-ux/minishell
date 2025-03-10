@@ -67,7 +67,13 @@ static void	shell_loop(t_context *context)
 	{
 		g_sig = 0;
 		parent_signal_setting();
-		line = readline("minishell$ ");
+		if (isatty(STDIN_FILENO))
+			line = readline("minishell$ ");
+		else
+		{
+			rl_outstream = stderr;
+			line = readline("");
+		}
 		setting_status(context);
 		tokens = NULL;
 		if (preprocess_line(line, context, &tokens) == EXIT_FAILURE)
