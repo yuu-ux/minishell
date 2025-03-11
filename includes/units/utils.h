@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 10:00:57 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/03/09 04:05:06 by yehara           ###   ########.fr       */
+/*   Updated: 2025/03/11 21:12:43 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,10 @@ bool	is_pipe(char *str);
 bool	is_redirect(char *str);
 
 /* execute_utils.c */
-void	check_path(t_node *parsed_tokens, t_exe_info *info, char **path_list, t_context *context);
+void	check_path(t_node *parsed_tokens, t_exe_info *info, char **path_list,
+			t_context *context);
 bool	is_absolute(char *argv);
-int	exec_abcolute(t_node *parsed_tokens, char **path_list, t_exe_info *info, t_context *context);
+int		exec_abcolute(t_node *parsed_tokens, char **path_list, t_exe_info *info,
+			t_context *context);
 
 #endif
