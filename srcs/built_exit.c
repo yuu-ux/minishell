@@ -11,8 +11,8 @@
 /* ************************************************************************** */
 
 #include "builtin.h"
-#include "utils.h"
 #include "error.h"
+#include "utils.h"
 
 static bool	is_numeric(char *argv)
 {
@@ -85,4 +85,3 @@ bool	built_exit(t_node *parsed_tokens, char **path_list, t_context *context,
 	all_free(info, path_list, parsed_tokens, context);
 	exit(context->exit_status);
 }
-
