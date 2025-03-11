@@ -6,7 +6,7 @@
 /*   By: hana/hmori <sagiri.mori@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 17:29:22 by hana/hmori        #+#    #+#             */
-/*   Updated: 2025/03/09 03:31:59 by yehara           ###   ########.fr       */
+/*   Updated: 2025/03/11 21:12:12 by hana/hmori       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,16 +48,16 @@ typedef struct s_token
 
 typedef struct s_exe_info
 {
-	pid_t			*pid;
-	int				pipe_num;
-	int				exec_count;
-	int				before_cmd_fd;
-	int				saved_stdin;
-	int				saved_stdout;
-	char			*path;
-	char			*error_message;
-	char			*heredoc_delimiter;
-}					t_exe_info;
+	pid_t	*pid;
+	int		pipe_num;
+	int		exec_count;
+	int		before_cmd_fd;
+	int		saved_stdin;
+	int		saved_stdout;
+	char	*path;
+	char	*error_message;
+	char	*heredoc_delimiter;
+}			t_exe_info;
 
 typedef enum e_node_type
 {
