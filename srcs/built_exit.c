@@ -12,6 +12,7 @@
 
 #include "builtin.h"
 #include "utils.h"
+#include "error.h"
 
 static bool	is_numeric(char *argv)
 {
@@ -62,19 +63,20 @@ bool	built_exit(t_node *parsed_tokens, char **path_list, t_context *context,
 		t_exe_info *info)
 {
 	if (info->pid[info->exec_count] == -1)
-		ft_putstr_fd("exit\n", EXIT_FAILURE);
+		print_err("exit\n");
 	if (parsed_tokens->argv[1] == NULL)
 		;
 	else if ((!(is_numeric(parsed_tokens->argv[1])))
 		|| is_greater_than_long_max(parsed_tokens)) // 引数のひとつめが数字以外
 	{
-		ft_printf("minishell: exit: %s: numeric argument required\n",
-			parsed_tokens->argv[1]);
+		print_err("minishell: exit: ");
+		print_err(parsed_tokens->argv[1]);
+		print_err(": numeric argument required\n");
 		context->exit_status = 2;
 	}
 	else if (parsed_tokens->argv[2] != NULL) // 引数の2つ目以降が存在する 例：exit 1 2
 	{
-		ft_printf("minishell: exit: too many arguments\n");
+		print_err("minishell: exit: too many arguments\n");
 		context->exit_status = EXIT_FAILURE;
 		return (context->exit_status);
 	}
@@ -83,3 +85,4 @@ bool	built_exit(t_node *parsed_tokens, char **path_list, t_context *context,
 	all_free(info, path_list, parsed_tokens, context);
 	exit(context->exit_status);
 }
+
