@@ -13,8 +13,8 @@
 #ifndef UTILS_H
 # define UTILS_H
 
-# include <stdint.h>
 # include "minishell.h"
+# include <stdint.h>
 
 /* utils.c */
 void	free_environ(t_context *context);
@@ -46,8 +46,10 @@ bool	is_pipe(char *str);
 bool	is_redirect(char *str);
 
 /* execute_utils.c */
-void	check_path(t_node *parsed_tokens, t_exe_info *info, char **path_list, t_context *context);
+void	check_path(t_node *parsed_tokens, t_exe_info *info, char **path_list,
+			t_context *context);
 bool	is_absolute(char *argv);
-int	exec_abcolute(t_node *parsed_tokens, char **path_list, t_exe_info *info, t_context *context);
+int		exec_abcolute(t_node *parsed_tokens, char **path_list, t_exe_info *info,
+			t_context *context);
 
 #endif
