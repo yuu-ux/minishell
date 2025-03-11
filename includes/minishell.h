@@ -57,6 +57,7 @@ typedef struct s_exe_info
 	int		saved_stdout;
 	char 	*path;
 	char	*error_message;
+	char	*heredoc_delimiter;
 }			t_exe_info;
 
 typedef enum e_node_type

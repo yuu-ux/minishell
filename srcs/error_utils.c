@@ -12,6 +12,11 @@
 
 #include "minishell.h"
 
+void	print_err(char *line)
+{
+	ft_putstr_fd(line, STDERR_FILENO);
+}
+
 void	join_perror(const char *s1, const char *s2)
 {
 	char	*message;

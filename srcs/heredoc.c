@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "error.h"
 #include "invoke_commands.h"
 #include "signal_setting.h"
 #include "utils.h"
@@ -22,30 +23,25 @@ static unsigned char	heredoc_child_process(char *delimiter, int fds[2],
 	heredoc_child_signal_setting();
 	rl_event_hook = here_document_rl_event_hook;
 	wrap_close(fds[IN]);
-	line = NULL;
 	while (true)
 	{
 		line = readline("> ");
 		if (line == NULL)
-			ft_printf("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n",
-				delimiter);
+			heredoc_print_error_message(delimiter);
 		if (g_sig == SIGINT)
 		{
 			rl_done = 0;
 			wrap_close(fds[OUT]);
-			free(line);
-			return (EXIT_STATUS_INVALID + SIGINT);
+			return (free(line), EXIT_STATUS_INVALID + SIGINT);
 		}
-		if (line == NULL || ft_strncmp(delimiter, line, ft_strlen(delimiter) + 1) == 0)
+		if (line == NULL || ft_strncmp(delimiter, line, ft_strlen(delimiter)
+				+ 1) == 0)
 			break ;
 		if (ft_strchr(line, '$') && context->flg_heredoc_expand)
 			line = expand_heredoc(&line, context);
-		ft_putstr_fd(line, fds[OUT]);
-		ft_putstr_fd("\n", fds[OUT]);
-		free(line);
+		print_line(&line, fds);
 	}
-	wrap_close(fds[OUT]);
-	return (EXIT_SUCCESS);
+	return (wrap_close(fds[OUT]), EXIT_SUCCESS);
 }
 
 static bool	heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid,
@@ -68,7 +64,7 @@ static bool	heredoc_parent_process(t_node *parsed_tokens, int fds[2], pid_t pid,
 	return (EXIT_SUCCESS);
 }
 
-static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context,
+static bool	setup_heredoc(t_node *parsed_tokens, t_context *context,
 		char **path_list, t_exe_info *info)
 {
 	int				fds[2];
@@ -77,16 +73,17 @@ static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context,
 
 	if (pipe(fds) == -1)
 	{
-		ft_putstr_fd("error\n", STDERR_FILENO);
+		print_err("pipe error\n");
 		return (EXIT_FAILURE);
 	}
 	pid = fork();
 	if (pid == -1)
-		return (wrap_close(fds[IN]), wrap_close(fds[OUT]), ft_putstr_fd("error\n", STDERR_FILENO),
-			EXIT_FAILURE);
+		return (wrap_close(fds[IN]), wrap_close(fds[OUT]),
+			print_err("fork error\n"), EXIT_FAILURE);
 	if (pid == 0)
 	{
-		child_exit_status = heredoc_child_process(parsed_tokens->argv[i + 1], fds, context);
+		child_exit_status = heredoc_child_process(info->heredoc_delimiter, fds,
+				context);
 		free_after_invoke(path_list, parsed_tokens, info);
 		free_environ(context);
 		exit(child_exit_status);
@@ -97,8 +94,8 @@ static bool	setup_heredoc(t_node *parsed_tokens, int i, t_context *context,
 	return (EXIT_SUCCESS);
 }
 
-static bool	exec_heredoc(t_node *current, char **path_list,
-		t_context *context, t_exe_info *info)
+static bool	exec_heredoc(t_node *current, char **path_list, t_context *context,
+		t_exe_info *info)
 {
 	int	i;
 
@@ -107,7 +104,9 @@ static bool	exec_heredoc(t_node *current, char **path_list,
 	{
 		if (is_heredoc(current->argv[i]))
 		{
-			if (setup_heredoc(current, i, context, path_list, info) == EXIT_FAILURE)
+			info->heredoc_delimiter = current->argv[i + 1];
+			if (setup_heredoc(current, context, path_list,
+					info) == EXIT_FAILURE)
 				return (EXIT_FAILURE);
 			i++;
 		}

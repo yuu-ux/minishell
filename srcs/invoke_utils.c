@@ -65,5 +65,6 @@ int	initialize_info(t_exe_info *info, t_node *parsed_tokens)
 	info->saved_stdout = INVALID_FD;
 	info->path = NULL;
 	info->error_message = NULL;
+	info->heredoc_delimiter = NULL;
 	return (EXIT_SUCCESS);
 }
