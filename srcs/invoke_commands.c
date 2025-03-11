@@ -15,6 +15,7 @@
 #include "redirect.h"
 #include "signal_setting.h"
 #include "utils.h"
+#include "error.h"
 
 static int	exec_single_cmd(t_node *parsed_tokens, char **path_list,
 		t_context *context, t_exe_info *info)
@@ -74,13 +75,13 @@ static int	exec_pipe(t_node *parsed_tokens, t_exe_info *info, char **path_list,
 static int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 		char **path_list, t_context *context)
 {
-	int	status;
+	int		status;
 	bool	flg_first_cmd;
 
 	flg_first_cmd = true;
 	info->pid[info->exec_count] = fork();
 	if (info->pid[info->exec_count] == -1)
-		return (ft_printf("error\n"), EXIT_FAILURE);
+		return (print_err("fork error\n"), EXIT_FAILURE);
 	if (info->pid[info->exec_count] == 0)
 	{
 		wrap_dup2(info->before_cmd_fd, STDIN_FILENO);
@@ -88,7 +89,6 @@ static int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 		execute(parsed_tokens, path_list, context, info);
 		exit(EXIT_FAILURE);
 	}
-	close_redirect_fd(&info->before_cmd_fd);
 	while (info->exec_count >= 0)
 	{
 		waitpid(info->pid[info->exec_count], &status, 0);
@@ -99,7 +99,7 @@ static int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 		}
 		info->exec_count--;
 	}
-	return (EXIT_SUCCESS);
+	return (close_redirect_fd(&info->before_cmd_fd), EXIT_SUCCESS);
 }
 
 static int	exec_cmd(t_node *parsed_tokens, char **path_list,
