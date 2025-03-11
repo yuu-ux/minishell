@@ -29,7 +29,6 @@ t_token_type	get_token_type(const char *token)
 		return (TOKEN_WORD);
 }
 
-
 int	count_argv_cmd(char **argv)
 {
 	int	count;
