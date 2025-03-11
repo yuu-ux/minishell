@@ -33,12 +33,10 @@ char	*search_env(const char *key, t_kvs *environ)
 	result = NULL;
 	while (environ[i].key)
 	{
-		// null 文字まで比較させるための+1
 		if (!ft_strncmp(environ[i].key, key, ft_strlen(environ[i].key) + 1))
 			result = ft_strdup(environ[i].value);
 		i++;
 	}
-	// key のみ存在する場合、value が NULL になる
 	if (result == NULL)
 		return (ft_strdup(""));
 	return (result);

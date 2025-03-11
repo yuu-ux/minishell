@@ -41,7 +41,6 @@ SRC_FILES		=	main.c \
 					invoke_utils.c \
 					execute.c \
 					execute_utils.c \
-					debug.c \
 					builtin.c \
 					builtin_utils.c \
 					free.c \

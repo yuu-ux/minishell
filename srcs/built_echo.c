@@ -74,7 +74,6 @@ bool	built_echo(const t_node *parsed_tokens, t_context *context)
 	bool	flg_option;
 	char	*message;
 
-	// はじめのオプションのみ検証する
 	if (parsed_tokens->argv[1] == NULL)
 		return (ft_printf("\n"), setting_exit_status(context, EXIT_SUCCESS));
 	flg_option = has_option(parsed_tokens->argv[1]);

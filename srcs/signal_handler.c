@@ -26,10 +26,10 @@ void	heredoc_parent_sigint_handler(int signum)
 void	sigint_handler(int signum)
 {
 	g_sig = signum;
-	ft_putchar_fd('\n', STDOUT_FILENO); // 改行
-	rl_replace_line("", 0);        // 入力中の行をクリア
-	rl_on_new_line();              // 新しい行を設定
-	rl_redisplay();                // プロンプトを再描画
+	ft_putchar_fd('\n', STDOUT_FILENO);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 }
 
 void	parent_override_signal_handler(int signum)

@@ -51,8 +51,6 @@ int	child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list,
 		t_context *context)
 {
 	child_signal_setting();
-	// 最後以外のコマンドの場合
-	// STDOUT → current_pipefd[OUT]
 	if (info->exec_count < info->pipe_num)
 	{
 		if (parsed_tokens->fds[IN] != INVALID_FD)
@@ -63,8 +61,6 @@ int	child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list,
 		wrap_dup2(parsed_tokens->fds[OUT], STDOUT_FILENO);
 		close_redirect_fd(&parsed_tokens->fds[OUT]);
 	}
-	// 初めのコマンド以外は、入力を前のpipefd[IN]にリダイレクトする
-	// STDIN → before_pipe_fd[IN]
 	if (info->exec_count > 0)
 	{
 		wrap_dup2(info->before_cmd_fd, STDIN_FILENO);
@@ -111,7 +107,6 @@ int	execute(t_node *parsed_tokens, char **path_list, t_context *context,
 		reset_fd(info);
 		return (context->exit_status);
 	}
-	// ./ がある場合相対パスを優先して実行するため PATH 探索して /bin/./ls とかでも実行できてしまう
 	if (is_absolute(parsed_tokens->argv[0]) == true)
 		exec_abcolute(parsed_tokens, path_list, info, context);
 	context->exit_status = find_executable_path(parsed_tokens, path_list, info);

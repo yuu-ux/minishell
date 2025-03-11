@@ -67,14 +67,14 @@ bool	built_exit(t_node *parsed_tokens, char **path_list, t_context *context,
 	if (parsed_tokens->argv[1] == NULL)
 		;
 	else if ((!(is_numeric(parsed_tokens->argv[1])))
-		|| is_greater_than_long_max(parsed_tokens)) // 引数のひとつめが数字以外
+		|| is_greater_than_long_max(parsed_tokens))
 	{
 		print_err("minishell: exit: ");
 		print_err(parsed_tokens->argv[1]);
 		print_err(": numeric argument required\n");
 		context->exit_status = 2;
 	}
-	else if (parsed_tokens->argv[2] != NULL) // 引数の2つ目以降が存在する 例：exit 1 2
+	else if (parsed_tokens->argv[2] != NULL)
 	{
 		print_err("minishell: exit: too many arguments\n");
 		context->exit_status = EXIT_FAILURE;
