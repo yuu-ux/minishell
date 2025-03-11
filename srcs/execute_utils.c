@@ -70,6 +70,7 @@ int	exec_abcolute(t_node *parsed_tokens, char **path_list, t_exe_info *info, t_c
 	else
 		setting_message_and_status(info, context, "Permission denied", EXIT_STATUS_PERMISSION_DENIED);
 	print_error(parsed_tokens, info);
+	all_free(info, path_list, parsed_tokens, context);
 	exit(context->exit_status);
 }
 
