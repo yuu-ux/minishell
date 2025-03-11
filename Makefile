@@ -66,7 +66,6 @@ OBJS 			=	$(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC_FILES))
 DEPENDENCY		=	$(patsubst %.c, $(OBJ_DIR)/%.d, $(SRC_FILES))
 
 
-TEST_DIR = ./test
 RED = "\033[31m"
 GREEN = "\033[32m"
 RESET = "\033[0m"
@@ -96,19 +95,6 @@ clean:
 fclean: clean
 	@make -C $(LIBFT_DIR) fclean
 	rm -f $(NAME)
-
-debug: CFLAGS += -fsanitize=address -fsanitize=leak
-debug: all
-
-test:
-	@echo $(RED)'[-----------tokenize test-----------]'$(RESET)
-	@make -C $(TEST_DIR)/tokenize test
-	@echo $(RED)'[-----------expand test-----------]'$(RESET)
-	@make -C $(TEST_DIR)/expand test
-	@echo $(RED)'[-----------parse test-----------]'$(RESET)
-	@make -C $(TEST_DIR)/parse test
-	@echo $(RED)'[-----------execute test-----------]'$(RESET)
-	@make -C $(TEST_DIR)/execute test
 
 re: fclean all
 
