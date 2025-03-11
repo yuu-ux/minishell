@@ -36,3 +36,8 @@ bool	is_redirect(char *str)
 		return (true);
 	return (false);
 }
+
+bool	is_absolute(char *argv)
+{
+	return (ft_strncmp(argv, "./", 2) == 0);
+}

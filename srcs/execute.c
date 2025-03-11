@@ -17,15 +17,18 @@
 #include "signal_setting.h"
 #include "utils.h"
 
-static uint8_t	find_executable_path(const t_node *parsed_tokens, char **path_list, t_exe_info *info)
+static uint8_t	find_executable_path(const t_node *parsed_tokens,
+		char **path_list, t_exe_info *info)
 {
 	int		i;
 	char	*slash_cmd;
 
 	if (path_list == NULL)
-		return (info->error_message = ft_strdup("No such file or directory"), EXIT_STATUS_COMMAND_NOT_FOUND);
+		return (info->error_message = ft_strdup("No such file or directory"),
+			EXIT_STATUS_COMMAND_NOT_FOUND);
 	if (ft_strncmp(parsed_tokens->argv[0], "..", 3) == 0)
-		return (info->error_message = ft_strdup("command not found"), EXIT_STATUS_COMMAND_NOT_FOUND);
+		return (info->error_message = ft_strdup("command not found"),
+			EXIT_STATUS_COMMAND_NOT_FOUND);
 	i = 0;
 	slash_cmd = ft_strjoin("/", parsed_tokens->argv[0]);
 	while (path_list[i])
@@ -97,7 +100,7 @@ void	set_redirect_fd(t_node *parsed_tokens)
 int	execute(t_node *parsed_tokens, char **path_list, t_context *context,
 		t_exe_info *info)
 {
-	char **envp;
+	char	**envp;
 
 	init_saved_fd(info);
 	do_redirections(parsed_tokens);
@@ -119,4 +122,3 @@ int	execute(t_node *parsed_tokens, char **path_list, t_context *context,
 	free_envp(envp);
 	exit(EXIT_FAILURE);
 }
-
