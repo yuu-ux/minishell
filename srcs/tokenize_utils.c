@@ -35,10 +35,10 @@ size_t	skip_quoted_token(char quote_char, const char **line)
 
 	moved = 0;
 	flg_close = false;
-	(*line)++;
-	moved++;
 	while (**line)
 	{
+		(*line)++;
+		moved++;
 		if (**line == quote_char)
 		{
 			(*line)++;
@@ -50,11 +50,9 @@ size_t	skip_quoted_token(char quote_char, const char **line)
 			if (**line == '\0')
 				break ;
 			if ((**line == ' ' || **line == '\t') && (flg_close == true))
-				break;
+				break ;
 			continue ;
 		}
-		(*line)++;
-		moved++;
 	}
 	return (moved);
 }
