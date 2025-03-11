@@ -10,8 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "error.h"
 #include "expand.h"
+#include "invoke_commands.h"
 #include "signal_setting.h"
+
+void	heredoc_print_error_message(char *delimiter)
+{
+	print_err("minishell: ");
+	print_err("warning: here-document delimited by end-of-file (wanted `");
+	print_err(delimiter);
+	print_err("')\n");
+}
+
+void	print_line(char **line, int fds[2])
+{
+	ft_putstr_fd(*line, fds[OUT]);
+	ft_putstr_fd("\n", fds[OUT]);
+	free(*line);
+}
 
 int	here_document_rl_event_hook(void)
 {
@@ -27,7 +44,7 @@ bool	is_heredoc(char *argv)
 	return (false);
 }
 
-char *expand_heredoc(char **line, t_context *context)
+char	*expand_heredoc(char **line, t_context *context)
 {
 	char		*result;
 	t_expand	expand;

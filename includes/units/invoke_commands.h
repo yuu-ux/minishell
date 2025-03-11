@@ -56,5 +56,7 @@ bool		process_heredoc(t_node *parsed_tokens, char **path_list,
 				t_context *context, t_exe_info *info);
 char		*expand_heredoc(char **line, t_context *context);
 int			here_document_rl_event_hook(void);
+void		print_line(char **line, int fds[2]);
+void		heredoc_print_error_message(char *delimiter);
 
 #endif
