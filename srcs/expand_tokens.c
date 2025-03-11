@@ -24,7 +24,6 @@ static size_t	delete_single_quote(char **result, t_expand expand)
 		expand.index++;
 	*result = free_strjoin(*result, ft_substr(expand.token, expand.start,
 				expand.index - expand.start));
-	// 「'」の次を指すために、+1
 	return (expand.index + 1);
 }
 
@@ -42,7 +41,6 @@ static size_t	expand_double_quote(char **result, t_expand expand,
 						expand.start, expand.index - expand.start));
 			expand.index += insert_env(result, &expand.token[expand.index],
 					expand.context);
-			// 「"」と「$」のため、i+1
 			expand.start = expand.index + 1;
 		}
 		expand.index++;
@@ -81,7 +79,6 @@ static char	*expand_token(t_expand expand, bool flg_heredoc)
 			if (is_quote(expand.token[expand.index++]))
 				result = free_strjoin(result, ft_substr(expand.token,
 							expand.start, expand.index - expand.start));
-			// 変数展開したときのみ、start を更新したいため、continue する
 			continue ;
 		}
 		expand.start = expand.index;

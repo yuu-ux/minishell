@@ -13,8 +13,8 @@
 #ifndef UTILS_H
 # define UTILS_H
 
-# include <stdint.h>
 # include "minishell.h"
+# include <stdint.h>
 
 /* utils.c */
 void	free_environ(t_context *context);

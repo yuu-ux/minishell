@@ -13,6 +13,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "libft.h"
 # include <errno.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -21,8 +22,6 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-
-# include "libft.h"
 
 # define EXIT_STATUS_PERMISSION_DENIED 126
 # define EXIT_STATUS_COMMAND_NOT_FOUND 127
@@ -38,7 +37,7 @@ typedef enum e_token_type
 	TOKEN_REDIRECT_OUT,
 	TOKEN_REDIRECT_APPEND,
 	TOKEN_REDIRECT_HEREDOC,
-}			t_token_type;
+}					t_token_type;
 
 typedef struct s_token
 {
@@ -64,12 +63,12 @@ typedef enum e_node_type
 {
 	CMD,
 	PIPE,
-}	t_node_type;
+}					t_node_type;
 
 typedef struct s_node
 {
 	int				fds[2];
-	t_node_type		kind; // CMD:0 PIPE:1
+	t_node_type		kind;
 	char			**argv;
 	struct s_node	*next;
 	struct s_node	*prev;
@@ -77,17 +76,17 @@ typedef struct s_node
 
 typedef struct s_kvs
 {
-	char	*key;
-	char	*value;
-}			t_kvs;
+	char			*key;
+	char			*value;
+}					t_kvs;
 
 typedef struct s_context
 {
-	t_kvs	*environ;
-	uint8_t	exit_status;
-	bool	flg_heredoc_expand;
-}			t_context;
+	t_kvs			*environ;
+	uint8_t			exit_status;
+	bool			flg_heredoc_expand;
+}					t_context;
 
-t_context	init_context(char *envp[]);
+t_context			init_context(char *envp[]);
 
 #endif

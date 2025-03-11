@@ -36,7 +36,6 @@ void	xaddenv(char *name, char *value, t_context *context)
 
 	i = 0;
 	env_count = count_environ(context->environ);
-	// 追加と null 終端のサイズ確保のために +2 する
 	new_environ = (t_kvs *)ft_xmalloc(sizeof(t_kvs) * (env_count + 2));
 	while (context->environ[i].key)
 	{

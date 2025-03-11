@@ -66,7 +66,7 @@ char	**remove_redirect(t_node *parsed_tokens)
 		{
 			free(parsed_tokens->argv[i]);
 			free(parsed_tokens->argv[i + 1]);
-			i += 2; // リダイレクトとファイル名までとばしたいため +2
+			i += 2;
 			continue ;
 		}
 		new_argv[j] = ft_strdup(parsed_tokens->argv[i]);
@@ -87,7 +87,6 @@ bool	do_redirections(t_node *parsed_tokens)
 	new_argv = remove_redirect(parsed_tokens);
 	if (!new_argv)
 		return (false);
-	// TODO free
 	parsed_tokens->argv = new_argv;
 	return (true);
 }
