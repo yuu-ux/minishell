@@ -69,7 +69,7 @@ typedef enum e_node_type
 typedef struct s_node
 {
 	int				fds[2];
-	t_node_type		kind; // CMD:0 PIPE:1
+	t_node_type		kind;
 	char			**argv;
 	struct s_node	*next;
 	struct s_node	*prev;
