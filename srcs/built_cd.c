@@ -73,20 +73,27 @@ static bool	cd_parent(char **current_pwd, t_context *context)
 static bool	cd_home(t_context *context, char **current_pwd)
 {
 	t_kvs	*home_path;
+	char *update_home_path;
 
 	home_path = xgetenv("HOME", context);
-	free(*current_pwd);
 	if (home_path != NULL)
 	{
-		chdir(home_path->value);
-		xsetenv("PWD", home_path->value, context);
-		return (setting_exit_status(context, EXIT_SUCCESS));
+		update_home_path = ft_strdup(home_path->value);
+		chdir(update_home_path);
+		if (xgetenv("PWD", context))
+			xsetenv("PWD", update_home_path, context);
+		else
+			xaddenv("PWD", update_home_path, context);
+		free(update_home_path);
+		context->exit_status = EXIT_SUCCESS;
 	}
 	else
 	{
 		ft_putstr_fd("minishell: cd: HOME not set\n", STDERR_FILENO);
-		return (setting_exit_status(context, EXIT_FAILURE));
+		context->exit_status = EXIT_FAILURE;
 	}
+	free(*current_pwd);
+	return (context->exit_status);
 }
 
 bool	built_cd(const t_node *parsed_tokens, t_context *context)
