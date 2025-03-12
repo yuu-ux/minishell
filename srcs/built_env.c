@@ -21,7 +21,7 @@ bool	built_env(t_context *context)
 	while (context->environ[i].key)
 	{
 		if (context->environ[i].value)
-			ft_printf("%s=%s\n", context->environ[i].key,
+			printf("%s=%s\n", context->environ[i].key,
 				context->environ[i].value);
 		i++;
 	}
