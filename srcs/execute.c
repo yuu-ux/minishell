@@ -67,6 +67,7 @@ int	child_process(t_node *parsed_tokens, t_exe_info *info, char **path_list,
 		wrap_close(info->before_cmd_fd);
 	}
 	execute(parsed_tokens, path_list, context, info);
+	all_free(info, path_list, parsed_tokens, context);
 	exit(EXIT_SUCCESS);
 }
 
