@@ -87,6 +87,7 @@ static int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 		wrap_dup2(info->before_cmd_fd, STDIN_FILENO);
 		close_redirect_fd(&info->before_cmd_fd);
 		execute(parsed_tokens, path_list, context, info);
+		all_free(info, path_list, parsed_tokens, context);
 		exit(EXIT_FAILURE);
 	}
 	close_redirect_fd(&info->before_cmd_fd);
