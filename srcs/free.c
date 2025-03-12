@@ -52,6 +52,8 @@ void	free_after_invoke(char **path_list, t_node *parsed_tokens,
 	}
 	free(info->pid);
 	free(info);
+	while (parsed_tokens->prev)
+		parsed_tokens = parsed_tokens->prev;
 	while (parsed_tokens)
 	{
 		i = 0;
