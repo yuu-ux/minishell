@@ -70,14 +70,16 @@ static bool	cd_parent(char **current_pwd, t_context *context)
 	return (setting_exit_status(context, EXIT_SUCCESS));
 }
 
-static bool	cd_home(t_context *context)
+static bool	cd_home(t_context *context, char **current_pwd)
 {
 	t_kvs	*home_path;
 
 	home_path = xgetenv("HOME", context);
+	free(*current_pwd);
 	if (home_path != NULL)
 	{
 		chdir(home_path->value);
+		xsetenv("PWD", home_path->value, context);
 		return (setting_exit_status(context, EXIT_SUCCESS));
 	}
 	else
@@ -99,7 +101,7 @@ bool	built_cd(const t_node *parsed_tokens, t_context *context)
 	}
 	current_pwd = getcwd(NULL, 0);
 	if (parsed_tokens->argv[1] == NULL)
-		return (cd_home(context));
+		return (cd_home(context, &current_pwd));
 	else if (ft_strncmp(parsed_tokens->argv[1], "..", 3) == 0)
 		return (cd_parent(&current_pwd, context));
 	else if (access(parsed_tokens->argv[1], X_OK) == 0)
