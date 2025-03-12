@@ -115,5 +115,7 @@ int	execute(t_node *parsed_tokens, char **path_list, t_context *context,
 	envp = convert_to_envp(context->environ);
 	execve(info->path, parsed_tokens->argv, envp);
 	free_envp(envp);
+	free(info->path);
+	all_free(info, path_list, parsed_tokens, context);
 	exit(EXIT_FAILURE);
 }
