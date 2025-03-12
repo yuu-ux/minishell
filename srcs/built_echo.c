@@ -49,22 +49,16 @@ static char	*create_message(char **argv, bool flg_option)
 
 	i = 1;
 	result = ft_strdup("");
-	if (flg_option)
+	while (argv[i])
 	{
-		while (argv[i])
+		if (has_option(argv[i]) && flg_option)
 		{
-			if (!(has_option(argv[i])))
-				result = join_message(result, argv[i]);
 			i++;
+			continue ;
 		}
-	}
-	else
-	{
-		while (argv[i])
-		{
+			flg_option = false;
 			result = join_message(result, argv[i]);
-			i++;
-		}
+		i++;
 	}
 	return (ft_chop(result));
 }
