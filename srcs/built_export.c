@@ -61,32 +61,32 @@ static void	kvs_swap(t_kvs *env1, t_kvs *env2)
 	*env2 = temp;
 }
 
-static void	sorted_print(t_context *context)
+static void	sorted_print(t_context *cont)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (context->environ[i + 1].key)
+	while (cont->environ[i + 1].key)
 	{
 		j = i + 1;
-		while (context->environ[j].key)
+		while (cont->environ[j].key)
 		{
-			if (ft_strcmp(context->environ[i].key, context->environ[j].key) > 0)
-				kvs_swap(&context->environ[i], &context->environ[j]);
+			if (ft_strncmp(cont->environ[i].key, cont->environ[j].key,
+					cmp_len(cont->environ[i].key, cont->environ[j].key)) > 0)
+				kvs_swap(&cont->environ[i], &cont->environ[j]);
 			j++;
 		}
 		i++;
 	}
-	i = 0;
-	while (context->environ[i].key)
+	i = -1;
+	while (cont->environ[++i].key)
 	{
-		if (context->environ[i].value)
-			ft_printf("declare -x %s=\"%s\"\n", context->environ[i].key,
-				context->environ[i].value);
+		if (cont->environ[i].value)
+			ft_printf("declare -x %s=\"%s\"\n", cont->environ[i].key,
+				cont->environ[i].value);
 		else
-			ft_printf("declare -x %s\n", context->environ[i].key);
-		i++;
+			ft_printf("declare -x %s\n", cont->environ[i].key);
 	}
 }
 
