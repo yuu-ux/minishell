@@ -6,6 +6,10 @@ minishell
 
 a.out
 
+*.a
+*.o
+*.d
+
 test.sh
 debug.sh
 playground/*.sh
