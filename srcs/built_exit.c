@@ -19,24 +19,22 @@ bool	built_exit(t_node *parsed_tokens, char **path_list, t_context *context,
 {
 	if (info->pid[info->exec_count] == -1)
 		print_err("exit\n");
-	if (parsed_tokens->argv[1] == NULL)
-		;
-	else if (parsed_tokens->argv[1])
+	if (parsed_tokens->argv[1])
 	{
 		context->exit_status = ft_atoi(parsed_tokens->argv[1]);
-		if (errno == ERANGE || ft_isvalue(parsed_tokens->argv[1]) == 0)
+		if (errno == ERANGE || is_struct_value(parsed_tokens->argv[1]) == false)
 		{
 			print_err("minishell: exit: ");
 			print_err(parsed_tokens->argv[1]);
 			print_err(": numeric argument required\n");
 			context->exit_status = 2;
 		}
-	}
-	else if (parsed_tokens->argv[2])
-	{
-		print_err("minishell: exit: too many arguments\n");
-		context->exit_status = EXIT_FAILURE;
-		return (context->exit_status);
+		else if (parsed_tokens->argv[2])
+		{
+			print_err("minishell: exit: too many arguments\n");
+			context->exit_status = EXIT_FAILURE;
+			return (context->exit_status);
+		}
 	}
 	all_free(info, path_list, parsed_tokens, context);
 	exit(context->exit_status);
