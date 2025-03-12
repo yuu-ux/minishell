@@ -89,14 +89,13 @@ static int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 		execute(parsed_tokens, path_list, context, info);
 		exit(EXIT_FAILURE);
 	}
+	close_redirect_fd(&info->before_cmd_fd);
 	while (info->exec_count >= 0)
 	{
 		waitpid(info->pid[info->exec_count], &status, 0);
 		if (flg_first_cmd)
-		{
 			catch_exit_status(context, status);
-			flg_first_cmd = false;
-		}
+		flg_first_cmd = false;
 		info->exec_count--;
 	}
 	return (close_redirect_fd(&info->before_cmd_fd), EXIT_SUCCESS);
