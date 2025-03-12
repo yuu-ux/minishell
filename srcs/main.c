@@ -16,7 +16,6 @@
 #include "tokenize.h"
 #include "utils.h"
 
-// シグナルの途中で変更されても、未定義動作が起こらない
 volatile sig_atomic_t	g_sig = 0;
 
 static bool	is_space_while(char *line)
