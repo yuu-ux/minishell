@@ -73,7 +73,7 @@ static bool	cd_parent(char **current_pwd, t_context *context)
 static bool	cd_home(t_context *context, char **current_pwd)
 {
 	t_kvs	*home_path;
-	char *update_home_path;
+	char	*update_home_path;
 
 	home_path = xgetenv("HOME", context);
 	if (home_path != NULL)

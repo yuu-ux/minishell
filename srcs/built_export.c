@@ -72,7 +72,7 @@ static void	sorted_print(t_context *context)
 		j = i + 1;
 		while (context->environ[j].key)
 		{
-			if (strcmp(context->environ[i].key, context->environ[j].key) > 0)
+			if (ft_strcmp(context->environ[i].key, context->environ[j].key) > 0)
 				kvs_swap(&context->environ[i], &context->environ[j]);
 			j++;
 		}
