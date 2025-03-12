@@ -62,12 +62,14 @@ static bool	is_greater_than_long_max(t_node *parsed_tokens)
 bool	built_exit(t_node *parsed_tokens, char **path_list, t_context *context,
 		t_exe_info *info)
 {
+	char	*argv;
+
 	if (info->pid[info->exec_count] == -1)
 		print_err("exit\n");
-	if (parsed_tokens->argv[1] == NULL)
+	argv = ft_strstrip(parsed_tokens->argv[1], &ft_isspace);
+	if (argv == NULL)
 		;
-	else if ((!(is_numeric(parsed_tokens->argv[1])))
-		|| is_greater_than_long_max(parsed_tokens))
+	else if ((!(is_numeric(argv))) || is_greater_than_long_max(parsed_tokens))
 	{
 		print_err("minishell: exit: ");
 		print_err(parsed_tokens->argv[1]);
@@ -78,10 +80,11 @@ bool	built_exit(t_node *parsed_tokens, char **path_list, t_context *context,
 	{
 		print_err("minishell: exit: too many arguments\n");
 		context->exit_status = EXIT_FAILURE;
-		return (context->exit_status);
+		return (free(argv), context->exit_status);
 	}
-	if (context->exit_status == 0 && parsed_tokens->argv[1])
-		context->exit_status = ft_atol(parsed_tokens->argv[1]);
+	if (context->exit_status == 0 && argv)
+		context->exit_status = ft_atol(argv);
+	free(argv);
 	all_free(info, path_list, parsed_tokens, context);
 	exit(context->exit_status);
 }

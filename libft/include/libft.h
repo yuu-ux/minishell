@@ -22,6 +22,7 @@
 # include <stdlib.h>
 # include <string.h>
 # include <strings.h>
+# include <stdbool.h>
 # include <errno.h>
 # include <sys/stat.h>
 # include <sys/types.h>
@@ -99,5 +100,6 @@ void				*ft_realloc(void *buf, size_t size);
 char				*free_strjoin(char *s1, char *s2);
 long				ft_atol(char *str);
 int					ft_isspace(int c);
+char				*ft_strstrip(const char *s1, int (*is_delim)(int));
 
 #endif
