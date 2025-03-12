@@ -31,5 +31,6 @@ int		xsetenv(char *name, char *value, t_context *context);
 void	xaddenv(char *name, char *value, t_context *context);
 void	xunsetenv(const char *name, t_context *context);
 bool	is_register(char *argv);
+size_t	cmp_len(const char *s1, const char *s2);
 
 #endif

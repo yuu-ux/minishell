@@ -31,3 +31,19 @@ int	exec_builtin(t_node *parsed_tokens, char **path_list, t_context *context,
 		return (built_exit(parsed_tokens, path_list, context, info));
 	return (EXIT_FAILURE);
 }
+
+size_t	cmp_len(const char *s1, const char *s2)
+{
+	size_t	len1;
+	size_t	len2;
+
+	len1 = 0;
+	if (s1)
+		len1 = ft_strlen(s1);
+	len2 = 0;
+	if (s2)
+		len2 = ft_strlen(s2);
+	if (len1 < len2)
+		return (len2);
+	return (len1);
+}
