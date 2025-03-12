@@ -77,7 +77,6 @@ $(NAME): $(OBJS) $(LIBFTA)
 	$(CC) $(CFLAGS) $(FLAGS) $^ -o $@ $(LIBREADL)
 
 $(LIBFT_DIR):
-	@git submodule update --init --remote
 	@make -C $@
 
 $(OBJ_DIR):
