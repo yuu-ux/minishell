@@ -12,7 +12,6 @@
 
 #include "builtin.h"
 #include "utils.h"
-#include "time.h"
 
 bool	built_env(t_context *context)
 {
