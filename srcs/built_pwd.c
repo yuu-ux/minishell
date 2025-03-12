@@ -27,9 +27,9 @@ bool	built_pwd(t_context *context)
 			perror("pwd");
 			return (setting_exit_status(context, EXIT_FAILURE));
 		}
-		return (ft_printf("%s\n", pwd->value), EXIT_SUCCESS);
+		return (printf("%s\n", pwd->value), EXIT_SUCCESS);
 	}
-	ft_printf("%s\n", current_dir);
+	printf("%s\n", current_dir);
 	free(current_dir);
 	return (setting_exit_status(context, EXIT_SUCCESS));
 }
