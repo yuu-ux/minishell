@@ -88,7 +88,7 @@ static int	exec_last_pipe_cmd(t_node *parsed_tokens, t_exe_info *info,
 		close_redirect_fd(&info->before_cmd_fd);
 		execute(parsed_tokens, path_list, context, info);
 		all_free(info, path_list, parsed_tokens, context);
-		exit(EXIT_FAILURE);
+		exit(context->exit_status);
 	}
 	close_redirect_fd(&info->before_cmd_fd);
 	while (info->exec_count >= 0)
